@@ -1,0 +1,510 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum Role {
+  SUPER_ADMIN
+  SECTION_EDITOR
+  CONTENT_CONTRIBUTOR
+  EVENTS_MANAGER
+}
+
+enum Locale {
+  EN
+  GU
+  HI
+}
+
+enum ContentStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MediaKind {
+  IMAGE
+  DOCUMENT
+}
+
+enum EnquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  SPAM
+}
+
+enum EnquiryType {
+  GENERAL
+  PROGRAMME
+  EVENT
+  VOLUNTEER
+  FEEDBACK
+}
+
+enum RegistrationStatus {
+  NEW
+  CONFIRMED
+  WAITLISTED
+  CANCELLED
+}
+
+model User {
+  id                 String        @id @default(cuid())
+  email              String        @unique
+  name               String
+  passwordHash       String
+  status             UserStatus    @default(ACTIVE)
+  mustChangePassword Boolean       @default(true)
+  lastLoginAt        DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  roles              UserRole[]
+  sections           UserSection[]
+  sessions           Session[]
+  pagesCreated       Page[]        @relation("PageCreatedBy")
+  pagesUpdated       Page[]        @relation("PageUpdatedBy")
+  revisions          PageRevision[]
+  blogPosts          BlogPost[]
+  media              MediaAsset[]
+  enquiriesHandled   Enquiry[]     @relation("EnquiryHandledBy")
+  resetTokens        PasswordResetToken[]
+  auditLogs          AuditLog[]    @relation("ActorAuditLogs")
+}
+
+model UserRole {
+  userId String
+  role   Role
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, role])
+  @@index([role])
+}
+
+model Section {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  nameEn      String
+  nameGu      String
+  nameHi      String
+  description String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       UserSection[]
+  pages       Page[]
+  notices     Notice[]
+  events      Event[]
+  albums      GalleryAlbum[]
+  resources   ResourceLink[]
+  blogPosts   BlogPost[]
+  enquiries   Enquiry[]
+}
+
+model UserSection {
+  userId     String
+  sectionId  String
+  canPublish Boolean @default(false)
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  section    Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, sectionId])
+  @@index([sectionId])
+}
+
+model Session {
+  id         String    @id @default(cuid())
+  tokenHash  String    @unique
+  userId     String
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime  @default(now())
+  revokedAt  DateTime?
+  ipHash     String?
+  userAgent  String?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Page {
+  id          String           @id @default(cuid())
+  path        String           @unique
+  sectionId   String
+  parentPath  String?
+  status      ContentStatus    @default(DRAFT)
+  isSystem    Boolean          @default(false)
+  featured    Boolean          @default(false)
+  sortOrder   Int              @default(0)
+  coverKey    String?
+  publishedAt DateTime?
+  createdById String
+  updatedById String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  section     Section          @relation(fields: [sectionId], references: [id])
+  createdBy   User             @relation("PageCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User             @relation("PageUpdatedBy", fields: [updatedById], references: [id])
+  translations PageTranslation[]
+  revisions    PageRevision[]
+
+  @@index([sectionId, status])
+  @@index([status, featured])
+}
+
+model PageTranslation {
+  id             String        @id @default(cuid())
+  pageId         String
+  locale         Locale
+  title          String
+  summary        String?
+  bodyHtml       String        @default("")
+  seoTitle       String?
+  seoDescription String?
+  status         ContentStatus @default(DRAFT)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  page           Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, locale])
+  @@index([locale, status])
+}
+
+model PageRevision {
+  id         String   @id @default(cuid())
+  pageId     String
+  locale     Locale
+  title      String
+  summary    String?
+  bodyHtml   String
+  status     ContentStatus
+  note       String?
+  editedById String
+  createdAt  DateTime @default(now())
+  page       Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  editedBy   User     @relation(fields: [editedById], references: [id])
+
+  @@index([pageId, createdAt])
+}
+
+model BlogPost {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  sectionId   String
+  status      ContentStatus @default(DRAFT)
+  publishedAt DateTime?
+  category    String?
+  coverKey    String?
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  section     Section       @relation(fields: [sectionId], references: [id])
+  createdBy   User          @relation(fields: [createdById], references: [id])
+  translations BlogTranslation[]
+
+  @@index([status, publishedAt])
+  @@index([sectionId])
+}
+
+model BlogTranslation {
+  id        String   @id @default(cuid())
+  postId    String
+  locale    Locale
+  title     String
+  summary   String?
+  bodyHtml  String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, locale])
+}
+
+model Notice {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  sectionId   String
+  status      ContentStatus @default(DRAFT)
+  isPinned    Boolean       @default(false)
+  publishAt   DateTime?
+  expireAt    DateTime?
+  createdById String
+  updatedById String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  section     Section       @relation(fields: [sectionId], references: [id])
+  translations NoticeTranslation[]
+  attachments  NoticeAttachment[]
+
+  @@index([status, publishAt, expireAt])
+  @@index([sectionId])
+}
+
+model NoticeTranslation {
+  id        String @id @default(cuid())
+  noticeId  String
+  locale    Locale
+  title     String
+  bodyHtml  String @default("")
+  linkUrl   String?
+  linkLabel String?
+  notice    Notice @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+
+  @@unique([noticeId, locale])
+}
+
+model NoticeAttachment {
+  noticeId String
+  mediaId  String
+  notice   Notice     @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+  media    MediaAsset @relation(fields: [mediaId], references: [id])
+
+  @@id([noticeId, mediaId])
+}
+
+model Event {
+  id                    String        @id @default(cuid())
+  slug                  String        @unique
+  sectionId             String
+  status                ContentStatus @default(DRAFT)
+  startAt               DateTime
+  endAt                 DateTime?
+  allDay                Boolean       @default(false)
+  location              String?
+  registrationEnabled   Boolean       @default(false)
+  registrationDeadline  DateTime?
+  capacity              Int?
+  coverKey              String?
+  createdById           String
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  section               Section       @relation(fields: [sectionId], references: [id])
+  translations          EventTranslation[]
+  registrations         EventRegistration[]
+
+  @@index([status, startAt])
+  @@index([sectionId])
+}
+
+model EventTranslation {
+  id          String @id @default(cuid())
+  eventId     String
+  locale      Locale
+  title       String
+  description String @default("")
+  location    String?
+  event       Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, locale])
+}
+
+model EventRegistration {
+  id           String             @id @default(cuid())
+  eventId      String
+  name         String
+  email        String
+  phone        String
+  participants Int                @default(1)
+  notes        String?
+  status       RegistrationStatus @default(NEW)
+  locale       Locale             @default(EN)
+  ipHash       String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  event        Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, createdAt])
+}
+
+model Announcement {
+  id          String        @id @default(cuid())
+  enabled     Boolean       @default(false)
+  status      ContentStatus @default(DRAFT)
+  startAt     DateTime
+  endAt       DateTime
+  timezone    String        @default("Asia/Kolkata")
+  linkUrl     String?
+  imageKey    String?
+  sectionId   String?
+  slug        String?       @unique
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  translations AnnouncementTranslation[]
+
+  @@index([enabled, status, startAt, endAt])
+}
+
+model AnnouncementTranslation {
+  id             String       @id @default(cuid())
+  announcementId String
+  locale         Locale
+  title          String
+  message        String
+  linkLabel      String?
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@unique([announcementId, locale])
+}
+
+model MediaAsset {
+  id           String    @id @default(cuid())
+  storageKey   String    @unique
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  width        Int?
+  height       Int?
+  kind         MediaKind
+  title        String
+  altText      String    @default("")
+  caption      String?
+  isPublic     Boolean   @default(true)
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  archivedAt   DateTime?
+  createdBy    User?     @relation(fields: [createdById], references: [id])
+  albumItems   GalleryItem[]
+  noticeLinks  NoticeAttachment[]
+
+  @@index([kind, archivedAt])
+  @@index([createdAt])
+}
+
+model GalleryAlbum {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  sectionId   String
+  status      ContentStatus @default(DRAFT)
+  eventDate   DateTime?
+  coverKey    String?
+  sortOrder   Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  section     Section       @relation(fields: [sectionId], references: [id])
+  translations AlbumTranslation[]
+  items       GalleryItem[]
+
+  @@index([status, sortOrder])
+}
+
+model AlbumTranslation {
+  id        String       @id @default(cuid())
+  albumId   String
+  locale    Locale
+  title     String
+  description String?
+  album     GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@unique([albumId, locale])
+}
+
+model GalleryItem {
+  id        String     @id @default(cuid())
+  albumId   String
+  mediaId   String
+  caption   String?
+  altText   String?
+  sortOrder Int        @default(0)
+  album     GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  media     MediaAsset @relation(fields: [mediaId], references: [id])
+
+  @@index([albumId, sortOrder])
+}
+
+model ResourceLink {
+  id          String   @id @default(cuid())
+  sectionId   String
+  title       String
+  description String?
+  url         String
+  category    String?
+  isExternal  Boolean  @default(true)
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  section     Section  @relation(fields: [sectionId], references: [id])
+
+  @@index([sectionId, isPublished, sortOrder])
+}
+
+model Enquiry {
+  id          String        @id @default(cuid())
+  type        EnquiryType   @default(GENERAL)
+  sectionId   String?
+  eventId     String?
+  name        String
+  email       String
+  phone       String?
+  subject     String
+  message     String
+  locale      Locale        @default(EN)
+  status      EnquiryStatus @default(NEW)
+  consent     Boolean       @default(false)
+  ipHash      String?
+  handledById String?
+  handledAt   DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  section     Section?      @relation(fields: [sectionId], references: [id])
+  handledBy   User?         @relation("EnquiryHandledBy", fields: [handledById], references: [id])
+
+  @@index([status, createdAt])
+  @@index([type])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String?
+  summary    String
+  metadata   Json?
+  ipHash     String?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation("ActorAuditLogs", fields: [actorId], references: [id])
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+  @@index([actorId])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model RateLimitBucket {
+  key     String   @id
+  count   Int      @default(0)
+  resetAt DateTime
+
+  @@index([resetAt])
+}
