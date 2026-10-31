@@ -9,7 +9,6 @@ import {
   Plus,
   Search,
   ShieldCheck,
-  UserRound,
   X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -93,6 +92,9 @@ export default function UserManager({ users, sections, currentUserId }: UserMana
   const [query, setQuery] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [userState] = useActionState(createUserAction, initialState);
+  const temporaryPassword = 'temporaryPassword' in userState
+  ? userState.temporaryPassword
+  : undefined;
   const [updateState] = useActionState(updateUserAction, initialState);
   const [resetState, resetAction, resetPending] = useActionState(resetUserPasswordAction, initialState);
 
@@ -104,7 +106,7 @@ export default function UserManager({ users, sections, currentUserId }: UserMana
       const timer = window.setTimeout(() => window.location.reload(), 1200);
       return () => window.clearTimeout(timer);
     }
-  }, [userState.status, updateState.status, resetState.status]);
+  }, [userState.status, temporaryPassword, updateState.status, resetState.status]);
 
   const copyTemporaryPassword = async (password: string) => {
     try {
@@ -269,15 +271,15 @@ export default function UserManager({ users, sections, currentUserId }: UserMana
   );
 
 if (showCreatedDialog) {
-  if (!createdUser) return null;
+  const sourceUser = createdUser!;
+  if (!sourceUser) return null;
 
-  const user = createdUser;
-    const user = {
-  ...createdUser,
-  roles: createdUser.roles ?? [],
-  sections: createdUser.sections ?? [],
-  temporaryPassword: createdUser.temporaryPassword ?? '',
-};
+  const user = {
+    ...sourceUser,
+    roles: sourceUser.roles ?? [],
+    sections: sourceUser.sections ?? [],
+    temporaryPassword: sourceUser.temporaryPassword ?? '',
+  };
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center">
         <div className="fixed inset-0 bg-ink/60 backdrop-blur-sm" onClick={handleDialogClose} aria-hidden="true" />
@@ -385,6 +387,7 @@ function UserForm({
           selected: user.sections,
           passwordOption: 'generate',
           temporaryPassword: '',
+          confirmTemporaryPassword: '',
         }
       : {
           name: '',
