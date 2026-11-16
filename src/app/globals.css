@@ -11,41 +11,32 @@
   --font-display: var(--font-display), var(--font-gujarati), var(--font-devanagari),
     ui-sans-serif, system-ui, sans-serif;
 
-  /* — MERIDIAN Master Palette — */
-  --color-midnight: #101c2c;
-  --color-cosmic: #172b43;
-  --color-warm-ivory: #f6f3ec;
-  --color-pure-white: #ffffff;
-  --color-cyan: #52d5e8;
-  --color-discovery: #24a6a0;
-  --color-solar: #e9a94b;
-  --color-slate-muted: #718096;
-
-  /* — Core Surfaces & Brand Mappings — */
-  --color-carbon: #101c2c;
-  --color-graphite: #172b43;
+  /* — MERIDIAN Core Palette — */
+  --color-carbon: #202321;
+  --color-graphite: #343a35;
+  --color-warm-ivory: #eae7df;
   --color-stone: #c7c0b2;
-  --color-brass: #e9a94b;
-  --color-brass-dark: #c88932;
-  --color-sage: #24a6a0;
-  --color-mineral: #52d5e8;
-  --color-taupe: #94a3b8;
+  --color-brass: #a58b62;
+  --color-brass-dark: #8a7250;
+  --color-sage: #788477;
+  --color-mineral: #667b83;
+  --color-taupe: #b7aa99;
 
   /* — Backward-compatible aliases (existing components keep working) — */
-  --color-ink: #101c2c;
-  --color-ink-soft: #172b43;
-  --color-ink-muted: #718096;
-  --color-teal: #24a6a0;
-  --color-teal-dark: #1b7a76;
-  --color-teal-light: #e6f7f6;
-  --color-saffron: #e9a94b;
-  --color-saffron-dark: #c88932;
-  --color-saffron-light: #fef7ed;
-  --color-sky: #f6f3ec;
-  --color-sky-deep: #e8e2d4;
-  --color-cream: #faf8f5;
-  --color-paper: #ffffff;
-  --color-line: #e2ded5;
+  --color-ink: #202321;
+  --color-ink-soft: #343a35;
+  --color-ink-muted: #6b6e6a;
+  --color-teal: #788477;
+  --color-teal-dark: #5e6a5e;
+  --color-teal-light: #e2e6df;
+  --color-saffron: #a58b62;
+  --color-saffron-dark: #8a7250;
+  --color-saffron-light: #f3eee5;
+  --color-sky: #eae7df;
+  --color-sky-deep: #d8d3c8;
+  --color-cream: #f5f2eb;
+  --color-paper: #faf8f3;
+  --color-line: #d5d0c5;
 
   /* — Status colours — */
   --color-danger: #9a3c32;
@@ -223,70 +214,46 @@
   }
 
   .btn-primary {
-    background: var(--color-midnight);
+    background: var(--color-carbon);
     color: var(--color-warm-ivory);
-    border: 1px solid var(--color-midnight);
-    box-shadow: 0 2px 8px -2px rgba(16, 28, 44, 0.25);
+    border: 1px solid var(--color-carbon);
   }
 
   .btn-primary:hover {
-    background: var(--color-cosmic);
-    border-color: var(--color-cosmic);
-    color: #ffffff;
-    box-shadow: 0 6px 16px -4px rgba(16, 28, 44, 0.35);
+    background: var(--color-graphite);
+    border-color: var(--color-graphite);
   }
 
   .btn-accent {
-    background: var(--color-solar);
-    color: #101c2c;
-    border: 1px solid var(--color-solar);
-    font-weight: 700;
-    box-shadow: 0 2px 10px -2px rgba(233, 169, 75, 0.35);
+    background: var(--color-brass);
+    color: var(--color-paper);
+    border: 1px solid var(--color-brass);
   }
 
   .btn-accent:hover {
-    background: #f0b55e;
-    border-color: #f0b55e;
-    box-shadow: 0 6px 18px -3px rgba(233, 169, 75, 0.45);
-  }
-
-  .btn-cyan {
-    background: var(--color-cyan);
-    color: #101c2c;
-    border: 1px solid var(--color-cyan);
-    font-weight: 700;
-    box-shadow: 0 2px 10px -2px rgba(82, 213, 232, 0.35);
-  }
-
-  .btn-cyan:hover {
-    background: #6fe0f0;
-    border-color: #6fe0f0;
-    box-shadow: 0 6px 20px -3px rgba(82, 213, 232, 0.5);
+    background: #b09670;
+    border-color: #b09670;
   }
 
   .btn-outline {
     background: transparent;
     color: var(--color-ink);
-    border: 1px solid rgb(23 43 67 / 0.18);
+    border: 1px solid rgb(32 35 33 / 0.22);
   }
 
   .btn-outline:hover {
     background: var(--color-paper);
     border-color: var(--color-carbon);
-    color: var(--color-carbon);
   }
 
   .btn-light {
-    background: rgba(246, 243, 236, 0.08);
+    background: rgb(234 231 223 / 0.1);
     color: var(--color-warm-ivory);
-    border: 1px solid rgba(246, 243, 236, 0.22);
-    backdrop-filter: blur(8px);
+    border: 1px solid rgb(234 231 223 / 0.28);
   }
 
   .btn-light:hover {
-    background: rgba(246, 243, 236, 0.16);
-    border-color: rgba(246, 243, 236, 0.4);
-    color: #ffffff;
+    background: rgb(234 231 223 / 0.18);
   }
 
   .card-surface {
@@ -294,51 +261,6 @@
     border: 1px solid var(--color-line);
     border-radius: 1.25rem;
     box-shadow: var(--shadow-card);
-  }
-
-  .glass-dark {
-    background: rgba(16, 28, 44, 0.82);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-  }
-
-  .glass-light {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(23, 43, 67, 0.08);
-  }
-
-  .meridian-card {
-    background: var(--color-paper);
-    border: 1px solid var(--color-line);
-    border-radius: 1.25rem;
-    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
-                border-color 0.4s cubic-bezier(0.19, 1, 0.22, 1),
-                box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-  }
-
-  .meridian-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(233, 169, 75, 0.4);
-    box-shadow: 0 16px 36px -12px rgba(16, 28, 44, 0.12);
-  }
-
-  .meridian-card-dark {
-    background: rgba(23, 43, 67, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
-    backdrop-filter: blur(12px);
-    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
-                border-color 0.4s cubic-bezier(0.19, 1, 0.22, 1),
-                box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-  }
-
-  .meridian-card-dark:hover {
-    transform: translateY(-3px);
-    border-color: rgba(82, 213, 232, 0.35);
-    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.45);
   }
 
   .prose-content {
@@ -517,24 +439,9 @@
 
   .science-grid-dark {
     background-image:
-      linear-gradient(rgb(82 213 232 / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(82 213 232 / 0.05) 1px, transparent 1px);
+      linear-gradient(rgb(199 192 178 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(199 192 178 / 0.06) 1px, transparent 1px);
     background-size: 48px 48px;
-  }
-
-  .science-grid-cyan {
-    background-image:
-      linear-gradient(rgb(82 213 232 / 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(82 213 232 / 0.08) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-
-  .glow-cyan {
-    box-shadow: 0 0 30px -5px rgba(82, 213, 232, 0.35);
-  }
-
-  .glow-amber {
-    box-shadow: 0 0 30px -5px rgba(233, 169, 75, 0.35);
   }
 
   /* MERIDIAN — fine separator */

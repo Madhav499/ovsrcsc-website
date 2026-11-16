@@ -331,4 +331,154 @@ export const hi: Dictionary = {
   'enquiries.track.volunteer': 'स्वयंसेवा और व्याख्यान-क्लब भागीदारी के अवसर।',
   'enquiries.track.visit': 'केंद्र पर भ्रमण, आकाश अवलोकन या उत्सव की योजना।',
   'enquiries.noticesCta': 'केंद्र की ताज़ा सूचनाएँ देखें',
+
+  // MERIDIAN public design — brand
+  'mx.brand.familiar': 'लोक विज्ञान केंद्र, राजकोट',
+  'mx.brand.affiliation': 'सौराष्ट्र एजुकेशन फाउंडेशन की संस्था',
+  'mx.brand.logoAlt': 'ओ.वी.एस.आर.सी.एस.सी. राजकोट — सौराष्ट्र एजुकेशन फाउंडेशन का लोगो',
+  'mx.brand.home': 'होम — ओ.वी.एस.आर.सी.एस.सी. राजकोट',
+
+  // Navigation
+  'mx.nav.visit': 'भ्रमण की योजना',
+  'mx.nav.searchOpen': 'खोज खोलें',
+  'mx.nav.searchClose': 'खोज बंद करें',
+  'mx.nav.explore': 'केंद्र को जानिए',
+  'mx.nav.submenu': 'उपमेन्यू दिखाएँ:',
+
+  // Home — hero
+  'mx.home.heroEyebrow': 'विज्ञान सबके लिए · राजकोट · 1997 से',
+  'mx.home.heroTitle': 'हर चीज़ के पीछे के',
+  'mx.home.heroTitleAccent': 'विज्ञान को खोजिए।',
+  'mx.home.heroCoordinates': 'राजकोट · 22.30° उ., 70.80° पू.',
+  'mx.home.heroAward': 'विज्ञान एवं प्रौद्योगिकी संचार में सर्वश्रेष्ठ प्रयास हेतु राष्ट्रीय पुरस्कार · NCSTC, 2008',
+  'mx.home.heroScroll': 'आगे देखने के लिए स्क्रॉल करें',
+  'mx.home.heroPlateCaption': 'बिग बैंग एस्ट्रोनॉमी क्लब के टेलिस्कोप',
+  'mx.home.heroNext': 'केंद्र में आगे',
+  'mx.home.heroNotice': 'ताज़ा सूचना',
+
+  // Home — introduction
+  'mx.home.introTitle': 'विज्ञान को',
+  'mx.home.introTitleAccent': 'सब तक पहुँचाना।',
+  'mx.home.introLede':
+    'विज्ञान केवल पढ़ाया नहीं जाता, सीखा जाता है। दो दशकों से अधिक समय से केंद्र ब्लैकबोर्ड के पाठों को ऐसे प्रयोगों में बदल रहा है जिन्हें आप छू सकें, परख सकें और जिन पर प्रश्न कर सकें।',
+  'mx.home.introHistory':
+    'इसकी मातृ संस्था सौराष्ट्र एजुकेशन फाउंडेशन ने 1979 में अपना विज्ञान मिशन शुरू किया। 1997 में केंद्र रेस कोर्स स्थित वर्तमान भवन में आया और उसी वर्ष GUJCOST द्वारा क्षेत्रीय केंद्र के रूप में मान्यता मिली।',
+  'mx.home.captionLearning': 'केंद्र में करके सीखना',
+  'mx.home.captionMuseum': 'आर्यभट्ट विज्ञान संग्रहालय',
+  'mx.figure': 'चित्र',
+
+  // Home — at a glance
+  'mx.home.glanceEyebrow': 'एक नज़र में',
+  'mx.home.glanceTitle': 'विज्ञान करके सीखने',
+  'mx.home.glanceTitleAccent': 'के लिए बना केंद्र।',
+  'mx.home.glanceNote': 'आँकड़े केंद्र द्वारा प्रकाशित जानकारी के अनुसार।',
+  'mx.home.stats.years': 'विज्ञान लोकप्रियकरण के वर्ष',
+  'mx.home.stats.auditorium': 'सीटों वाला सभागार',
+  'mx.home.stats.periodicals': 'पुस्तकालय में विज्ञान पत्रिकाएँ',
+
+  // Home — experiences
+  'mx.home.experiencesEyebrow': 'खोज के स्थान',
+  'mx.home.experiencesTitle': 'जिज्ञासा की',
+  'mx.home.experiencesTitleAccent': 'प्रयोगशाला में आइए।',
+  'mx.home.experiencesIntro':
+    'पाँच प्रयोगशालाएँ, विज्ञान संग्रहालय, पुस्तकालय और सभागार — केंद्र का हर स्थान स्वयं करके खोजने के लिए बना है।',
+  'mx.home.facility.museum.title': 'आर्यभट्ट विज्ञान संग्रहालय',
+  'mx.home.facility.museum.text':
+    '50 से अधिक कार्यशील प्रदर्शों वाला विज्ञान संग्रहालय — आज़माने, परखने और चर्चा करने के लिए।',
+  'mx.home.facility.labs.title': 'पाँच प्रयोगशालाएँ',
+  'mx.home.facility.labs.text':
+    'पाठ्यक्रम आधारित प्रयोगों के लिए जीवविज्ञान, रसायन, इलेक्ट्रॉनिक्स, गणित और भौतिकी प्रयोगशालाएँ।',
+  'mx.home.facility.library.title': 'विज्ञान एवं गणित पुस्तकालय',
+  'mx.home.facility.library.text': 'विज्ञान और गणित को समर्पित 6,000 से अधिक पुस्तकें और 50 पत्रिकाएँ।',
+  'mx.home.facility.astronomy.title': 'बिग बैंग एस्ट्रोनॉमी क्लब',
+  'mx.home.facility.astronomy.text': 'केंद्र के खगोल क्लब के साथ आकाश अवलोकन, स्टार पार्टी और टेलिस्कोप सत्र।',
+  'mx.home.facility.auditorium.title': 'सभागार और एम्फीथिएटर',
+  'mx.home.facility.auditorium.text':
+    'व्याख्यानों और उत्सवों के लिए मल्टीमीडिया सुविधाओं वाला 200 सीटों का सभागार और खुला रंगमंच।',
+  'mx.home.programmesTitle': 'प्रमुख कार्यक्रम',
+  'mx.home.programmesAll': 'सभी कार्यक्रम',
+
+  // Home — events, discovery, insights, notices, visit
+  'mx.home.eventsAll': 'सभी आयोजन',
+  'mx.home.discoveryEyebrow': 'कक्षा से आगे',
+  'mx.home.discoveryTitle': 'जो जानते हैं,',
+  'mx.home.discoveryTitleAccent': 'उससे आगे देखिए।',
+  'mx.home.discoveryBody':
+    'सौराष्ट्र के आकाश के नीचे टेलिस्कोप सत्रों से लेकर सूर्यग्रहण अवलोकन और शून्य छाया दिवस के प्रयोगों तक — केंद्र शिक्षा को खुले आसमान तक ले जाता है, जहाँ जिज्ञासा को बढ़ने की जगह मिलती है।',
+  'mx.home.discoveryCta': 'खगोल क्लब से मिलिए',
+  'mx.home.discoveryCaption': 'शून्य छाया दिवस 2022',
+  'mx.home.discoveryCaption2': 'गीर स्टार पार्टी में डॉ. जे. जे. रावल',
+  'mx.home.insightsEyebrow': 'गतिविधि ब्लॉग से',
+  'mx.home.insightsTitle': 'ताज़ा',
+  'mx.home.insightsTitleAccent': 'जानकारियाँ।',
+  'mx.home.insightsCta': 'गतिविधि ब्लॉग पढ़ें',
+  'mx.home.noticesAll': 'सभी सूचनाएँ',
+  'mx.home.visitTitle': 'आपकी खोज-यात्रा',
+  'mx.home.visitTitleAccent': 'यहीं से शुरू होती है।',
+  'mx.home.visitCaption': 'रेस कोर्स, राजकोट स्थित केंद्र',
+
+  // Footer
+  'mx.footer.backToTop': 'ऊपर जाएँ',
+  'mx.footer.partners': 'सहयोग',
+  'mx.footer.rmc': 'राजकोट नगर निगम',
+  'mx.footer.gujcost': 'गुजरात काउंसिल ऑन साइंस एंड टेक्नोलॉजी (GUJCOST)',
+  'mx.footer.sef': 'सौराष्ट्र एजुकेशन फाउंडेशन (SEF)',
+
+  // Pages
+  'mx.page.continue': 'आगे जानिए',
+  'mx.page.chapters': 'अध्याय',
+  'mx.page.sectionIndex': 'अनुभाग सूची',
+  'mx.page.backTo': 'वापस जाएँ:',
+
+  // Blog
+  'mx.blog.featured': 'विशेष लेख',
+  'mx.blog.related': 'गतिविधि ब्लॉग से और',
+  'mx.blog.filter': 'श्रेणी के अनुसार लेख देखें',
+  'mx.blog.stories': 'लेख',
+
+  // Events
+  'mx.events.featured': 'अगला आयोजन',
+  'mx.events.registrationOpen': 'पंजीकरण खुला',
+  'mx.events.details': 'आयोजन विवरण',
+  'mx.events.seatsLeft': 'स्थान शेष',
+  'mx.events.full': 'सभी स्थान भर गए',
+  'mx.events.related': 'अन्य आगामी आयोजन',
+  'mx.events.when': 'कब',
+  'mx.events.where': 'कहाँ',
+  'mx.events.archiveIntro': 'केंद्र द्वारा आयोजित व्याख्यानों, कार्यशालाओं और उत्सवों का अभिलेख।',
+
+  // Gallery
+  'mx.gallery.albums': 'एल्बम',
+  'mx.gallery.photographs': 'तस्वीरें',
+  'mx.gallery.index': 'एल्बम सूची',
+  'mx.gallery.related': 'और एल्बम',
+  'mx.gallery.counter': 'तस्वीर',
+
+  // Notices
+  'mx.notices.important': 'महत्वपूर्ण',
+  'mx.notices.attachments': 'संलग्नक',
+  'mx.notices.filter': 'अनुभाग के अनुसार सूचनाएँ देखें',
+  'mx.notices.all': 'सभी सूचनाएँ',
+  'mx.notices.openLink': 'लिंक खोलें',
+
+  // Downloads
+  'mx.downloads.filterLabel': 'संसाधन खोजें',
+  'mx.downloads.filterPlaceholder': 'शीर्षक या फ़ाइल नाम से खोजें…',
+  'mx.downloads.noMatch': 'आपकी खोज से कोई संसाधन मेल नहीं खाता।',
+  'mx.downloads.open': 'खोलें',
+
+  // Contact
+  'mx.contact.directions': 'रास्ता देखें',
+  'mx.contact.writeTo': 'हमें लिखें',
+  'mx.contact.callUs': 'हमें कॉल करें',
+  'mx.contact.follow': 'केंद्र को फ़ॉलो करें',
+
+  // Search
+  'mx.search.all': 'सभी परिणाम',
+  'mx.search.searching': 'खोज जारी है…',
+  'mx.search.suggestions': 'या यहाँ से शुरू करें',
+  'mx.search.englishVersion': 'अंग्रेज़ी में उपलब्ध',
+
+  // Auth
+  'mx.auth.staffOnly': 'यह पृष्ठ केवल केंद्र के कर्मचारियों के लिए है।',
 };

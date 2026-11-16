@@ -333,6 +333,156 @@ export const en = {
   'enquiries.track.volunteer': 'Volunteering and lecture-club participation opportunities.',
   'enquiries.track.visit': 'Planning a visit, sky watch or celebration at the center.',
   'enquiries.noticesCta': 'See the latest notices from the center',
+
+  // MERIDIAN public design — brand
+  'mx.brand.familiar': 'Lok Vigyan Kendra, Rajkot',
+  'mx.brand.affiliation': 'A Saurashtra Education Foundation institution',
+  'mx.brand.logoAlt': 'OVSRCSC Rajkot — Saurashtra Education Foundation logo',
+  'mx.brand.home': 'Home — OVSRCSC Rajkot',
+
+  // Navigation
+  'mx.nav.visit': 'Plan a visit',
+  'mx.nav.searchOpen': 'Open search',
+  'mx.nav.searchClose': 'Close search',
+  'mx.nav.explore': 'Explore the center',
+  'mx.nav.submenu': 'Show submenu for',
+
+  // Home — hero
+  'mx.home.heroEyebrow': 'Science for All · Rajkot · Since 1997',
+  'mx.home.heroTitle': 'Explore the science',
+  'mx.home.heroTitleAccent': 'behind everything.',
+  'mx.home.heroCoordinates': 'Rajkot · 22.30° N, 70.80° E',
+  'mx.home.heroAward': 'National Award for Best Effort in Science & Technology Communication · NCSTC, 2008',
+  'mx.home.heroScroll': 'Scroll to explore',
+  'mx.home.heroPlateCaption': 'Big Bang Astronomy Club telescopes',
+  'mx.home.heroNext': 'Next at the center',
+  'mx.home.heroNotice': 'Latest notice',
+
+  // Home — introduction
+  'mx.home.introTitle': 'Making science',
+  'mx.home.introTitleAccent': 'accessible to everyone.',
+  'mx.home.introLede':
+    'Science is learned, not just taught. For more than two decades the center has turned blackboard lessons into experiments you can touch, test and question.',
+  'mx.home.introHistory':
+    'Its parent organisation, Saurashtra Education Foundation, began its science mission in 1979. The center moved into its present building at Race Course in 1997 and was recognised as a Regional Center by GUJCOST the same year.',
+  'mx.home.captionLearning': 'Learning by doing at the center',
+  'mx.home.captionMuseum': 'Aryabhatt Science Museum',
+  'mx.figure': 'Fig.',
+
+  // Home — at a glance
+  'mx.home.glanceEyebrow': 'At a glance',
+  'mx.home.glanceTitle': 'A center built around',
+  'mx.home.glanceTitleAccent': 'doing science.',
+  'mx.home.glanceNote': 'Figures as published by the center.',
+  'mx.home.stats.years': 'Years of science popularisation',
+  'mx.home.stats.auditorium': 'Seat auditorium',
+  'mx.home.stats.periodicals': 'Science periodicals in the library',
+
+  // Home — experiences
+  'mx.home.experiencesEyebrow': 'Spaces for discovery',
+  'mx.home.experiencesTitle': 'Step inside a',
+  'mx.home.experiencesTitleAccent': 'laboratory of curiosity.',
+  'mx.home.experiencesIntro':
+    'Five laboratories, a science museum, a library and an auditorium — every space at the center is designed for hands-on exploration.',
+  'mx.home.facility.museum.title': 'Aryabhatt Science Museum',
+  'mx.home.facility.museum.text':
+    'A science museum with more than 50 working exhibits — made to be tried, tested and talked about.',
+  'mx.home.facility.labs.title': 'Five laboratories',
+  'mx.home.facility.labs.text':
+    'Biology, chemistry, electronics, mathematics and physics laboratories for curriculum-linked experiments.',
+  'mx.home.facility.library.title': 'Science & maths library',
+  'mx.home.facility.library.text': 'Over 6,000 books and 50 periodicals dedicated to science and mathematics.',
+  'mx.home.facility.astronomy.title': 'Big Bang Astronomy Club',
+  'mx.home.facility.astronomy.text': 'Sky watches, star parties and telescope sessions with the center’s astronomy club.',
+  'mx.home.facility.auditorium.title': 'Auditorium & amphitheatre',
+  'mx.home.facility.auditorium.text':
+    'A 200-seat auditorium with multimedia facilities and an open-air theatre for lectures and celebrations.',
+  'mx.home.programmesTitle': 'Flagship programmes',
+  'mx.home.programmesAll': 'All programmes',
+
+  // Home — events, discovery, insights, notices, visit
+  'mx.home.eventsAll': 'All events',
+  'mx.home.discoveryEyebrow': 'Beyond the classroom',
+  'mx.home.discoveryTitle': 'Look beyond',
+  'mx.home.discoveryTitleAccent': 'what you know.',
+  'mx.home.discoveryBody':
+    'From telescope sessions under the Saurashtra sky to solar eclipse observations and Zero Shadow Day experiments, the center takes learning outdoors — where curiosity has room to grow.',
+  'mx.home.discoveryCta': 'Meet the astronomy club',
+  'mx.home.discoveryCaption': 'Zero Shadow Day 2022',
+  'mx.home.discoveryCaption2': 'Dr. J. J. Rawal at the Gir Star Party',
+  'mx.home.insightsEyebrow': 'From the activity blog',
+  'mx.home.insightsTitle': 'Latest',
+  'mx.home.insightsTitleAccent': 'insights.',
+  'mx.home.insightsCta': 'Read the activity blog',
+  'mx.home.noticesAll': 'All notices',
+  'mx.home.visitTitle': 'Your journey of discovery',
+  'mx.home.visitTitleAccent': 'starts here.',
+  'mx.home.visitCaption': 'The center at Race Course, Rajkot',
+
+  // Footer
+  'mx.footer.backToTop': 'Back to top',
+  'mx.footer.partners': 'Supported by',
+  'mx.footer.rmc': 'Rajkot Municipal Corporation',
+  'mx.footer.gujcost': 'Gujarat Council on Science and Technology (GUJCOST)',
+  'mx.footer.sef': 'Saurashtra Education Foundation (SEF)',
+
+  // Pages
+  'mx.page.continue': 'Continue exploring',
+  'mx.page.chapters': 'Chapters',
+  'mx.page.sectionIndex': 'Section index',
+  'mx.page.backTo': 'Back to',
+
+  // Blog
+  'mx.blog.featured': 'Featured story',
+  'mx.blog.related': 'More from the activity blog',
+  'mx.blog.filter': 'Filter stories by category',
+  'mx.blog.stories': 'stories',
+
+  // Events
+  'mx.events.featured': 'Next event',
+  'mx.events.registrationOpen': 'Registration open',
+  'mx.events.details': 'Event details',
+  'mx.events.seatsLeft': 'places remaining',
+  'mx.events.full': 'Fully booked',
+  'mx.events.related': 'Other upcoming events',
+  'mx.events.when': 'When',
+  'mx.events.where': 'Where',
+  'mx.events.archiveIntro': 'A record of lectures, workshops and celebrations held by the center.',
+
+  // Gallery
+  'mx.gallery.albums': 'albums',
+  'mx.gallery.photographs': 'photographs',
+  'mx.gallery.index': 'Album index',
+  'mx.gallery.related': 'More albums',
+  'mx.gallery.counter': 'Photograph',
+
+  // Notices
+  'mx.notices.important': 'Important',
+  'mx.notices.attachments': 'Attachments',
+  'mx.notices.filter': 'Filter notices by section',
+  'mx.notices.all': 'All notices',
+  'mx.notices.openLink': 'Open link',
+
+  // Downloads
+  'mx.downloads.filterLabel': 'Filter resources',
+  'mx.downloads.filterPlaceholder': 'Search by title or file name…',
+  'mx.downloads.noMatch': 'No resources match your search.',
+  'mx.downloads.open': 'Open',
+
+  // Contact
+  'mx.contact.directions': 'Get directions',
+  'mx.contact.writeTo': 'Write to us',
+  'mx.contact.callUs': 'Call us',
+  'mx.contact.follow': 'Follow the center',
+
+  // Search
+  'mx.search.all': 'All results',
+  'mx.search.searching': 'Searching…',
+  'mx.search.suggestions': 'Or start with',
+  'mx.search.englishVersion': 'Available in English',
+
+  // Auth
+  'mx.auth.staffOnly': 'This page is for staff of the center only.',
 } as const;
 
 export type Dictionary = Record<keyof typeof en, string>;

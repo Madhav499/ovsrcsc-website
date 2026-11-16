@@ -1,0 +1,1423 @@
+/* ==========================================================================
+   MERIDIAN — public design system for the OVSRCSC Rajkot website
+   --------------------------------------------------------------------------
+   Imported ONLY by src/app/(site)/[locale]/layout.tsx. Never by the admin.
+   Every rule is scoped under [data-site='meridian'] (set on the public
+   <body>), so nothing here can reach the admin panel.
+
+   Rules live in the same cascade layers Tailwind v4 uses, so Tailwind
+   utility classes in components still override these base/component rules.
+   Shared tokens from src/app/globals.css are intentionally NOT used.
+   ========================================================================== */
+
+@layer theme, base, components, utilities;
+
+/* -------------------------------------------------------------------------
+   1. Tokens
+   ------------------------------------------------------------------------- */
+@layer base {
+  [data-site='meridian'] {
+    /* Palette */
+    --mx-midnight: #101c2c;
+    --mx-navy: #172b43;
+    --mx-navy-raised: #1d3553;
+    --mx-ivory: #f6f3ec;
+    --mx-ivory-deep: #ece6d8;
+    --mx-white: #ffffff;
+    --mx-cyan: #52d5e8;
+    --mx-teal: #24a6a0;
+    --mx-teal-ink: #14706b;
+    --mx-amber: #e9a94b;
+    --mx-amber-bright: #f2bb68;
+    --mx-amber-ink: #8a5a12;
+    --mx-slate: #718096;
+
+    /* Text on light surfaces (all ≥ 4.5:1 on ivory and white) */
+    --mx-ink: #101c2c;
+    --mx-ink-2: #36414f;
+    --mx-ink-3: #56616f;
+
+    /* Status */
+    --mx-danger: #b4372b;
+    --mx-danger-soft: #fbe9e6;
+    --mx-success: #1e7a55;
+    --mx-success-soft: #e3f3ec;
+
+    /* Typography */
+    --mx-font-sans: var(--mx-font-body-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
+      ui-sans-serif, system-ui, sans-serif;
+    --mx-font-display: var(--mx-font-display-latin), var(--mx-font-gujarati),
+      var(--mx-font-devanagari), ui-sans-serif, system-ui, sans-serif;
+    --mx-font-serif: var(--mx-font-serif-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
+      ui-serif, Georgia, serif;
+
+    /* Radii — editorial, restrained */
+    --mx-radius-xs: 4px;
+    --mx-radius-sm: 8px;
+    --mx-radius-md: 14px;
+    --mx-radius-lg: 22px;
+    --mx-radius-pill: 999px;
+
+    /* Spacing */
+    --mx-space-1: 0.25rem;
+    --mx-space-2: 0.5rem;
+    --mx-space-3: 0.75rem;
+    --mx-space-4: 1rem;
+    --mx-space-6: 1.5rem;
+    --mx-space-8: 2rem;
+    --mx-space-12: 3rem;
+    --mx-space-16: 4rem;
+    --mx-space-section: clamp(4.5rem, 2.5rem + 7vw, 9rem);
+    --mx-gutter: clamp(1rem, 0.4rem + 2.6vw, 2.75rem);
+    --mx-header-h: 4.5rem;
+
+    /* Shadows — tinted toward midnight, never pure black */
+    --mx-shadow-sm: 0 1px 2px rgb(16 28 44 / 0.06), 0 4px 12px -6px rgb(16 28 44 / 0.12);
+    --mx-shadow-md: 0 2px 6px rgb(16 28 44 / 0.05), 0 18px 40px -22px rgb(16 28 44 / 0.35);
+    --mx-shadow-lg: 0 30px 80px -30px rgb(16 28 44 / 0.45);
+
+    /* Motion */
+    --mx-ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+    --mx-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --mx-duration-fast: 160ms;
+    --mx-duration: 320ms;
+    --mx-duration-slow: 700ms;
+
+    /* Default (light) surface semantics */
+    --mx-bg: var(--mx-ivory);
+    --mx-fg: var(--mx-ink);
+    --mx-fg-2: var(--mx-ink-2);
+    --mx-fg-3: var(--mx-ink-3);
+    --mx-line: rgb(16 28 44 / 0.12);
+    --mx-line-strong: rgb(16 28 44 / 0.24);
+    --mx-accent: var(--mx-teal-ink);
+    --mx-accent-2: var(--mx-amber-ink);
+    --mx-focus: var(--mx-teal-ink);
+    --mx-raised: var(--mx-white);
+    --mx-sunken: var(--mx-ivory-deep);
+    --mx-input-bg: var(--mx-white);
+  }
+
+  @media (min-width: 1024px) {
+    [data-site='meridian'] {
+      --mx-header-h: 5rem;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     2. Surfaces — each section declares its surface; children adapt.
+     ----------------------------------------------------------------------- */
+  [data-site='meridian'] .mx-surface-ivory,
+  [data-site='meridian'] .mx-surface-white {
+    --mx-bg: var(--mx-ivory);
+    --mx-fg: var(--mx-ink);
+    --mx-fg-2: var(--mx-ink-2);
+    --mx-fg-3: var(--mx-ink-3);
+    --mx-line: rgb(16 28 44 / 0.12);
+    --mx-line-strong: rgb(16 28 44 / 0.24);
+    --mx-accent: var(--mx-teal-ink);
+    --mx-accent-2: var(--mx-amber-ink);
+    --mx-focus: var(--mx-teal-ink);
+    --mx-raised: var(--mx-white);
+    --mx-sunken: var(--mx-ivory-deep);
+    --mx-input-bg: var(--mx-white);
+    background-color: var(--mx-bg);
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-surface-white {
+    --mx-bg: var(--mx-white);
+    --mx-raised: var(--mx-ivory);
+    --mx-input-bg: var(--mx-ivory);
+  }
+
+  [data-site='meridian'] .mx-surface-dark,
+  [data-site='meridian'] .mx-surface-navy {
+    --mx-bg: var(--mx-midnight);
+    --mx-fg: var(--mx-ivory);
+    --mx-fg-2: rgb(246 243 236 / 0.78);
+    --mx-fg-3: rgb(246 243 236 / 0.6);
+    --mx-line: rgb(246 243 236 / 0.12);
+    --mx-line-strong: rgb(246 243 236 / 0.26);
+    --mx-accent: var(--mx-cyan);
+    --mx-accent-2: var(--mx-amber);
+    --mx-focus: var(--mx-cyan);
+    --mx-raised: var(--mx-navy);
+    --mx-sunken: #0b1521;
+    --mx-input-bg: rgb(246 243 236 / 0.06);
+    background-color: var(--mx-bg);
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-surface-navy {
+    --mx-bg: var(--mx-navy);
+    --mx-raised: var(--mx-navy-raised);
+  }
+
+  /* -----------------------------------------------------------------------
+     3. Base elements (scoped)
+     ----------------------------------------------------------------------- */
+  [data-site='meridian'] {
+    background-color: var(--mx-ivory);
+    color: var(--mx-ink);
+    font-family: var(--mx-font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    font-feature-settings: 'ss01' on;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  [data-site='meridian'] *,
+  [data-site='meridian'] ::before,
+  [data-site='meridian'] ::after {
+    border-color: var(--mx-line);
+  }
+
+  [data-site='meridian'] :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--mx-font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+    color: inherit;
+  }
+
+  [data-site='meridian'] :where(p, li, dd, blockquote) {
+    text-wrap: pretty;
+  }
+
+  [data-site='meridian'] ::selection {
+    background: var(--mx-amber);
+    color: var(--mx-midnight);
+  }
+
+  [data-site='meridian'] :focus-visible {
+    outline: 2px solid var(--mx-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  [data-site='meridian'] :where(a) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  [data-site='meridian'] :where(img, svg, video, canvas) {
+    max-width: 100%;
+  }
+
+  /* Script-aware rhythm: Gujarati and Devanagari need taller lines and no tracking */
+  [data-site='meridian']:lang(gu),
+  [data-site='meridian']:lang(hi) {
+    line-height: 1.8;
+  }
+
+  [data-site='meridian']:lang(gu) :where(h1, h2, h3, h4, h5, h6),
+  [data-site='meridian']:lang(hi) :where(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: 0;
+    line-height: 1.32;
+    font-weight: 600;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   4. Components
+   ------------------------------------------------------------------------- */
+@layer components {
+  /* Layout ---------------------------------------------------------------- */
+  [data-site='meridian'] .mx-container {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-container-narrow {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+    padding-inline: var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-section {
+    padding-block: var(--mx-space-section);
+  }
+
+  [data-site='meridian'] .mx-hero-offset {
+    padding-top: calc(var(--mx-header-h) + clamp(2.5rem, 1rem + 5vw, 6rem));
+  }
+
+  /* Typography ------------------------------------------------------------ */
+  [data-site='meridian'] .mx-display {
+    font-family: var(--mx-font-display);
+    font-size: clamp(2.6rem, 1.1rem + 5.2vw, 6.25rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+  }
+
+  [data-site='meridian'] .mx-h1 {
+    font-family: var(--mx-font-display);
+    font-size: clamp(2.3rem, 1.2rem + 4vw, 4.75rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  [data-site='meridian'] .mx-h2 {
+    font-family: var(--mx-font-display);
+    font-size: clamp(1.9rem, 1.15rem + 2.7vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+
+  [data-site='meridian'] .mx-h3 {
+    font-family: var(--mx-font-display);
+    font-size: clamp(1.3rem, 1.05rem + 0.85vw, 1.75rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+  }
+
+  [data-site='meridian'] .mx-h4 {
+    font-family: var(--mx-font-display);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  [data-site='meridian'] .mx-lede {
+    font-family: var(--mx-font-serif);
+    font-size: clamp(1.2rem, 1rem + 0.75vw, 1.6rem);
+    line-height: 1.45;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--mx-fg-2);
+  }
+
+  [data-site='meridian'] .mx-body-lg {
+    font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+    line-height: 1.7;
+    color: var(--mx-fg-2);
+  }
+
+  [data-site='meridian'] .mx-serif-accent {
+    font-family: var(--mx-font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  [data-site='meridian'] .mx-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mx-font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--mx-accent);
+  }
+
+  [data-site='meridian'] .mx-eyebrow-index {
+    font-variant-numeric: tabular-nums;
+    color: var(--mx-fg-3);
+    letter-spacing: 0.08em;
+  }
+
+  [data-site='meridian'] .mx-meta {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--mx-fg-3);
+  }
+
+  [data-site='meridian'] .mx-numeric {
+    font-family: var(--mx-font-display);
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.04em;
+    font-weight: 300;
+  }
+
+  [data-site='meridian'] .mx-mono-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--mx-fg-3);
+  }
+
+  /* Gujarati / Hindi typographic adjustments */
+  [data-site='meridian']:lang(gu) :is(.mx-display, .mx-h1, .mx-h2),
+  [data-site='meridian']:lang(hi) :is(.mx-display, .mx-h1, .mx-h2) {
+    letter-spacing: 0;
+    line-height: 1.28;
+    font-weight: 600;
+  }
+
+  [data-site='meridian']:lang(gu) .mx-display,
+  [data-site='meridian']:lang(hi) .mx-display {
+    font-size: clamp(2.2rem, 1rem + 4.8vw, 5.4rem);
+  }
+
+  [data-site='meridian']:lang(gu) .mx-h1,
+  [data-site='meridian']:lang(hi) .mx-h1 {
+    font-size: clamp(2rem, 1.1rem + 3.2vw, 4rem);
+  }
+
+  [data-site='meridian']:lang(gu) .mx-h3,
+  [data-site='meridian']:lang(hi) .mx-h3 {
+    letter-spacing: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  [data-site='meridian']:lang(gu) :is(.mx-eyebrow, .mx-mono-label),
+  [data-site='meridian']:lang(hi) :is(.mx-eyebrow, .mx-mono-label) {
+    letter-spacing: 0.02em;
+    font-size: 0.8125rem;
+  }
+
+  [data-site='meridian']:lang(gu) .mx-serif-accent,
+  [data-site='meridian']:lang(hi) .mx-serif-accent {
+    font-family: var(--mx-font-display);
+    font-style: normal;
+    letter-spacing: 0;
+    color: var(--mx-accent-2);
+  }
+
+  [data-site='meridian']:lang(gu) .mx-lede,
+  [data-site='meridian']:lang(hi) .mx-lede {
+    font-family: var(--mx-font-sans);
+    font-size: clamp(1.1rem, 1rem + 0.45vw, 1.35rem);
+    line-height: 1.75;
+  }
+
+  /* Buttons --------------------------------------------------------------- */
+  [data-site='meridian'] .mx-btn {
+    --mx-btn-bg: transparent;
+    --mx-btn-fg: var(--mx-fg);
+    --mx-btn-border: var(--mx-line-strong);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--mx-radius-pill);
+    border: 1px solid var(--mx-btn-border);
+    background: var(--mx-btn-bg);
+    color: var(--mx-btn-fg);
+    font-family: var(--mx-font-sans);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    text-align: center;
+    text-wrap: balance;
+    cursor: pointer;
+    transition:
+      background-color var(--mx-duration) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out),
+      border-color var(--mx-duration) var(--mx-ease-out),
+      box-shadow var(--mx-duration) var(--mx-ease-out),
+      transform var(--mx-duration-fast) ease;
+  }
+
+  [data-site='meridian'] .mx-btn:active {
+    transform: translateY(1px);
+  }
+
+  [data-site='meridian'] .mx-btn:disabled,
+  [data-site='meridian'] .mx-btn[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  [data-site='meridian'] .mx-btn-icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    transition: transform var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-btn:hover .mx-btn-icon {
+    transform: translateX(3px);
+  }
+
+  [data-site='meridian'] .mx-btn-primary {
+    --mx-btn-bg: var(--mx-amber);
+    --mx-btn-fg: var(--mx-midnight);
+    --mx-btn-border: var(--mx-amber);
+  }
+
+  [data-site='meridian'] .mx-btn-primary:hover {
+    --mx-btn-bg: var(--mx-amber-bright);
+    --mx-btn-border: var(--mx-amber-bright);
+    box-shadow: 0 10px 30px -12px rgb(233 169 75 / 0.6);
+  }
+
+  [data-site='meridian'] .mx-btn-ink {
+    --mx-btn-bg: var(--mx-midnight);
+    --mx-btn-fg: var(--mx-ivory);
+    --mx-btn-border: var(--mx-midnight);
+  }
+
+  [data-site='meridian'] .mx-btn-ink:hover {
+    --mx-btn-bg: var(--mx-navy);
+    --mx-btn-border: var(--mx-navy);
+  }
+
+  [data-site='meridian'] .mx-btn-light {
+    --mx-btn-bg: var(--mx-ivory);
+    --mx-btn-fg: var(--mx-midnight);
+    --mx-btn-border: var(--mx-ivory);
+  }
+
+  [data-site='meridian'] .mx-btn-light:hover {
+    --mx-btn-bg: var(--mx-white);
+  }
+
+  [data-site='meridian'] .mx-btn-ghost:hover {
+    --mx-btn-border: var(--mx-fg);
+    --mx-btn-bg: color-mix(in srgb, var(--mx-fg) 6%, transparent);
+  }
+
+  [data-site='meridian'] .mx-btn-sm {
+    min-height: 2.5rem;
+    padding: 0.5rem 1.05rem;
+    font-size: 0.875rem;
+  }
+
+  [data-site='meridian'] .mx-btn-block {
+    width: 100%;
+  }
+
+  [data-site='meridian'] .mx-icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--mx-radius-pill);
+    border: 1px solid var(--mx-line-strong);
+    color: inherit;
+    background: transparent;
+    cursor: pointer;
+    transition:
+      background-color var(--mx-duration) var(--mx-ease-out),
+      border-color var(--mx-duration) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-icon-btn:hover {
+    border-color: currentColor;
+    background: color-mix(in srgb, currentColor 8%, transparent);
+  }
+
+  /* Text link with drawn underline */
+  [data-site='meridian'] .mx-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 650;
+    color: var(--mx-fg);
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition:
+      background-size var(--mx-duration-slow) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-link:hover,
+  [data-site='meridian'] .group:hover .mx-link {
+    background-size: 100% 1px;
+  }
+
+  [data-site='meridian'] .mx-link .mx-btn-icon {
+    color: var(--mx-accent);
+  }
+
+  [data-site='meridian'] .mx-link:hover .mx-btn-icon,
+  [data-site='meridian'] .group:hover .mx-link .mx-btn-icon {
+    transform: translateX(3px);
+  }
+
+  /* Chips / filters -------------------------------------------------------- */
+  [data-site='meridian'] .mx-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: var(--mx-radius-pill);
+    border: 1px solid var(--mx-line-strong);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--mx-fg-2);
+    white-space: nowrap;
+    transition:
+      background-color var(--mx-duration) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out),
+      border-color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-chip:hover {
+    border-color: var(--mx-fg);
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-chip[aria-current='true'],
+  [data-site='meridian'] .mx-chip[aria-pressed='true'] {
+    background: var(--mx-fg);
+    border-color: var(--mx-fg);
+    color: var(--mx-bg);
+  }
+
+  [data-site='meridian'] .mx-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--mx-radius-xs);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    background: color-mix(in srgb, var(--mx-accent) 12%, transparent);
+    color: var(--mx-accent);
+  }
+
+  [data-site='meridian'] .mx-tag-amber {
+    background: color-mix(in srgb, var(--mx-amber) 22%, transparent);
+    color: var(--mx-accent-2);
+  }
+
+  [data-site='meridian']:lang(gu) .mx-tag,
+  [data-site='meridian']:lang(hi) .mx-tag {
+    letter-spacing: 0.02em;
+    font-size: 0.75rem;
+  }
+
+  /* Rules & motifs -------------------------------------------------------- */
+  [data-site='meridian'] .mx-rule {
+    height: 1px;
+    width: 100%;
+    background: var(--mx-line);
+  }
+
+  [data-site='meridian'] .mx-gridlines {
+    background-image:
+      linear-gradient(var(--mx-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--mx-line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at 50% 40%, black 30%, transparent 75%);
+  }
+
+  [data-site='meridian'] .mx-starfield {
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgb(246 243 236 / 0.55), transparent 60%),
+      radial-gradient(1px 1px at 72% 12%, rgb(246 243 236 / 0.4), transparent 60%),
+      radial-gradient(1.5px 1.5px at 38% 66%, rgb(82 213 232 / 0.55), transparent 60%),
+      radial-gradient(1px 1px at 86% 54%, rgb(246 243 236 / 0.45), transparent 60%),
+      radial-gradient(1px 1px at 22% 84%, rgb(246 243 236 / 0.3), transparent 60%),
+      radial-gradient(1.5px 1.5px at 58% 34%, rgb(233 169 75 / 0.5), transparent 60%),
+      radial-gradient(1px 1px at 94% 88%, rgb(246 243 236 / 0.35), transparent 60%),
+      radial-gradient(1px 1px at 6% 52%, rgb(246 243 236 / 0.4), transparent 60%);
+    background-size: 420px 420px;
+  }
+
+  [data-site='meridian'] .mx-atmosphere {
+    background:
+      radial-gradient(60% 55% at 78% 30%, rgb(36 166 160 / 0.16), transparent 70%),
+      radial-gradient(40% 40% at 88% 78%, rgb(233 169 75 / 0.1), transparent 70%),
+      radial-gradient(70% 60% at 0% 100%, rgb(82 213 232 / 0.08), transparent 70%);
+  }
+
+  /* Specimen plate — image frame with instrument corner ticks */
+  [data-site='meridian'] .mx-plate {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--mx-radius-sm);
+    background: var(--mx-sunken);
+    isolation: isolate;
+  }
+
+  [data-site='meridian'] .mx-ticks {
+    --mx-tick: 14px;
+    --mx-tick-color: rgb(246 243 236 / 0.85);
+    position: absolute;
+    inset: 12px;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) top left / var(--mx-tick) 1px
+        no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) top left / 1px var(--mx-tick)
+        no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) top right / var(--mx-tick) 1px
+        no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) top right / 1px var(--mx-tick)
+        no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) bottom left / var(--mx-tick) 1px
+        no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) bottom left / 1px var(--mx-tick)
+        no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) bottom right / var(--mx-tick)
+        1px no-repeat,
+      linear-gradient(var(--mx-tick-color), var(--mx-tick-color)) bottom right / 1px
+        var(--mx-tick) no-repeat;
+  }
+
+  [data-site='meridian'] .mx-zoom img {
+    transition: transform 1.2s var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .group:hover .mx-zoom img,
+  [data-site='meridian'] .mx-zoom:hover img {
+    transform: scale(1.045);
+  }
+
+  [data-site='meridian'] .mx-scrim {
+    background: linear-gradient(180deg, rgb(16 28 44 / 0) 35%, rgb(16 28 44 / 0.88) 100%);
+  }
+
+  /* Surfaces that lift on hover */
+  [data-site='meridian'] .mx-card {
+    position: relative;
+    background: var(--mx-raised);
+    border: 1px solid var(--mx-line);
+    border-radius: var(--mx-radius-md);
+    transition:
+      border-color var(--mx-duration) var(--mx-ease-out),
+      box-shadow var(--mx-duration) var(--mx-ease-out),
+      transform var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] a.mx-card:hover,
+  [data-site='meridian'] .mx-card-interactive:hover {
+    border-color: var(--mx-line-strong);
+    box-shadow: var(--mx-shadow-md);
+    transform: translateY(-2px);
+  }
+
+  /* Forms ----------------------------------------------------------------- */
+  [data-site='meridian'] .mx-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 650;
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-label-hint {
+    font-weight: 500;
+    color: var(--mx-fg-3);
+  }
+
+  [data-site='meridian'] .mx-input {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.7rem 0.95rem;
+    border-radius: var(--mx-radius-sm);
+    border: 1px solid var(--mx-line-strong);
+    background: var(--mx-input-bg);
+    color: var(--mx-fg);
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color var(--mx-duration-fast) ease,
+      box-shadow var(--mx-duration-fast) ease;
+  }
+
+  [data-site='meridian'] .mx-input::placeholder {
+    color: var(--mx-fg-3);
+    opacity: 0.8;
+  }
+
+  [data-site='meridian'] .mx-input:hover {
+    border-color: var(--mx-fg-3);
+  }
+
+  [data-site='meridian'] .mx-input:focus {
+    outline: none;
+    border-color: var(--mx-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mx-focus) 22%, transparent);
+  }
+
+  [data-site='meridian'] .mx-input[aria-invalid='true'] {
+    border-color: var(--mx-danger);
+  }
+
+  [data-site='meridian'] select.mx-input {
+    appearance: none;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2356616f' stroke-width='1.6' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+  }
+
+  [data-site='meridian'] textarea.mx-input {
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  [data-site='meridian'] .mx-checkbox {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    accent-color: var(--mx-teal-ink);
+  }
+
+  [data-site='meridian'] .mx-field-error {
+    margin-top: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--mx-danger);
+  }
+
+  [data-site='meridian'] .mx-surface-dark .mx-field-error,
+  [data-site='meridian'] .mx-surface-navy .mx-field-error {
+    color: #ff9d8f;
+  }
+
+  [data-site='meridian'] .mx-alert {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.9rem 1rem;
+    border-radius: var(--mx-radius-sm);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  [data-site='meridian'] .mx-alert-error {
+    background: var(--mx-danger-soft);
+    color: var(--mx-danger);
+    border: 1px solid color-mix(in srgb, var(--mx-danger) 30%, transparent);
+  }
+
+  [data-site='meridian'] .mx-alert-success {
+    background: var(--mx-success-soft);
+    color: var(--mx-success);
+    border: 1px solid color-mix(in srgb, var(--mx-success) 30%, transparent);
+  }
+
+  [data-site='meridian'] .mx-alert-info {
+    background: color-mix(in srgb, var(--mx-amber) 16%, var(--mx-raised));
+    color: var(--mx-fg);
+    border: 1px solid color-mix(in srgb, var(--mx-amber) 45%, transparent);
+  }
+
+  /* Prose — CMS HTML ------------------------------------------------------- */
+  [data-site='meridian'] .mx-prose {
+    color: var(--mx-fg-2);
+    font-size: clamp(1.02rem, 0.98rem + 0.2vw, 1.125rem);
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+  }
+
+  [data-site='meridian'] .mx-prose > * + * {
+    margin-top: 1.15em;
+  }
+
+  [data-site='meridian'] .mx-prose :where(h1, h2, h3, h4, h5, h6) {
+    color: var(--mx-fg);
+    font-family: var(--mx-font-display);
+    scroll-margin-top: calc(var(--mx-header-h) + 1.5rem);
+  }
+
+  [data-site='meridian'] .mx-prose h1,
+  [data-site='meridian'] .mx-prose h2 {
+    margin-top: 2.2em;
+    margin-bottom: 0.2em;
+    font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.1rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  [data-site='meridian'] .mx-prose h3 {
+    margin-top: 1.9em;
+    font-size: clamp(1.2rem, 1.08rem + 0.5vw, 1.45rem);
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  [data-site='meridian'] .mx-prose :where(h4, h5, h6) {
+    margin-top: 1.6em;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  [data-site='meridian'] .mx-prose > :first-child {
+    margin-top: 0;
+  }
+
+  [data-site='meridian'] .mx-prose :where(p, ul, ol, blockquote, table) {
+    max-width: 72ch;
+  }
+
+  [data-site='meridian'] .mx-prose p {
+    margin-block: 0;
+  }
+
+  [data-site='meridian'] .mx-prose a {
+    color: var(--mx-accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--mx-accent) 45%, transparent);
+    transition: text-decoration-color var(--mx-duration) ease;
+  }
+
+  [data-site='meridian'] .mx-prose a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  [data-site='meridian'] .mx-prose :where(strong, b) {
+    color: var(--mx-fg);
+    font-weight: 700;
+  }
+
+  [data-site='meridian'] .mx-prose :where(ul, ol) {
+    padding-left: 1.35rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  [data-site='meridian'] .mx-prose ul {
+    list-style: none;
+  }
+
+  [data-site='meridian'] .mx-prose ul > li {
+    position: relative;
+  }
+
+  [data-site='meridian'] .mx-prose ul > li::before {
+    content: '';
+    position: absolute;
+    left: -1.15rem;
+    top: 0.78em;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--mx-accent);
+  }
+
+  [data-site='meridian'] .mx-prose ol {
+    list-style: decimal;
+  }
+
+  [data-site='meridian'] .mx-prose ol > li::marker {
+    color: var(--mx-accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  [data-site='meridian'] .mx-prose blockquote {
+    position: relative;
+    margin-block: 2em;
+    padding: 0.25rem 0 0.25rem 1.5rem;
+    border-left: 2px solid var(--mx-amber);
+    font-family: var(--mx-font-serif);
+    font-size: 1.25em;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian']:lang(gu) .mx-prose blockquote,
+  [data-site='meridian']:lang(hi) .mx-prose blockquote {
+    font-family: var(--mx-font-sans);
+    font-style: normal;
+    font-size: 1.1em;
+  }
+
+  [data-site='meridian'] .mx-prose :where(img, video, iframe) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--mx-radius-sm);
+  }
+
+  [data-site='meridian'] .mx-prose iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+  }
+
+  [data-site='meridian'] .mx-prose figure {
+    margin-block: 2.2em;
+    max-width: 100%;
+  }
+
+  [data-site='meridian'] .mx-prose figure img {
+    width: 100%;
+  }
+
+  [data-site='meridian'] .mx-prose figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--mx-fg-3);
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--mx-line-strong);
+  }
+
+  [data-site='meridian'] .mx-prose table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  [data-site='meridian'] .mx-prose :where(th, td) {
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--mx-line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  [data-site='meridian'] .mx-prose th {
+    color: var(--mx-fg);
+    font-weight: 700;
+    border-bottom-color: var(--mx-line-strong);
+  }
+
+  [data-site='meridian'] .mx-prose hr {
+    border: 0;
+    height: 1px;
+    background: var(--mx-line);
+    margin-block: 2.5rem;
+    max-width: none;
+  }
+
+  [data-site='meridian'] .mx-prose :where(pre, code) {
+    font-size: 0.9em;
+    background: var(--mx-sunken);
+    border-radius: var(--mx-radius-xs);
+  }
+
+  [data-site='meridian'] .mx-prose code {
+    padding: 0.1em 0.35em;
+  }
+
+  [data-site='meridian'] .mx-prose pre {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  /* Header ---------------------------------------------------------------- */
+  [data-site='meridian'] .mx-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 60;
+    height: var(--mx-header-h);
+    color: var(--mx-fg);
+    transition:
+      background-color var(--mx-duration) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out),
+      box-shadow var(--mx-duration) var(--mx-ease-out),
+      transform 420ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-header[data-mode='overlay-dark'] {
+    --mx-fg: var(--mx-ivory);
+    --mx-fg-2: rgb(246 243 236 / 0.8);
+    --mx-fg-3: rgb(246 243 236 / 0.62);
+    --mx-line: rgb(246 243 236 / 0.14);
+    --mx-line-strong: rgb(246 243 236 / 0.3);
+    --mx-accent: var(--mx-cyan);
+    --mx-focus: var(--mx-cyan);
+    background: linear-gradient(180deg, rgb(16 28 44 / 0.55), rgb(16 28 44 / 0));
+  }
+
+  [data-site='meridian'] .mx-header[data-mode='overlay-light'] {
+    background: linear-gradient(180deg, rgb(246 243 236 / 0.85), rgb(246 243 236 / 0));
+  }
+
+  [data-site='meridian'] .mx-header[data-mode='solid'] {
+    background: rgb(246 243 236 / 0.88);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    box-shadow: 0 1px 0 rgb(16 28 44 / 0.1);
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    [data-site='meridian'] .mx-header[data-mode='solid'] {
+      background: var(--mx-ivory);
+    }
+  }
+
+  [data-site='meridian'] .mx-header[data-hidden='true'] {
+    transform: translateY(-100%);
+  }
+
+  [data-site='meridian'] .mx-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--mx-radius-pill);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--mx-fg-2);
+    white-space: nowrap;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-nav-link:hover,
+  [data-site='meridian'] .mx-nav-link[aria-expanded='true'] {
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 0.45rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--mx-duration-slow) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-nav-link:hover::after {
+    transform: scaleX(1);
+  }
+
+  [data-site='meridian'] .mx-nav-link[aria-current='page'] {
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-nav-link[aria-current='page']::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0.25rem;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--mx-amber);
+  }
+
+  [data-site='meridian'] .mx-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    min-width: 17rem;
+    padding: 0.5rem;
+    border-radius: var(--mx-radius-md);
+    background: var(--mx-white);
+    color: var(--mx-ink);
+    border: 1px solid rgb(16 28 44 / 0.08);
+    box-shadow: var(--mx-shadow-lg);
+    transform: translateX(-50%);
+    --mx-fg: var(--mx-ink);
+    --mx-fg-2: var(--mx-ink-2);
+    --mx-fg-3: var(--mx-ink-3);
+    --mx-focus: var(--mx-teal-ink);
+  }
+
+  [data-site='meridian'] .mx-dropdown-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: var(--mx-radius-sm);
+    font-size: 0.9375rem;
+    font-weight: 550;
+    color: var(--mx-ink-2);
+    transition:
+      background-color var(--mx-duration-fast) ease,
+      color var(--mx-duration-fast) ease;
+  }
+
+  [data-site='meridian'] .mx-dropdown-link:hover,
+  [data-site='meridian'] .mx-dropdown-link[aria-current='page'] {
+    background: var(--mx-ivory);
+    color: var(--mx-ink);
+  }
+
+  /* Language switcher */
+  [data-site='meridian'] .mx-lang {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px;
+    border-radius: var(--mx-radius-pill);
+    border: 1px solid var(--mx-line-strong);
+  }
+
+  [data-site='meridian'] .mx-lang a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    min-height: 2.1rem;
+    padding: 0 0.6rem;
+    border-radius: var(--mx-radius-pill);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    line-height: 1;
+    color: var(--mx-fg-2);
+    transition:
+      background-color var(--mx-duration) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-lang a:hover {
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-lang a[aria-current='true'] {
+    background: var(--mx-fg);
+    color: var(--mx-bg, var(--mx-midnight));
+  }
+
+  [data-site='meridian'] .mx-header[data-mode='overlay-dark'] .mx-lang a[aria-current='true'] {
+    background: var(--mx-ivory);
+    color: var(--mx-midnight);
+  }
+
+  [data-site='meridian'] .mx-header[data-mode='solid'] .mx-lang a[aria-current='true'],
+  [data-site='meridian'] .mx-header[data-mode='overlay-light'] .mx-lang a[aria-current='true'] {
+    background: var(--mx-midnight);
+    color: var(--mx-ivory);
+  }
+
+  /* Skeleton */
+  [data-site='meridian'] .mx-skeleton {
+    position: relative;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--mx-fg) 7%, transparent);
+    border-radius: var(--mx-radius-sm);
+  }
+
+  [data-site='meridian'] .mx-skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--mx-fg) 8%, transparent),
+      transparent
+    );
+    animation: mx-shimmer 1.6s infinite;
+  }
+
+  /* Scroll cue */
+  [data-site='meridian'] .mx-scroll-cue {
+    position: relative;
+    width: 1px;
+    height: 3.5rem;
+    overflow: hidden;
+    background: var(--mx-line-strong);
+  }
+
+  [data-site='meridian'] .mx-scroll-cue::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -40%;
+    width: 1px;
+    height: 40%;
+    background: var(--mx-amber);
+    animation: mx-scroll-cue 2.4s var(--mx-ease-in-out) infinite;
+  }
+
+  /* Static orbit fallback (no WebGL / reduced motion / small screens) */
+  [data-site='meridian'] .mx-orbit-spin {
+    transform-origin: 50% 50%;
+    animation: mx-orbit 60s linear infinite;
+  }
+
+  [data-site='meridian'] .mx-orbit-spin-reverse {
+    transform-origin: 50% 50%;
+    animation: mx-orbit 90s linear infinite reverse;
+  }
+
+  [data-site='meridian'] .mx-pulse {
+    animation: mx-pulse 3.2s ease-in-out infinite;
+  }
+
+  /* Dialogs */
+  [data-site='meridian'] dialog.mx-dialog::backdrop {
+    background: rgb(16 28 44 / 0.78);
+    backdrop-filter: blur(6px);
+  }
+
+  [data-site='meridian'] dialog.mx-dialog[open] {
+    animation: mx-dialog-in 420ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-hide-scrollbar {
+    scrollbar-width: none;
+  }
+
+  [data-site='meridian'] .mx-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  [data-site='meridian'] .mx-line-clamp-2,
+  [data-site='meridian'] .mx-line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  [data-site='meridian'] .mx-line-clamp-2 {
+    -webkit-line-clamp: 2;
+  }
+
+  [data-site='meridian'] .mx-line-clamp-3 {
+    -webkit-line-clamp: 3;
+  }
+
+  /* CSS-only entrance for above-the-fold content (no JS dependency) */
+  [data-site='meridian'] .mx-enter {
+    animation: mx-rise 1s var(--mx-ease-out) both;
+    animation-delay: var(--mx-delay, 0ms);
+  }
+
+  [data-site='meridian'] .mx-enter-fade {
+    animation: mx-fade-in 1.6s var(--mx-ease-out) both;
+    animation-delay: var(--mx-delay, 0ms);
+  }
+
+  /* Skip link */
+  [data-site='meridian'] .mx-skip-link {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.1rem;
+    border-radius: var(--mx-radius-sm);
+    background: var(--mx-amber);
+    color: var(--mx-midnight);
+    font-weight: 700;
+    transform: translateY(-200%);
+    transition: transform var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-skip-link:focus {
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   5. Keyframes (namespaced) and motion preferences
+   ------------------------------------------------------------------------- */
+@keyframes mx-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes mx-scroll-cue {
+  0% {
+    top: -40%;
+  }
+  60%,
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes mx-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mx-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes mx-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mx-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-site='meridian'] .mx-enter,
+  [data-site='meridian'] .mx-enter-fade,
+  [data-site='meridian'] .mx-orbit-spin,
+  [data-site='meridian'] .mx-orbit-spin-reverse,
+  [data-site='meridian'] .mx-pulse,
+  [data-site='meridian'] .mx-scroll-cue::after,
+  [data-site='meridian'] .mx-skeleton::after {
+    animation: none;
+  }
+
+  [data-site='meridian'] .mx-zoom img,
+  [data-site='meridian'] .mx-btn,
+  [data-site='meridian'] .mx-card {
+    transition: none;
+  }
+
+  [data-site='meridian'] .group:hover .mx-zoom img,
+  [data-site='meridian'] .mx-zoom:hover img {
+    transform: none;
+  }
+}

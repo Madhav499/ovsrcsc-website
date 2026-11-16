@@ -2,19 +2,19 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
-import { ArrowRight, CalendarDays, Layers } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CalendarDays } from 'lucide-react';
 import { getDictionary, isLocale } from '@/i18n';
-import type { LocaleCode } from '@/lib/constants';
+import { LOCALE_LABELS, type LocaleCode } from '@/lib/constants';
 import { formatDate } from '@/lib/dates';
-import { absoluteUrl } from '@/lib/utils';
 import { excerptFromHtml } from '@/lib/sanitize';
+import { indexLabel, sectionLabel, siteOrigin } from '@/lib/meridian/site';
 import { getPublishedPage, getPublishedSiblingPages } from '@/server/services/pages';
 import { getChildPages, getPageBreadcrumbs } from '@/server/public/queries';
-import { AppImage } from '@/components/ui/app-image';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { FallbackNotice } from '@/components/ui/fallback-notice';
-import { PageHeader } from '@/components/ui/page-header';
-import { EmptyState } from '@/components/ui/empty-state';
+import { PageHero } from '@/components/meridian/layout/page-hero';
+import { CmsImage } from '@/components/meridian/media/cms-image';
+import { JsonLd } from '@/components/meridian/primitives/json-ld';
+import { Reveal, Stagger, StaggerItem } from '@/components/meridian/motion/reveal';
+import { EmptyState, FallbackNotice } from '@/components/meridian/states/states';
 
 interface ContentPageProps {
   params: Promise<{ locale: string; path: string[] }>;
@@ -22,28 +22,28 @@ interface ContentPageProps {
 
 const getPageCached = cache(getPublishedPage);
 
-function sectionLabel(
-  section: { nameEn: string; nameGu: string; nameHi: string },
-  locale: LocaleCode,
-): string {
-  if (locale === 'gu') return section.nameGu || section.nameEn;
-  if (locale === 'hi') return section.nameHi || section.nameEn;
-  return section.nameEn;
-}
+/** Each institutional section gets its own scientific motif. */
+const SECTION_MOTIF: Record<string, 'atom' | 'rings' | 'meridian'> = {
+  about: 'meridian',
+  infrastructure: 'rings',
+  activities: 'atom',
+  projects: 'atom',
+  publications: 'meridian',
+};
 
 export async function generateMetadata({ params }: ContentPageProps): Promise<Metadata> {
   const { locale: rawLocale, path: segments } = await params;
   if (!isLocale(rawLocale)) return {};
   const path = segments.join('/');
   const result = await getPageCached(path, rawLocale);
-  if (!result) return { title: 'Page not found' };
+  if (!result) return { title: getDictionary(rawLocale)['notFound.title'] };
   const { page, translation } = result;
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
-  const languages: Record<string, string> = { 'x-default': `${appUrl}/en/${page.path}` };
+  const origin = siteOrigin();
+  const languages: Record<string, string> = { 'x-default': `${origin}/en/${page.path}` };
   for (const item of page.translations) {
     if (item.status === 'PUBLISHED') {
-      const code = item.locale.toLowerCase();
-      languages[`${code}-IN`] = `${appUrl}/${code}/${page.path}`;
+      const code = item.locale.toLowerCase() as LocaleCode;
+      if (LOCALE_LABELS[code]) languages[LOCALE_LABELS[code].htmlLang] = `${origin}/${code}/${page.path}`;
     }
   }
   const description =
@@ -54,16 +54,14 @@ export async function generateMetadata({ params }: ContentPageProps): Promise<Me
   return {
     title: translation.seoTitle || translation.title,
     description,
-    alternates: {
-      canonical: `${appUrl}/${rawLocale}/${page.path}`,
-      languages,
-    },
+    alternates: { canonical: `${origin}/${rawLocale}/${page.path}`, languages },
     openGraph: {
       type: 'article',
       title: translation.seoTitle || translation.title,
       description,
-      url: `${appUrl}/${rawLocale}/${page.path}`,
+      url: `${origin}/${rawLocale}/${page.path}`,
       modifiedTime: page.updatedAt.toISOString(),
+      images: page.coverKey ? [`${origin}/media/${page.coverKey}`] : undefined,
     },
   };
 }
@@ -83,184 +81,170 @@ export default async function ContentPage({ params }: ContentPageProps) {
     getPublishedSiblingPages(page.sectionId, locale, page.id),
     getChildPages(path, locale),
   ]);
-  const hasSidebar = siblings.length > 0 || children.length > 0;
   const label = sectionLabel(page.section, locale);
-  const description =
-    translation.summary || excerptFromHtml(translation.bodyHtml, 220) || undefined;
+  const intro = translation.summary || excerptFromHtml(translation.bodyHtml, 220) || undefined;
+  const hasSidebar = siblings.length > 0;
+  const origin = siteOrigin();
+  const p = `/${locale}`;
 
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: translation.title,
-    description,
-    url: absoluteUrl(`/${locale}/${page.path}`),
-    inLanguage: locale,
-    dateModified: page.updatedAt.toISOString(),
-    isPartOf: {
-      '@type': 'WebSite',
-      name: dict['site.name'],
-      url: absoluteUrl(`/${locale}`),
-    },
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        name: translation.title,
+        description: intro,
+        url: `${origin}${p}/${page.path}`,
+        inLanguage: LOCALE_LABELS[locale].htmlLang,
+        dateModified: page.updatedAt.toISOString(),
+        isPartOf: { '@type': 'WebSite', name: dict['site.name'], url: `${origin}${p}` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: dict['page.breadcrumbHome'], item: `${origin}${p}` },
+          ...crumbs.map((crumb, index) => ({
+            '@type': 'ListItem',
+            position: index + 2,
+            name: crumb.label,
+            item: `${origin}${p}${crumb.path}`,
+          })),
+          { '@type': 'ListItem', position: crumbs.length + 2, name: translation.title },
+        ],
+      },
+    ],
   };
 
   return (
     <>
-      <div className="site-container">
-        <Breadcrumbs
-          locale={locale}
-          homeLabel={dict['page.breadcrumbHome']}
-          ariaLabel={dict['nav.breadcrumb']}
-          items={[
-            ...crumbs.map((crumb) => ({ label: crumb.label, href: `/${locale}${crumb.path}` })),
-            { label: translation.title },
-          ]}
-        />
-      </div>
-      <PageHeader
-        tone="ink"
+      <PageHero
+        locale={locale}
+        homeLabel={dict['page.breadcrumbHome']}
+        breadcrumbLabel={dict['nav.breadcrumb']}
+        crumbs={[
+          ...crumbs.map((crumb) => ({ label: crumb.label, href: `${p}${crumb.path}` })),
+          { label: translation.title },
+        ]}
         eyebrow={label}
         title={translation.title}
-        intro={description}
+        intro={intro}
+        motif={SECTION_MOTIF[page.section.key] ?? 'rings'}
+        meta={
+          <p className="mx-meta inline-flex items-center gap-2">
+            <CalendarDays className="size-3.5" aria-hidden="true" />
+            {dict['page.lastUpdated']}: {formatDate(page.updatedAt, locale)}
+          </p>
+        }
+        aside={
+          page.coverKey ? (
+            <figure className="mx-plate relative aspect-[4/3] w-full">
+              <CmsImage
+                storageKey={page.coverKey}
+                alt={translation.title}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                priority
+              />
+              <span aria-hidden="true" className="mx-ticks" />
+            </figure>
+          ) : undefined
+        }
       />
 
-      <div className="site-container py-12 lg:py-16">
-        <div
-          className={
-            hasSidebar
-              ? 'grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-14'
-              : 'grid gap-10'
-          }
-        >
-          <article className="min-w-0">
-            {isFallback ? (
-              <div className="mb-7">
-                <FallbackNotice>{dict['page.notTranslated']}</FallbackNotice>
-              </div>
-            ) : null}
+      <div className="mx-surface-ivory">
+        <div className="mx-container mx-section !pt-14 sm:!pt-20">
+          <div
+            className={
+              hasSidebar
+                ? 'grid gap-14 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16 xl:grid-cols-[minmax(0,1fr)_22rem]'
+                : 'mx-auto max-w-4xl'
+            }
+          >
+            <article className="min-w-0">
+              {isFallback ? <FallbackNotice className="mb-10">{dict['page.notTranslated']}</FallbackNotice> : null}
 
-            {page.coverKey ? (
-              <div className="relative mb-9 aspect-[16/8] overflow-hidden rounded-3xl border border-line bg-midnight shadow-card">
-                <AppImage
-                  storageKey={page.coverKey}
-                  alt={translation.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                  priority
-                  className="object-cover"
-                />
-              </div>
-            ) : null}
-
-            {translation.bodyHtml ? (
-              <div
-                className="prose-content rounded-3xl border border-line/70 bg-white p-7 sm:p-10 shadow-xs"
-                dangerouslySetInnerHTML={{ __html: translation.bodyHtml }}
-              />
-            ) : (
-              <EmptyState icon={<Layers className="size-5" aria-hidden="true" />}>
-                {dict['common.noResults']}
-              </EmptyState>
-            )}
-
-            <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-line/70 pt-6 text-xs text-slate-muted">
-              <span className="inline-flex items-center gap-1.5 font-medium">
-                <CalendarDays className="size-3.5 text-solar" aria-hidden="true" />
-                {dict['page.lastUpdated']}: {formatDate(page.updatedAt, locale)}
-              </span>
-            </div>
-
-            {children.length > 0 ? (
-              <section className="mt-14">
-                <h2 className="font-display text-2xl font-semibold text-midnight">{label}</h2>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  {children.map((child) => (
-                    <Link
-                      key={child.id}
-                      href={`/${locale}/${child.path}`}
-                      className="meridian-card group flex flex-col p-6"
-                    >
-                      <h3 className="font-display text-lg font-semibold leading-snug text-midnight group-hover:text-solar transition-colors">
-                        {child.title}
-                      </h3>
-                      {child.summary ? (
-                        <p className="mt-2.5 line-clamp-3 text-sm leading-relaxed text-slate-muted">{child.summary}</p>
-                      ) : null}
-                      <span className="mt-auto pt-5 inline-flex items-center gap-1.5 text-xs font-bold text-teal-600 group-hover:text-midnight transition-colors">
-                        {dict['common.learnMore']}
-                        <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            ) : null}
-          </article>
-
-          {hasSidebar ? (
-            <aside className="space-y-6">
-              <div className="rounded-3xl border border-line bg-white p-6 shadow-xs">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-solar">
-                  {dict['page.inSection']} {label}
-                </p>
-                <ul className="mt-4 space-y-1.5">
-                  {siblings.map((sibling) => (
-                    <li key={sibling.id}>
-                      <Link
-                        href={`/${locale}/${sibling.path}`}
-                        className="flex items-start gap-2.5 rounded-xl px-2.5 py-2 text-sm font-medium text-midnight transition-colors hover:bg-warm-ivory/60 hover:text-solar"
-                      >
-                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-cyan" />
-                        <span>{sibling.title}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {children.length > 0 ? (
-                <div className="rounded-2xl border border-line bg-graphite/5 p-5">
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-sage">
-                    {dict['page.onThisPage']}
-                  </p>
-                  <ul className="mt-3 space-y-2">
-                    {children.slice(0, 8).map((child) => (
-                      <li key={child.id}>
-                        <Link
-                          href={`/${locale}/${child.path}`}
-                          className="text-sm font-semibold text-ink-soft hover:text-brass-dark"
-                        >
-                          {child.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {translation.bodyHtml ? (
+                <div className="mx-prose" dangerouslySetInnerHTML={{ __html: translation.bodyHtml }} />
+              ) : children.length === 0 ? (
+                <EmptyState title={dict['common.noResults']} />
               ) : null}
 
-              <div className="rounded-2xl bg-ink p-5 text-paper">
-                <p className="font-display text-lg font-semibold">{dict['site.tagline']}</p>
-                <p className="mt-2 text-xs leading-relaxed text-paper/60">
-                  {dict['footer.about']}
-                </p>
-                <Link
-                  href={`/${locale}/contact`}
-                  className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-brass"
-                >
-                  {dict['nav.contact']}
-                  <ArrowRight className="size-3.5" aria-hidden="true" />
-                </Link>
-              </div>
-            </aside>
-          ) : null}
+              {children.length > 0 ? (
+                <section aria-labelledby="page-chapters" className="mt-16 border-t border-(--mx-line-strong) pt-10">
+                  <p className="mx-eyebrow">{dict['mx.page.chapters']}</p>
+                  <h2 id="page-chapters" className="mx-h3 mt-3">
+                    {translation.title}
+                  </h2>
+                  <Stagger className="mt-8 grid gap-5 sm:grid-cols-2">
+                    {children.map((child, index) => (
+                      <StaggerItem key={child.id}>
+                        <Link href={`${p}/${child.path}`} className="mx-card group flex h-full flex-col overflow-hidden">
+                          {child.coverKey ? (
+                            <div className="mx-plate mx-zoom relative aspect-[16/9] rounded-none">
+                              <CmsImage storageKey={child.coverKey} alt="" sizes="(max-width: 640px) 100vw, 30vw" />
+                            </div>
+                          ) : null}
+                          <div className="flex flex-1 flex-col p-6">
+                            <span className="mx-mono-label">{indexLabel(index + 1)}</span>
+                            <h3 className="mx-h4 mt-2 transition-colors duration-300 group-hover:text-(--mx-accent)">
+                              {child.title}
+                            </h3>
+                            {child.summary ? (
+                              <p className="mx-line-clamp-3 mt-2 text-[0.9375rem] text-(--mx-fg-2)">{child.summary}</p>
+                            ) : null}
+                            <span className="mx-link mt-auto self-start pt-5 text-[0.9375rem]">
+                              {dict['common.learnMore']}
+                              <ArrowRight className="mx-btn-icon" aria-hidden="true" />
+                            </span>
+                          </div>
+                        </Link>
+                      </StaggerItem>
+                    ))}
+                  </Stagger>
+                </section>
+              ) : null}
+            </article>
+
+            {hasSidebar ? (
+              <aside className="min-w-0">
+                <div className="grid gap-6 lg:sticky lg:top-[calc(var(--mx-header-h)+1.5rem)]">
+                  <nav aria-labelledby="page-section-nav" className="mx-surface-white rounded-(--mx-radius-md) p-6 shadow-[var(--mx-shadow-sm)]">
+                    <p id="page-section-nav" className="mx-mono-label">
+                      {dict['page.inSection']} · {label}
+                    </p>
+                    <ol className="mt-4 grid">
+                      {siblings.map((sibling, index) => (
+                        <li key={sibling.id} className="border-t border-(--mx-line) first:border-t-0">
+                          <Link
+                            href={`${p}/${sibling.path}`}
+                            className="group flex min-h-11 items-baseline gap-3 py-2.5 text-[0.9375rem] font-medium text-(--mx-fg-2) transition-colors hover:text-(--mx-fg)"
+                          >
+                            <span className="mx-mono-label w-5 shrink-0">{indexLabel(index + 1)}</span>
+                            <span className="min-w-0">{sibling.title}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ol>
+                  </nav>
+
+                  <Reveal>
+                    <div className="mx-surface-dark relative isolate overflow-hidden rounded-(--mx-radius-md) p-7">
+                      <div aria-hidden="true" className="mx-atmosphere absolute inset-0 -z-10" />
+                      <p className="mx-h4">{dict['site.tagline']}</p>
+                      <p className="mt-3 text-[0.875rem] leading-relaxed text-(--mx-fg-2)">{dict['contact.intro']}</p>
+                      <Link href={`${p}/contact`} className="mx-btn mx-btn-primary mx-btn-sm mt-6">
+                        {dict['nav.contact']}
+                        <ArrowUpRight className="mx-btn-icon" aria-hidden="true" />
+                      </Link>
+                    </div>
+                  </Reveal>
+                </div>
+              </aside>
+            ) : null}
+          </div>
         </div>
       </div>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
-        }}
-      />
+      <JsonLd data={structuredData} />
     </>
   );
 }

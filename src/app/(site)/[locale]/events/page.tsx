@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowUpRight, CalendarDays } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { getDictionary, isLocale } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
+import { formatDate } from '@/lib/dates';
+import { isSafeHttpUrl } from '@/lib/utils';
+import { localeAlternates } from '@/lib/meridian/site';
 import { getSiteSettings } from '@/server/services/settings';
-import { getPastEvents, getUpcomingEvents } from '@/server/public/queries';
-import { PageHeader } from '@/components/ui/page-header';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { EmptyState } from '@/components/ui/empty-state';
-import { EventCard } from '@/components/site/event-card';
+import { getPastEvents, getUpcomingEvents, type PublicEvent } from '@/server/public/queries';
+import { PageHero } from '@/components/meridian/layout/page-hero';
+import { EventCard } from '@/components/meridian/cards/event-card';
+import { Reveal } from '@/components/meridian/motion/reveal';
+import { EmptyState } from '@/components/meridian/states/states';
 
 interface EventsPageProps {
   params: Promise<{ locale: string }>;
@@ -21,16 +25,17 @@ export async function generateMetadata({ params }: EventsPageProps): Promise<Met
   return {
     title: dict['events.title'],
     description: dict['events.intro'],
-    alternates: {
-      canonical: `${process.env.APP_URL ?? 'http://localhost:3000'}/${locale}/events`,
-      languages: {
-        'en-IN': `${process.env.APP_URL ?? 'http://localhost:3000'}/en/events`,
-        'gu-IN': `${process.env.APP_URL ?? 'http://localhost:3000'}/gu/events`,
-        'hi-IN': `${process.env.APP_URL ?? 'http://localhost:3000'}/hi/events`,
-        'x-default': `${process.env.APP_URL ?? 'http://localhost:3000'}/en/events`,
-      },
-    },
+    alternates: localeAlternates(locale, '/events'),
   };
+}
+
+function groupByYear(events: PublicEvent[], locale: LocaleCode) {
+  const groups = new Map<string, PublicEvent[]>();
+  for (const event of events) {
+    const year = formatDate(event.startAt, locale, { year: 'numeric' });
+    groups.set(year, [...(groups.get(year) ?? []), event]);
+  }
+  return Array.from(groups.entries());
 }
 
 export default async function EventsPage({ params }: EventsPageProps) {
@@ -43,83 +48,114 @@ export default async function EventsPage({ params }: EventsPageProps) {
     getPastEvents(locale, 12),
     getSiteSettings(),
   ]);
+  const [featured, ...rest] = upcoming;
+  const calendar =
+    settings.external.upcomingEvents && isSafeHttpUrl(settings.external.upcomingEvents)
+      ? settings.external.upcomingEvents
+      : null;
+  const pastByYear = groupByYear(past, locale);
 
   return (
     <>
-      <div className="site-container">
-        <Breadcrumbs
-          locale={locale}
-          homeLabel={dict['page.breadcrumbHome']}
-          ariaLabel={dict['nav.breadcrumb']}
-          items={[{ label: dict['events.title'] }]}
-        />
-      </div>
-      <PageHeader
-        tone="ink"
-        eyebrow={dict['nav.events']}
+      <PageHero
+        locale={locale}
+        homeLabel={dict['page.breadcrumbHome']}
+        breadcrumbLabel={dict['nav.breadcrumb']}
+        crumbs={[{ label: dict['events.title'] }]}
+        eyebrow={dict['home.events.eyebrow']}
         title={dict['events.title']}
         intro={dict['events.intro']}
-      >
-        <a
-          href={settings.external.upcomingEvents}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-light"
-        >
-          {dict['home.events.external']}
-          <ArrowUpRight className="size-4" aria-hidden="true" />
-        </a>
-      </PageHeader>
-
-      <div className="site-container py-12 lg:py-16">
-        <section aria-labelledby="upcoming-events">
-          <div className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-full bg-carbon text-warm-ivory">
-              <CalendarDays className="size-5" aria-hidden="true" />
-            </span>
-            <h2 id="upcoming-events" className="font-display text-2xl font-medium sm:text-3xl">
-              {dict['events.upcoming']}
-            </h2>
+        motif="meridian"
+        meta={
+          <div className="flex flex-wrap gap-3">
+            <a href="#upcoming" className="mx-chip">
+              {dict['events.upcoming']} · {upcoming.length}
+            </a>
+            <a href="#past" className="mx-chip">
+              {dict['events.past']} · {past.length}
+            </a>
+            {calendar ? (
+              <a href={calendar} target="_blank" rel="noopener noreferrer" className="mx-chip">
+                {dict['nav.upcomingExternal']}
+                <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                <span className="sr-only">({dict['a11y.newTab']})</span>
+              </a>
+            ) : null}
           </div>
-          {upcoming.length > 0 ? (
-            <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {upcoming.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  locale={locale}
-                  learnMore={dict['common.learnMore']}
-                />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              className="mt-7"
-              icon={<CalendarDays className="size-5" aria-hidden="true" />}
-            >
-              {dict['home.events.empty']}
-            </EmptyState>
-          )}
-        </section>
+        }
+      />
 
-        {past.length > 0 ? (
-          <section className="mt-16 border-t border-line pt-12" aria-labelledby="past-events">
-            <h2 id="past-events" className="font-display text-2xl font-medium sm:text-3xl">
-              {dict['events.past']}
-            </h2>
-            <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {past.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  locale={locale}
-                  learnMore={dict['common.learnMore']}
-                />
-              ))}
+      <section id="upcoming" aria-labelledby="upcoming-title" className="mx-surface-ivory mx-section !pt-16 scroll-mt-24">
+        <div className="mx-container">
+          <h2 id="upcoming-title" className="mx-h2">
+            {dict['events.upcoming']}
+          </h2>
+          <div className="mt-10">
+            {featured ? (
+              <>
+                <Reveal>
+                  <EventCard event={featured} locale={locale} dict={dict} variant="feature" headingLevel="h3" />
+                </Reveal>
+                {rest.length ? (
+                  <div className="mt-12 border-b border-(--mx-line)">
+                    {rest.map((event) => (
+                      <EventCard key={event.id} event={event} locale={locale} dict={dict} />
+                    ))}
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <EmptyState
+                title={dict['events.empty']}
+                body={<p>{dict['home.events.empty']}</p>}
+                action={
+                  <>
+                    {calendar ? (
+                      <a href={calendar} target="_blank" rel="noopener noreferrer" className="mx-btn mx-btn-ink">
+                        {dict['home.events.external']}
+                        <ArrowUpRight className="mx-btn-icon" aria-hidden="true" />
+                        <span className="sr-only">({dict['a11y.newTab']})</span>
+                      </a>
+                    ) : null}
+                    <Link href={`/${locale}/notices`} className="mx-btn mx-btn-ghost">
+                      {dict['nav.notices']}
+                    </Link>
+                  </>
+                }
+              />
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section id="past" aria-labelledby="past-title" className="mx-surface-white mx-section scroll-mt-24">
+        <div className="mx-container grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-[calc(var(--mx-header-h)+2rem)]">
+              <h2 id="past-title" className="mx-h2">
+                {dict['events.past']}
+              </h2>
+              <p className="mt-4 max-w-sm text-(--mx-fg-2)">{dict['mx.events.archiveIntro']}</p>
             </div>
-          </section>
-        ) : null}
-      </div>
+          </div>
+          <div className="lg:col-span-8">
+            {pastByYear.length ? (
+              pastByYear.map(([year, events]) => (
+                <div key={year} className="mb-12 last:mb-0">
+                  <p className="mx-numeric text-5xl text-(--mx-fg-3)">{year}</p>
+                  <div className="mt-4 border-b border-(--mx-line)">
+                    {events.map((event) => (
+                      <EventCard key={event.id} event={event} locale={locale} dict={dict} />
+                    ))}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="border-y border-(--mx-line) py-10 text-(--mx-fg-2)">{dict['events.emptyPast']}</p>
+            )}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

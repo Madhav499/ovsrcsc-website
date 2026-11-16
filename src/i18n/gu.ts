@@ -331,4 +331,154 @@ export const gu: Dictionary = {
   'enquiries.track.volunteer': 'સ્વયંસેવા અને વ્યાખ્યાન-ક્લબ ભાગીદારીની તકો.',
   'enquiries.track.visit': 'કેન્દ્ર પર મુલાકાત, આકાશ નિરીક્ષણ કે ઉજવણીનું આયોજન.',
   'enquiries.noticesCta': 'કેન્દ્રની તાજી સૂચનાઓ જુઓ',
+
+  // MERIDIAN public design — brand
+  'mx.brand.familiar': 'લોક વિજ્ઞાન કેન્દ્ર, રાજકોટ',
+  'mx.brand.affiliation': 'સૌરાષ્ટ્ર એજ્યુકેશન ફાઉન્ડેશનની સંસ્થા',
+  'mx.brand.logoAlt': 'ઓ.વી.એસ.આર.સી.એસ.સી. રાજકોટ — સૌરાષ્ટ્ર એજ્યુકેશન ફાઉન્ડેશનનો લોગો',
+  'mx.brand.home': 'હોમ — ઓ.વી.એસ.આર.સી.એસ.સી. રાજકોટ',
+
+  // Navigation
+  'mx.nav.visit': 'મુલાકાત લો',
+  'mx.nav.searchOpen': 'શોધ ખોલો',
+  'mx.nav.searchClose': 'શોધ બંધ કરો',
+  'mx.nav.explore': 'કેન્દ્રને જાણો',
+  'mx.nav.submenu': 'ઉપમેનુ બતાવો:',
+
+  // Home — hero
+  'mx.home.heroEyebrow': 'વિજ્ઞાન સૌ માટે · રાજકોટ · ૧૯૯૭થી',
+  'mx.home.heroTitle': 'દરેક વસ્તુ પાછળના',
+  'mx.home.heroTitleAccent': 'વિજ્ઞાનને શોધો.',
+  'mx.home.heroCoordinates': 'રાજકોટ · ૨૨.૩૦° ઉ., ૭૦.૮૦° પૂ.',
+  'mx.home.heroAward': 'વિજ્ઞાન અને ટેકનોલોજી સંચારમાં શ્રેષ્ઠ પ્રયાસ માટે રાષ્ટ્રીય પુરસ્કાર · NCSTC, ૨૦૦૮',
+  'mx.home.heroScroll': 'આગળ જોવા માટે સ્ક્રોલ કરો',
+  'mx.home.heroPlateCaption': 'બિગ બેંગ એસ્ટ્રોનોમી ક્લબના ટેલિસ્કોપ',
+  'mx.home.heroNext': 'કેન્દ્રમાં હવે પછી',
+  'mx.home.heroNotice': 'તાજી સૂચના',
+
+  // Home — introduction
+  'mx.home.introTitle': 'વિજ્ઞાનને',
+  'mx.home.introTitleAccent': 'સૌ સુધી પહોંચાડીએ.',
+  'mx.home.introLede':
+    'વિજ્ઞાન માત્ર ભણાવાતું નથી, તે શીખાય છે. બે દાયકાથી વધુ સમયથી કેન્દ્ર બ્લેકબોર્ડના પાઠને એવા પ્રયોગોમાં ફેરવે છે જેને તમે સ્પર્શી, ચકાસી અને પ્રશ્ન કરી શકો.',
+  'mx.home.introHistory':
+    'તેની માતૃસંસ્થા સૌરાષ્ટ્ર એજ્યુકેશન ફાઉન્ડેશને ૧૯૭૯માં વિજ્ઞાન મિશનની શરૂઆત કરી હતી. ૧૯૯૭માં કેન્દ્ર રેસ કોર્સ ખાતેના વર્તમાન ભવનમાં આવ્યું અને તે જ વર્ષે GUJCOST દ્વારા પ્રાદેશિક કેન્દ્ર તરીકે માન્યતા મળી.',
+  'mx.home.captionLearning': 'કેન્દ્રમાં કરીને શીખવું',
+  'mx.home.captionMuseum': 'આર્યભટ્ટ વિજ્ઞાન સંગ્રહાલય',
+  'mx.figure': 'ચિત્ર',
+
+  // Home — at a glance
+  'mx.home.glanceEyebrow': 'એક નજરે',
+  'mx.home.glanceTitle': 'વિજ્ઞાન કરીને શીખવા',
+  'mx.home.glanceTitleAccent': 'માટે બનેલું કેન્દ્ર.',
+  'mx.home.glanceNote': 'આંકડા કેન્દ્ર દ્વારા પ્રકાશિત માહિતી મુજબ.',
+  'mx.home.stats.years': 'વિજ્ઞાન લોકપ્રિયતાના વર્ષો',
+  'mx.home.stats.auditorium': 'બેઠકોવાળું ઓડિટોરિયમ',
+  'mx.home.stats.periodicals': 'પુસ્તકાલયમાં વિજ્ઞાન સામયિકો',
+
+  // Home — experiences
+  'mx.home.experiencesEyebrow': 'શોધ માટેની જગ્યાઓ',
+  'mx.home.experiencesTitle': 'જિજ્ઞાસાની',
+  'mx.home.experiencesTitleAccent': 'પ્રયોગશાળામાં પ્રવેશો.',
+  'mx.home.experiencesIntro':
+    'પાંચ પ્રયોગશાળાઓ, વિજ્ઞાન સંગ્રહાલય, પુસ્તકાલય અને ઓડિટોરિયમ — કેન્દ્રની દરેક જગ્યા હાથોહાથ શોધ માટે બનાવાઈ છે.',
+  'mx.home.facility.museum.title': 'આર્યભટ્ટ વિજ્ઞાન સંગ્રહાલય',
+  'mx.home.facility.museum.text':
+    '૫૦થી વધુ કાર્યરત પ્રદર્શનો ધરાવતું વિજ્ઞાન સંગ્રહાલય — અજમાવવા, ચકાસવા અને ચર્ચા કરવા માટે.',
+  'mx.home.facility.labs.title': 'પાંચ પ્રયોગશાળાઓ',
+  'mx.home.facility.labs.text':
+    'અભ્યાસક્રમ આધારિત પ્રયોગો માટે જીવવિજ્ઞાન, રસાયણ, ઇલેક્ટ્રોનિક્સ, ગણિત અને ભૌતિકશાસ્ત્રની પ્રયોગશાળાઓ.',
+  'mx.home.facility.library.title': 'વિજ્ઞાન અને ગણિત પુસ્તકાલય',
+  'mx.home.facility.library.text': 'વિજ્ઞાન અને ગણિતને સમર્પિત ૬,૦૦૦થી વધુ પુસ્તકો અને ૫૦ સામયિકો.',
+  'mx.home.facility.astronomy.title': 'બિગ બેંગ એસ્ટ્રોનોમી ક્લબ',
+  'mx.home.facility.astronomy.text': 'કેન્દ્રની ખગોળ ક્લબ સાથે આકાશ નિરીક્ષણ, સ્ટાર પાર્ટી અને ટેલિસ્કોપ સત્રો.',
+  'mx.home.facility.auditorium.title': 'ઓડિટોરિયમ અને એમ્ફીથિયેટર',
+  'mx.home.facility.auditorium.text':
+    'વ્યાખ્યાનો અને ઉજવણીઓ માટે મલ્ટીમીડિયા સુવિધાવાળું ૨૦૦ બેઠકોનું ઓડિટોરિયમ અને ખુલ્લું થિયેટર.',
+  'mx.home.programmesTitle': 'મુખ્ય કાર્યક્રમો',
+  'mx.home.programmesAll': 'બધા કાર્યક્રમો',
+
+  // Home — events, discovery, insights, notices, visit
+  'mx.home.eventsAll': 'બધા કાર્યક્રમો',
+  'mx.home.discoveryEyebrow': 'વર્ગખંડની બહાર',
+  'mx.home.discoveryTitle': 'જાણેલાની',
+  'mx.home.discoveryTitleAccent': 'પેલે પાર જુઓ.',
+  'mx.home.discoveryBody':
+    'સૌરાષ્ટ્રના આકાશ નીચે ટેલિસ્કોપ સત્રોથી લઈને સૂર્યગ્રહણ નિરીક્ષણ અને શૂન્ય પડછાયા દિવસના પ્રયોગો સુધી — કેન્દ્ર શિક્ષણને ખુલ્લામાં લઈ જાય છે, જ્યાં જિજ્ઞાસાને વિકસવાની જગ્યા મળે છે.',
+  'mx.home.discoveryCta': 'ખગોળ ક્લબને મળો',
+  'mx.home.discoveryCaption': 'શૂન્ય પડછાયા દિવસ ૨૦૨૨',
+  'mx.home.discoveryCaption2': 'ગીર સ્ટાર પાર્ટીમાં ડૉ. જે. જે. રાવલ',
+  'mx.home.insightsEyebrow': 'પ્રવૃત્તિ બ્લોગમાંથી',
+  'mx.home.insightsTitle': 'તાજી',
+  'mx.home.insightsTitleAccent': 'વાતો.',
+  'mx.home.insightsCta': 'પ્રવૃત્તિ બ્લોગ વાંચો',
+  'mx.home.noticesAll': 'બધી સૂચનાઓ',
+  'mx.home.visitTitle': 'તમારી શોધયાત્રા',
+  'mx.home.visitTitleAccent': 'અહીંથી શરૂ થાય છે.',
+  'mx.home.visitCaption': 'રેસ કોર્સ, રાજકોટ ખાતેનું કેન્દ્ર',
+
+  // Footer
+  'mx.footer.backToTop': 'ઉપર જાઓ',
+  'mx.footer.partners': 'સહયોગ',
+  'mx.footer.rmc': 'રાજકોટ મહાનગરપાલિકા',
+  'mx.footer.gujcost': 'ગુજરાત કાઉન્સિલ ઓન સાયન્સ એન્ડ ટેકનોલોજી (GUJCOST)',
+  'mx.footer.sef': 'સૌરાષ્ટ્ર એજ્યુકેશન ફાઉન્ડેશન (SEF)',
+
+  // Pages
+  'mx.page.continue': 'આગળ જાણો',
+  'mx.page.chapters': 'પ્રકરણો',
+  'mx.page.sectionIndex': 'વિભાગ સૂચિ',
+  'mx.page.backTo': 'પાછા જાઓ:',
+
+  // Blog
+  'mx.blog.featured': 'વિશેષ લેખ',
+  'mx.blog.related': 'પ્રવૃત્તિ બ્લોગમાંથી વધુ',
+  'mx.blog.filter': 'શ્રેણી પ્રમાણે લેખો જુઓ',
+  'mx.blog.stories': 'લેખો',
+
+  // Events
+  'mx.events.featured': 'આગામી કાર્યક્રમ',
+  'mx.events.registrationOpen': 'નોંધણી ચાલુ',
+  'mx.events.details': 'કાર્યક્રમની વિગતો',
+  'mx.events.seatsLeft': 'જગ્યાઓ બાકી',
+  'mx.events.full': 'બધી જગ્યાઓ ભરાઈ ગઈ',
+  'mx.events.related': 'અન્ય આગામી કાર્યક્રમો',
+  'mx.events.when': 'ક્યારે',
+  'mx.events.where': 'ક્યાં',
+  'mx.events.archiveIntro': 'કેન્દ્ર દ્વારા યોજાયેલા વ્યાખ્યાનો, કાર્યશાળાઓ અને ઉજવણીઓની નોંધ.',
+
+  // Gallery
+  'mx.gallery.albums': 'આલ્બમ',
+  'mx.gallery.photographs': 'તસવીરો',
+  'mx.gallery.index': 'આલ્બમ સૂચિ',
+  'mx.gallery.related': 'વધુ આલ્બમ',
+  'mx.gallery.counter': 'તસવીર',
+
+  // Notices
+  'mx.notices.important': 'મહત્વપૂર્ણ',
+  'mx.notices.attachments': 'જોડાણો',
+  'mx.notices.filter': 'વિભાગ પ્રમાણે સૂચનાઓ જુઓ',
+  'mx.notices.all': 'બધી સૂચનાઓ',
+  'mx.notices.openLink': 'લિંક ખોલો',
+
+  // Downloads
+  'mx.downloads.filterLabel': 'સંસાધનો શોધો',
+  'mx.downloads.filterPlaceholder': 'શીર્ષક અથવા ફાઇલના નામથી શોધો…',
+  'mx.downloads.noMatch': 'તમારી શોધ સાથે કોઈ સંસાધન મેળ ખાતું નથી.',
+  'mx.downloads.open': 'ખોલો',
+
+  // Contact
+  'mx.contact.directions': 'રસ્તો જુઓ',
+  'mx.contact.writeTo': 'અમને લખો',
+  'mx.contact.callUs': 'અમને ફોન કરો',
+  'mx.contact.follow': 'કેન્દ્રને અનુસરો',
+
+  // Search
+  'mx.search.all': 'બધાં પરિણામો',
+  'mx.search.searching': 'શોધી રહ્યા છીએ…',
+  'mx.search.suggestions': 'અથવા અહીંથી શરૂ કરો',
+  'mx.search.englishVersion': 'અંગ્રેજીમાં ઉપલબ્ધ',
+
+  // Auth
+  'mx.auth.staffOnly': 'આ પાનું માત્ર કેન્દ્રના કર્મચારીઓ માટે છે.',
 };

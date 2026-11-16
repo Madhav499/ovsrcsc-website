@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowRight, Clock, FlaskConical, Telescope, Users } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { getDictionary, isLocale } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
+import { indexLabel, localeAlternates } from '@/lib/meridian/site';
 import { getSiteSettings } from '@/server/services/settings';
-import { PageHeader } from '@/components/ui/page-header';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { Reveal } from '@/components/site/motion';
-import { ContactForm } from '@/components/site/contact-form';
+import { PageHero } from '@/components/meridian/layout/page-hero';
+import { ContactForm } from '@/components/meridian/forms/contact-form';
+import { ContactDetails } from '@/components/meridian/sections/contact-details';
 
 interface EnquiriesPageProps {
   params: Promise<{ locale: string }>;
@@ -18,27 +18,14 @@ export async function generateMetadata({ params }: EnquiriesPageProps): Promise<
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = getDictionary(locale);
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
   return {
     title: dict['enquiries.title'],
     description: dict['enquiries.intro'],
-    alternates: {
-      canonical: `${appUrl}/${locale}/enquiries`,
-      languages: {
-        'en-IN': `${appUrl}/en/enquiries`,
-        'gu-IN': `${appUrl}/gu/enquiries`,
-        'hi-IN': `${appUrl}/hi/enquiries`,
-        'x-default': `${appUrl}/en/enquiries`,
-      },
-    },
+    alternates: localeAlternates(locale, '/enquiries'),
   };
 }
 
-const ENQUIRY_TRACKS = [
-  { Icon: FlaskConical, key: 'enquiries.track.programme' },
-  { Icon: Users, key: 'enquiries.track.volunteer' },
-  { Icon: Telescope, key: 'enquiries.track.visit' },
-] as const;
+const TRACKS = ['enquiries.track.programme', 'enquiries.track.volunteer', 'enquiries.track.visit'] as const;
 
 export default async function EnquiriesPage({ params }: EnquiriesPageProps) {
   const { locale: rawLocale } = await params;
@@ -49,79 +36,44 @@ export default async function EnquiriesPage({ params }: EnquiriesPageProps) {
 
   return (
     <>
-      <div className="site-container">
-        <Breadcrumbs
-          locale={locale}
-          homeLabel={dict['page.breadcrumbHome']}
-          ariaLabel={dict['nav.breadcrumb']}
-          items={[{ label: dict['enquiries.title'] }]}
-        />
-      </div>
-      <PageHeader
-        tone="ink"
+      <PageHero
+        locale={locale}
+        homeLabel={dict['page.breadcrumbHome']}
+        breadcrumbLabel={dict['nav.breadcrumb']}
+        crumbs={[{ label: dict['enquiries.title'] }]}
         eyebrow={dict['nav.contact']}
         title={dict['enquiries.title']}
         intro={dict['enquiries.intro']}
+        motif="atom"
+        meta={
+          <ol className="grid max-w-3xl gap-px overflow-hidden rounded-(--mx-radius-sm) border border-(--mx-line) bg-(--mx-line) sm:grid-cols-3">
+            {TRACKS.map((key, index) => (
+              <li key={key} className="bg-(--mx-midnight) p-5">
+                <span className="mx-mono-label text-(--mx-amber)">{indexLabel(index + 1)}</span>
+                <p className="mt-2 text-[0.9375rem] leading-snug text-(--mx-fg-2)">{dict[key]}</p>
+              </li>
+            ))}
+          </ol>
+        }
       />
 
-      <div className="site-container pb-16 pt-10 lg:pb-24 lg:pt-14">
-        <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
-          <Reveal>
+      <div className="mx-surface-ivory">
+        <div className="mx-container mx-section !pt-16 grid gap-14 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-7 lg:order-2">
             <ContactForm locale={locale} dict={dict} />
-          </Reveal>
-
-          <Reveal delay={0.12} className="space-y-6">
-            <div className="grid gap-3.5 sm:grid-cols-3 lg:grid-cols-1">
-              {ENQUIRY_TRACKS.map(({ Icon, key }) => (
-                <div
-                  key={key}
-                  className="flex items-start gap-4 rounded-2xl border border-line bg-white p-5 shadow-xs"
-                >
-                  <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-midnight text-cyan">
-                    <Icon className="size-5" aria-hidden="true" />
-                  </span>
-                  <p className="text-sm font-medium leading-snug text-midnight pt-0.5">{dict[key]}</p>
-                </div>
-              ))}
+          </div>
+          <section aria-labelledby="enquiry-details-title" className="lg:col-span-5 lg:order-1">
+            <h2 id="enquiry-details-title" className="mx-h3">
+              {dict['contact.detailsTitle']}
+            </h2>
+            <div className="mt-8">
+              <ContactDetails dict={dict} settings={settings} />
             </div>
-
-            <div className="rounded-3xl border border-line bg-white p-7 shadow-xs">
-              <h2 className="font-display text-lg font-semibold text-midnight">{dict['contact.detailsTitle']}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-muted">
-                {settings.contact.address}
-              </p>
-              <div className="mt-5 space-y-2.5 text-sm font-medium">
-                <a
-                  href={`tel:${settings.contact.phone.replace(/[^\d+]/g, '')}`}
-                  className="block text-midnight transition-colors hover:text-solar"
-                >
-                  {settings.contact.phone}
-                </a>
-                <a
-                  href={`mailto:${settings.contact.email}`}
-                  className="block break-all text-midnight transition-colors hover:text-cyan"
-                >
-                  {settings.contact.email}
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 rounded-2xl border border-line bg-warm-ivory/60 p-4.5 text-xs leading-relaxed text-slate-muted">
-              <Clock className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
-              <span>{dict['contact.responseNote']}</span>
-            </div>
-
-            <Link
-              href={`/${locale}/notices`}
-              className="group inline-flex items-center gap-2 text-sm font-bold text-teal-600 transition-colors hover:text-midnight pt-2"
-            >
-              <span>{dict['enquiries.noticesCta']}</span>
-              <ArrowRight
-                className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-                aria-hidden="true"
-              />
+            <Link href={`/${locale}/notices`} className="mx-link mt-8">
+              {dict['enquiries.noticesCta']}
+              <ArrowRight className="mx-btn-icon" aria-hidden="true" />
             </Link>
-          </Reveal>
+          </section>
         </div>
       </div>
     </>

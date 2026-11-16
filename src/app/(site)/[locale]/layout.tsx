@@ -1,15 +1,19 @@
 import type { Metadata, Viewport } from 'next';
-import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { getDictionary, isLocale } from '@/i18n';
 import { LOCALE_LABELS, type LocaleCode } from '@/lib/constants';
-import { fontVariables } from '@/lib/fonts';
+import { meridianFontVariables } from '@/lib/meridian-fonts';
+import { siteOrigin } from '@/lib/meridian/site';
 import { getSiteSettings } from '@/server/services/settings';
 import { getActiveAnnouncement } from '@/server/public/queries';
-import { SiteHeader } from '@/components/site/site-header';
-import { SiteFooter } from '@/components/site/site-footer';
-import { AnnouncementModal } from '@/components/site/announcement-modal';
+import { SiteHeader } from '@/components/meridian/navigation/site-header';
+import { SiteFooter } from '@/components/meridian/layout/site-footer';
+import { AnnouncementDialog } from '@/components/meridian/layout/announcement-dialog';
+import { MeridianMotionProvider } from '@/components/meridian/motion/reveal';
+import { JsonLd } from '@/components/meridian/primitives/json-ld';
+import { BRAND_PHOTOS } from '@/components/meridian/media/brand-photos';
 import '@/app/globals.css';
+import '@/styles/meridian/meridian.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,11 +30,12 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = getDictionary(locale);
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  const origin = siteOrigin();
+  const defaultTitle = `${dict['site.name']} | ${dict['site.tagline']}`;
   return {
-    metadataBase: new URL(appUrl),
+    metadataBase: new URL(origin),
     title: {
-      default: `${dict['site.name']} | ${dict['site.tagline']}`,
+      default: defaultTitle,
       template: `%s | ${dict['site.shortName']}`,
     },
     description: dict['site.description'],
@@ -39,23 +44,33 @@ export async function generateMetadata({
     keywords: [
       'science center Rajkot',
       'community science centre',
+      'Lok Vigyan Kendra Rajkot',
       'OVSRCSC',
       'Sunday Science School',
-      'science museum Rajkot',
+      'Aryabhatt Science Museum',
+      'Big Bang Astronomy Club',
       'Vigyan Safar',
       'Vigyan Darshan',
     ],
     openGraph: {
       type: 'website',
       siteName: dict['site.name'],
-      locale: LOCALE_LABELS[locale].htmlLang,
-      title: `${dict['site.name']} | ${dict['site.tagline']}`,
+      locale: LOCALE_LABELS[locale].htmlLang.replace('-', '_'),
+      title: defaultTitle,
       description: dict['site.description'],
-      url: `${appUrl}/${locale}`,
+      url: `${origin}/${locale}`,
+      images: [
+        {
+          url: BRAND_PHOTOS.telescopes.src,
+          width: BRAND_PHOTOS.telescopes.width,
+          height: BRAND_PHOTOS.telescopes.height,
+          alt: dict['mx.home.heroPlateCaption'],
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${dict['site.name']} | ${dict['site.tagline']}`,
+      title: defaultTitle,
       description: dict['site.description'],
     },
     robots: { index: true, follow: true },
@@ -65,7 +80,7 @@ export async function generateMetadata({
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#202321',
+  themeColor: '#101c2c',
   colorScheme: 'light',
 };
 
@@ -74,35 +89,54 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   if (!isLocale(rawLocale)) notFound();
   const locale: LocaleCode = rawLocale;
   const dict = getDictionary(locale);
-  const [settings, announcement, requestHeaders] = await Promise.all([
+  const [settings, announcement] = await Promise.all([
     getSiteSettings(),
     getActiveAnnouncement(locale),
-    headers(),
   ]);
-  const activePath = requestHeaders.get('x-ovsrcsc-path') ?? `/${locale}`;
+  const origin = siteOrigin();
+
+  const organization = {
+    '@context': 'https://schema.org',
+    '@type': ['EducationalOrganization', 'Museum'],
+    name: dict['site.name'],
+    alternateName: [dict['site.shortName'], dict['mx.brand.familiar']],
+    url: `${origin}/${locale}`,
+    foundingDate: '1997',
+    slogan: dict['site.tagline'],
+    description: dict['site.description'],
+    address: settings.contact.address || undefined,
+    telephone: settings.contact.phone || undefined,
+    email: settings.contact.email || undefined,
+    parentOrganization: { '@type': 'Organization', name: 'Saurashtra Education Foundation' },
+    sameAs: Object.values(settings.socials).filter((url) => url.startsWith('http')),
+  };
 
   return (
-    <html lang={LOCALE_LABELS[locale].htmlLang} className={fontVariables}>
-      <body>
-        <a
-          href="#main-content"
-          className="sr-only z-[100] rounded-br-xl bg-ink px-4 py-2 text-paper focus:not-sr-only focus:fixed focus:left-0 focus:top-0"
-        >
+    <html lang={LOCALE_LABELS[locale].htmlLang} className={meridianFontVariables}>
+      <body data-site="meridian">
+        <div id="top" />
+        <a href="#main-content" className="mx-skip-link">
           {dict['common.skipToContent']}
         </a>
-        <SiteHeader locale={locale} dict={dict} settings={settings} activePath={activePath} />
-        <main id="main-content">{children}</main>
-        <SiteFooter locale={locale} dict={dict} settings={settings} />
-        {announcement ? (
-          <AnnouncementModal
-            announcement={announcement}
-            labels={{
-              close: dict['popup.close'],
-              label: dict['popup.label'],
-              link: dict['popup.link'],
-            }}
-          />
-        ) : null}
+        <MeridianMotionProvider>
+          <SiteHeader locale={locale} dict={dict} settings={settings} />
+          <main id="main-content" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
+          <SiteFooter locale={locale} dict={dict} settings={settings} />
+          {announcement ? (
+            <AnnouncementDialog
+              announcement={announcement}
+              labels={{
+                close: dict['popup.close'],
+                label: dict['popup.label'],
+                link: dict['popup.link'],
+                newTab: dict['a11y.newTab'],
+              }}
+            />
+          ) : null}
+        </MeridianMotionProvider>
+        <JsonLd data={organization} />
       </body>
     </html>
   );

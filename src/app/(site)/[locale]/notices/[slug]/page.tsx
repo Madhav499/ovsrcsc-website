@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, ArrowUpRight, Download, FileText, Pin } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Download, FileText } from 'lucide-react';
 import { getDictionary, isLocale } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
 import { formatDate } from '@/lib/dates';
 import { formatFileSize, mediaUrl } from '@/lib/media';
+import { isSafeLinkHref } from '@/lib/utils';
+import { siteOrigin } from '@/lib/meridian/site';
 import { getNoticeBySlug } from '@/server/public/queries';
-import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { FallbackNotice } from '@/components/ui/fallback-notice';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHero } from '@/components/meridian/layout/page-hero';
+import { FallbackNotice } from '@/components/meridian/states/states';
 
 interface NoticeDetailProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -19,19 +20,18 @@ export async function generateMetadata({ params }: NoticeDetailProps): Promise<M
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale)) return {};
   const notice = await getNoticeBySlug(slug, rawLocale);
-  if (!notice) return { title: 'Notice not found' };
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  if (!notice) return { title: getDictionary(rawLocale)['notFound.title'] };
   return {
     title: notice.title,
     description: notice.excerpt,
-    alternates: { canonical: `${appUrl}/${rawLocale}/notices/${slug}` },
-    openGraph: {
-      type: 'article',
-      title: notice.title,
-      description: notice.excerpt,
-      url: `${appUrl}/${rawLocale}/notices/${slug}`,
-    },
+    alternates: { canonical: `${siteOrigin()}/${rawLocale}/notices/${slug}` },
   };
+}
+
+function fileType(name: string, mimeType: string): string {
+  const extension = name.split('.').pop();
+  if (extension && extension.length <= 5 && extension !== name) return extension.toUpperCase();
+  return mimeType.split('/').pop()?.toUpperCase() ?? '';
 }
 
 export default async function NoticeDetailPage({ params }: NoticeDetailProps) {
@@ -41,105 +41,105 @@ export default async function NoticeDetailPage({ params }: NoticeDetailProps) {
   const dict = getDictionary(locale);
   const notice = await getNoticeBySlug(slug, locale);
   if (!notice) notFound();
+  const p = `/${locale}`;
+  const link = notice.translation.linkUrl && isSafeLinkHref(notice.translation.linkUrl) ? notice.translation.linkUrl : null;
+  const external = Boolean(link?.startsWith('http'));
 
   return (
     <>
-      <div className="site-container">
-        <Breadcrumbs
-          locale={locale}
-          homeLabel={dict['page.breadcrumbHome']}
-          ariaLabel={dict['nav.breadcrumb']}
-          items={[
-            { label: dict['notices.title'], href: `/${locale}/notices` },
-            { label: notice.title },
-          ]}
-        />
-      </div>
-      <PageHeader tone="ink" eyebrow={notice.sectionLabel} title={notice.title}>
-        <div className="flex flex-wrap items-center gap-3 text-xs text-warm-ivory/70 font-semibold">
-          {notice.isPinned ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-solar/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-solar">
-              <Pin className="size-3" aria-hidden="true" />
-              {dict['notices.pinned']}
-            </span>
-          ) : null}
-          <span className="text-solar">
-            {dict['notices.publishDate']}: {formatDate(notice.publishAt, locale)}
-          </span>
-          {notice.expireAt ? (
-            <span>
-              · {dict['notices.validUntil']}: {formatDate(notice.expireAt, locale)}
-            </span>
-          ) : null}
-        </div>
-      </PageHeader>
+      <PageHero
+        locale={locale}
+        homeLabel={dict['page.breadcrumbHome']}
+        breadcrumbLabel={dict['nav.breadcrumb']}
+        crumbs={[{ label: dict['notices.title'], href: `${p}/notices` }, { label: notice.title }]}
+        eyebrow={notice.sectionLabel}
+        title={notice.title}
+        motif="meridian"
+        meta={
+          <dl className="flex flex-wrap gap-x-10 gap-y-4">
+            {notice.publishAt ? (
+              <div>
+                <dt className="mx-mono-label">{dict['notices.publishDate']}</dt>
+                <dd className="mt-1 font-semibold">{formatDate(notice.publishAt, locale)}</dd>
+              </div>
+            ) : null}
+            {notice.expireAt ? (
+              <div>
+                <dt className="mx-mono-label">{dict['notices.validUntil']}</dt>
+                <dd className="mt-1 font-semibold">{formatDate(notice.expireAt, locale)}</dd>
+              </div>
+            ) : null}
+            {notice.isPinned ? (
+              <div className="self-end">
+                <span className="mx-tag mx-tag-amber">{dict['mx.notices.important']}</span>
+              </div>
+            ) : null}
+          </dl>
+        }
+      />
 
-      <div className="site-container py-12 lg:py-16">
-        <div className="mx-auto max-w-3xl">
-          {notice.isFallback ? (
-            <div className="mb-6">
-              <FallbackNotice>{dict['page.notTranslated']}</FallbackNotice>
-            </div>
-          ) : null}
+      <div className="mx-surface-ivory">
+        <div className="mx-container mx-section !pt-14 sm:!pt-20">
+          <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
+            <article className="min-w-0">
+              {notice.isFallback ? <FallbackNotice className="mb-10">{dict['page.notTranslated']}</FallbackNotice> : null}
+              <div className="mx-prose" dangerouslySetInnerHTML={{ __html: notice.translation.bodyHtml }} />
+              {link ? (
+                <a
+                  href={link}
+                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="mx-btn mx-btn-ink mt-10"
+                >
+                  {notice.translation.linkLabel || dict['mx.notices.openLink']}
+                  {external ? (
+                    <>
+                      <ArrowUpRight className="mx-btn-icon" aria-hidden="true" />
+                      <span className="sr-only">({dict['a11y.newTab']})</span>
+                    </>
+                  ) : (
+                    <ArrowRight className="mx-btn-icon" aria-hidden="true" />
+                  )}
+                </a>
+              ) : null}
+              <div className="mt-14 border-t border-(--mx-line-strong) pt-8">
+                <Link href={`${p}/notices`} className="mx-btn mx-btn-ghost">
+                  <ArrowLeft className="size-4" aria-hidden="true" />
+                  {dict['mx.notices.all']}
+                </Link>
+              </div>
+            </article>
 
-          <div
-            className="prose-content rounded-3xl border border-line/70 bg-white p-7 sm:p-10 shadow-xs"
-            dangerouslySetInnerHTML={{ __html: notice.translation.bodyHtml }}
-          />
-
-          {notice.translation.linkUrl ? (
-            <a
-              href={notice.translation.linkUrl}
-              target={notice.translation.linkUrl.startsWith('http') ? '_blank' : undefined}
-              rel={notice.translation.linkUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="btn btn-primary mt-8"
-            >
-              {notice.translation.linkLabel || dict['common.learnMore']}
-              <ArrowUpRight className="size-4" aria-hidden="true" />
-            </a>
-          ) : null}
-
-          {notice.attachments.length > 0 ? (
-            <section className="mt-10 border-t border-line/70 pt-8">
-              <h2 className="font-display text-xl font-semibold text-midnight">
-                {dict['common.downloads']}
-              </h2>
-              <ul className="mt-4 space-y-3">
-                {notice.attachments.map((attachment) => (
-                  <li key={attachment.id}>
-                    <a
-                      href={`${mediaUrl(attachment.storageKey)}?download=1`}
-                      className="group flex items-center gap-4 rounded-2xl border border-line bg-white px-5 py-4 transition-all duration-300 hover:border-cyan hover:shadow-xs"
-                    >
-                      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-midnight text-cyan">
-                        <FileText className="size-5" aria-hidden="true" />
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-semibold text-midnight group-hover:text-solar">
-                          {attachment.title}
-                        </span>
-                        <span className="text-xs text-slate-muted font-medium">
-                          {formatFileSize(attachment.sizeBytes)}
-                        </span>
-                      </span>
-                      <span className="grid size-8 place-items-center rounded-full bg-cream text-slate-muted group-hover:bg-cyan/15 group-hover:text-cyan transition-colors">
-                        <Download className="size-4" aria-hidden="true" />
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-
-          <div className="mt-10 border-t border-line/60 pt-6">
-            <Link
-              href={`/${locale}/notices`}
-              className="group inline-flex items-center gap-2 text-sm font-bold text-teal-600 transition-colors hover:text-midnight"
-            >
-              <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
-              <span>{dict['common.back']}</span>
-            </Link>
+            {notice.attachments.length ? (
+              <aside aria-labelledby="notice-attachments" className="min-w-0">
+                <div className="mx-surface-white rounded-(--mx-radius-md) p-6 shadow-[var(--mx-shadow-sm)] lg:sticky lg:top-[calc(var(--mx-header-h)+1.5rem)]">
+                  <h2 id="notice-attachments" className="mx-mono-label">
+                    {dict['mx.notices.attachments']}
+                  </h2>
+                  <ul className="mt-4 grid gap-2">
+                    {notice.attachments.map((attachment) => (
+                      <li key={attachment.id}>
+                        <a
+                          href={`${mediaUrl(attachment.storageKey)}?download=1`}
+                          className="group flex items-center gap-4 rounded-(--mx-radius-sm) border border-(--mx-line) p-3.5 transition-colors hover:border-(--mx-fg)"
+                        >
+                          <span className="grid size-11 shrink-0 place-items-center rounded-(--mx-radius-sm) bg-(--mx-sunken)">
+                            <FileText className="size-5 text-(--mx-accent)" aria-hidden="true" />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate font-semibold">{attachment.title || attachment.originalName}</span>
+                            <span className="mx-meta">
+                              {fileType(attachment.originalName, attachment.mimeType)} · {formatFileSize(attachment.sizeBytes)}
+                            </span>
+                          </span>
+                          <Download className="size-4 shrink-0 text-(--mx-fg-3) group-hover:text-(--mx-fg)" aria-hidden="true" />
+                          <span className="sr-only">{dict['common.download']}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </aside>
+            ) : null}
           </div>
         </div>
       </div>
