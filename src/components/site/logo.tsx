@@ -19,22 +19,22 @@ export function Logo({ locale, shortName, fullName, light = false, className }: 
     >
       <span
         className={cn(
-          'relative grid size-10 shrink-0 place-items-center rounded-full border transition-colors duration-300',
+          'relative grid size-10 shrink-0 place-items-center rounded-full border transition-all duration-300',
           light
-            ? 'border-warm-ivory/20 bg-warm-ivory/8 text-warm-ivory group-hover:border-brass/40 group-hover:bg-brass/15'
-            : 'border-carbon bg-carbon text-warm-ivory group-hover:border-graphite group-hover:bg-graphite',
+            ? 'border-cyan/30 bg-cosmic/70 text-warm-ivory group-hover:border-cyan group-hover:shadow-[0_0_12px_rgba(82,213,232,0.4)]'
+            : 'border-midnight bg-midnight text-warm-ivory group-hover:border-cosmic group-hover:shadow-[0_0_14px_rgba(82,213,232,0.3)]',
         )}
       >
-        <svg viewBox="0 0 40 40" aria-hidden="true" className="size-7.5">
+        <svg viewBox="0 0 40 40" aria-hidden="true" className="size-7.5 transition-transform duration-700 ease-out group-hover:rotate-45">
           <ellipse
             cx="20"
             cy="20"
             rx="15"
             ry="6"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            opacity="0.55"
+            stroke="#52D5E8"
+            strokeWidth="1.2"
+            opacity="0.65"
             transform="rotate(-28 20 20)"
           />
           <ellipse
@@ -45,11 +45,11 @@ export function Logo({ locale, shortName, fullName, light = false, className }: 
             fill="none"
             stroke="currentColor"
             strokeWidth="1"
-            opacity="0.3"
+            opacity="0.35"
             transform="rotate(32 20 20)"
           />
-          <circle cx="20" cy="20" r="3.8" fill="#A58B62" />
-          <circle cx="32.5" cy="14" r="1.4" fill="currentColor" opacity="0.7" />
+          <circle cx="20" cy="20" r="3.8" fill="#E9A94B" />
+          <circle cx="32.5" cy="14" r="1.6" fill="#52D5E8" opacity="0.9" />
         </svg>
       </span>
       <span className="min-w-0">

@@ -33,3 +33,5 @@ test-results/
 
 # Original migration source archive
 data/source/events-archive.html
+.vercel
+.env*

@@ -48,8 +48,8 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   return (
     <>
       {/* ─── Observatory header band ─── */}
-      <div className="relative overflow-hidden bg-carbon text-warm-ivory">
-        <div className="science-grid-dark absolute inset-0" aria-hidden="true" />
+      <div className="relative overflow-hidden bg-midnight text-warm-ivory border-b border-cosmic">
+        <div className="science-grid-dark absolute inset-0 opacity-50" aria-hidden="true" />
         <div className="site-container relative">
           <div className="pt-6">
             <Breadcrumbs
@@ -65,34 +65,34 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
 
           <div className="grid gap-10 py-12 lg:grid-cols-[1fr_auto] lg:items-end lg:py-16">
             <div>
-              <p className="eyebrow !text-brass">
+              <p className="eyebrow !text-solar">
                 <Telescope className="mr-2 inline size-3.5" aria-hidden="true" />
                 {dict['gallery.heroEyebrow']}
               </p>
-              <h1 className="display-title mt-5 max-w-3xl text-[clamp(2.2rem,4.5vw,3.6rem)] font-medium text-warm-ivory">
+              <h1 className="display-title mt-5 max-w-3xl text-[clamp(2.2rem,4.5vw,3.6rem)] font-medium text-white">
                 {album.title}
               </h1>
               {album.description ? (
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-warm-ivory/55">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-warm-ivory/70">
                   {album.description}
                 </p>
               ) : null}
-              <div className="mt-5 flex flex-wrap items-center gap-5 text-xs text-warm-ivory/45">
+              <div className="mt-6 flex flex-wrap items-center gap-5 text-xs text-warm-ivory/60 font-semibold">
                 {album.eventDate ? (
                   <span className="flex items-center gap-2">
-                    <CalendarDays className="size-3.5 text-brass" aria-hidden="true" />
+                    <CalendarDays className="size-3.5 text-solar" aria-hidden="true" />
                     {formatDate(album.eventDate, locale)}
                   </span>
                 ) : null}
                 <span className="flex items-center gap-2">
-                  <Images className="size-3.5 text-brass" aria-hidden="true" />
+                  <Images className="size-3.5 text-cyan" aria-hidden="true" />
                   {album.items.length} {dict['gallery.photos']}
                 </span>
               </div>
             </div>
 
             <div className="hidden lg:block">
-              <OrbitVisualization rings={3} className="size-40" />
+              <OrbitVisualization rings={3} className="size-44" />
             </div>
           </div>
         </div>

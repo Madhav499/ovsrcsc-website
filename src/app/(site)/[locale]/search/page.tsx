@@ -57,13 +57,13 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
         title={dict['search.title']}
         intro={dict['search.intro']}
       >
-        <form action={`/${locale}/search`} method="get" role="search" className="flex gap-2">
+        <form action={`/${locale}/search`} method="get" role="search" className="flex gap-2.5">
           <label htmlFor="search-query" className="sr-only">
             {dict['search.placeholder']}
           </label>
           <div className="relative flex-1">
             <Search
-              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-warm-ivory/40"
+              className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-cyan"
               aria-hidden="true"
             />
             <input
@@ -72,10 +72,10 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
               type="search"
               defaultValue={query}
               placeholder={dict['search.placeholder']}
-              className="h-11 w-full rounded-full border border-warm-ivory/15 bg-warm-ivory/8 pl-9 pr-4 text-sm text-warm-ivory placeholder:text-warm-ivory/40"
+              className="h-12 w-full rounded-full border border-white/20 bg-white/10 pl-10 pr-4 text-sm text-white placeholder:text-warm-ivory/50 focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/30 transition-all backdrop-blur-md"
             />
           </div>
-          <button type="submit" className="btn btn-accent">
+          <button type="submit" className="btn btn-accent !py-3 !px-6 text-xs font-bold uppercase tracking-wider">
             {dict['search.button']}
           </button>
         </form>
@@ -93,34 +93,34 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
             </EmptyState>
           ) : (
             <>
-              <p className="text-sm text-ink-muted">
-                {results.length} {dict['search.results']} · {dict['common.resultsFor']}{' '}
-                <span className="font-semibold text-ink">“{query}”</span>
+              <p className="text-sm text-slate-muted font-medium">
+                <span className="font-bold text-midnight">{results.length}</span> {dict['search.results']} · {dict['common.resultsFor']}{' '}
+                <span className="font-semibold text-midnight">“{query}”</span>
               </p>
-              <ul className="mt-6 space-y-3">
+              <ul className="mt-6 space-y-4">
                 {results.map((result) => (
                   <li key={`${result.type}-${result.href}`}>
                     <Link
                       href={result.href}
-                      className="group block rounded-2xl border border-line bg-paper p-5 transition-all hover:border-brass/40 hover:shadow-card"
+                      className="meridian-card group block p-6"
                     >
                       <span className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-graphite/8 px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-sage">
+                        <span className="rounded-full bg-cyan/15 px-3 py-0.5 text-[9px] font-bold uppercase tracking-wider text-cyan">
                           {dict[TYPE_LABELS[result.type]]}
                         </span>
                         {result.isFallback ? (
-                          <span className="text-[10px] font-semibold text-ink-muted">EN</span>
+                          <span className="rounded-full bg-solar/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-solar">EN</span>
                         ) : null}
                       </span>
-                      <span className="mt-2 block font-display text-lg font-semibold leading-snug text-ink group-hover:text-brass-dark">
+                      <span className="mt-2.5 block font-display text-xl font-semibold leading-snug text-midnight group-hover:text-solar transition-colors">
                         {result.title}
                       </span>
-                      <span className="mt-1 line-clamp-2 block text-sm text-ink-muted">
+                      <span className="mt-1.5 line-clamp-2 block text-sm leading-relaxed text-slate-muted">
                         {result.summary}
                       </span>
-                      <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-sage">
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-teal-600 group-hover:text-midnight transition-colors">
                         {dict['common.readMore']}
-                        <ArrowRight className="size-3.5" aria-hidden="true" />
+                        <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                       </span>
                     </Link>
                   </li>

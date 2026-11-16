@@ -24,20 +24,20 @@ export default async function ForgotPasswordPage({ params }: ForgotPasswordPageP
 
   return (
     <div className="site-container flex min-h-[60vh] items-center justify-center py-16">
-      <div className="w-full overflow-hidden rounded-2xl border border-line bg-paper shadow-card">
-        <div className="relative bg-carbon px-7 pb-6 pt-7 text-warm-ivory sm:px-9">
+      <div className="w-full max-w-lg overflow-hidden rounded-3xl border border-line bg-white shadow-card">
+        <div className="relative bg-midnight px-8 pb-7 pt-8 text-warm-ivory border-b border-cosmic">
           <div className="science-grid-dark pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
-          <p className="relative text-[10px] font-bold uppercase tracking-[0.22em] text-brass">
+          <p className="relative text-[10px] font-bold uppercase tracking-[0.22em] text-cyan">
             {dict['auth.eyebrow']}
           </p>
-          <h1 className="relative mt-2 font-display text-2xl font-semibold sm:text-3xl">
+          <h1 className="relative mt-2 font-display text-2xl font-semibold text-white sm:text-3xl">
             {dict['auth.forgotTitle']}
           </h1>
-          <p className="relative mt-2 text-sm leading-relaxed text-warm-ivory/60">
+          <p className="relative mt-2 text-sm leading-relaxed text-warm-ivory/70">
             {dict['auth.forgotBody']}
           </p>
         </div>
-        <div className="p-7 sm:p-9">
+        <div className="p-8 sm:p-9">
           <ForgotPasswordForm dict={dict} />
         </div>
       </div>

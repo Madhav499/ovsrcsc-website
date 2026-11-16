@@ -139,20 +139,21 @@ export default async function ContentPage({ params }: ContentPageProps) {
             ) : null}
 
             {page.coverKey ? (
-              <div className="relative mb-9 aspect-[16/8] overflow-hidden rounded-3xl bg-graphite shadow-card">
+              <div className="relative mb-9 aspect-[16/8] overflow-hidden rounded-3xl border border-line bg-midnight shadow-card">
                 <AppImage
                   storageKey={page.coverKey}
                   alt={translation.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 66vw"
                   priority
+                  className="object-cover"
                 />
               </div>
             ) : null}
 
             {translation.bodyHtml ? (
               <div
-                className="prose-content"
+                className="prose-content rounded-3xl border border-line/70 bg-white p-7 sm:p-10 shadow-xs"
                 dangerouslySetInnerHTML={{ __html: translation.bodyHtml }}
               />
             ) : (
@@ -161,32 +162,32 @@ export default async function ContentPage({ params }: ContentPageProps) {
               </EmptyState>
             )}
 
-            <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-line pt-5 text-xs text-ink-muted">
-              <span className="inline-flex items-center gap-1.5">
-                <CalendarDays className="size-3.5" aria-hidden="true" />
+            <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-line/70 pt-6 text-xs text-slate-muted">
+              <span className="inline-flex items-center gap-1.5 font-medium">
+                <CalendarDays className="size-3.5 text-solar" aria-hidden="true" />
                 {dict['page.lastUpdated']}: {formatDate(page.updatedAt, locale)}
               </span>
             </div>
 
             {children.length > 0 ? (
-              <section className="mt-12">
-                <h2 className="font-display text-2xl font-semibold">{label}</h2>
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <section className="mt-14">
+                <h2 className="font-display text-2xl font-semibold text-midnight">{label}</h2>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   {children.map((child) => (
                     <Link
                       key={child.id}
                       href={`/${locale}/${child.path}`}
-                      className="group flex flex-col rounded-2xl border border-line bg-paper p-5 transition-all hover:-translate-y-0.5 hover:border-brass/40 hover:shadow-card"
+                      className="meridian-card group flex flex-col p-6"
                     >
-                      <h3 className="font-display text-lg font-semibold leading-snug group-hover:text-brass-dark">
+                      <h3 className="font-display text-lg font-semibold leading-snug text-midnight group-hover:text-solar transition-colors">
                         {child.title}
                       </h3>
                       {child.summary ? (
-                        <p className="mt-2 line-clamp-3 text-sm text-ink-muted">{child.summary}</p>
+                        <p className="mt-2.5 line-clamp-3 text-sm leading-relaxed text-slate-muted">{child.summary}</p>
                       ) : null}
-                      <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-sage">
+                      <span className="mt-auto pt-5 inline-flex items-center gap-1.5 text-xs font-bold text-teal-600 group-hover:text-midnight transition-colors">
                         {dict['common.learnMore']}
-                        <ArrowRight className="size-3.5" aria-hidden="true" />
+                        <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                       </span>
                     </Link>
                   ))}
@@ -197,19 +198,19 @@ export default async function ContentPage({ params }: ContentPageProps) {
 
           {hasSidebar ? (
             <aside className="space-y-6">
-              <div className="rounded-2xl border border-line bg-paper p-5">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-sage">
+              <div className="rounded-3xl border border-line bg-white p-6 shadow-xs">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-solar">
                   {dict['page.inSection']} {label}
                 </p>
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-4 space-y-1.5">
                   {siblings.map((sibling) => (
                     <li key={sibling.id}>
                       <Link
                         href={`/${locale}/${sibling.path}`}
-                        className="flex items-start gap-2 rounded-lg px-2 py-2 text-sm text-ink-soft transition-colors hover:bg-cream hover:text-ink"
+                        className="flex items-start gap-2.5 rounded-xl px-2.5 py-2 text-sm font-medium text-midnight transition-colors hover:bg-warm-ivory/60 hover:text-solar"
                       >
-                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brass" />
-                        {sibling.title}
+                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-cyan" />
+                        <span>{sibling.title}</span>
                       </Link>
                     </li>
                   ))}

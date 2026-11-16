@@ -155,16 +155,16 @@ export function GalleryGrid({ items, labels }: GalleryGridProps) {
           if (Math.abs(delta) > 48) go(delta < 0 ? 1 : -1);
           touchStartX.current = null;
         }}
-        className="m-auto w-screen max-w-none bg-transparent p-0 text-warm-ivory backdrop:bg-carbon/95 backdrop:backdrop-blur-md"
+        className="m-auto w-screen max-w-none bg-transparent p-0 text-warm-ivory backdrop:bg-midnight/95 backdrop:backdrop-blur-xl"
         aria-label={labels.exhibition ?? labels.open}
       >
         {active ? (
           <div className="relative flex min-h-screen flex-col justify-center p-4 sm:p-8">
             <div className="absolute left-1/2 top-5 -translate-x-1/2 text-center">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-brass">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-solar">
                 {labels.plate ?? ''}
               </p>
-              <p className="mt-1 rounded-full bg-warm-ivory/8 px-4 py-1 text-xs font-medium tracking-wider text-warm-ivory/70">
+              <p className="mt-1 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold tracking-wider text-cyan backdrop-blur-md">
                 {index !== null ? plateNumber(index) : '—'} / {plateNumber(items.length - 1)}
               </p>
             </div>
@@ -184,25 +184,25 @@ export function GalleryGrid({ items, labels }: GalleryGridProps) {
               />
             </div>
 
-            <div className="mx-auto mt-5 flex w-full max-w-6xl items-center justify-between gap-4">
+            <div className="mx-auto mt-6 flex w-full max-w-6xl items-center justify-between gap-4">
               <button
                 type="button"
                 onClick={() => go(-1)}
-                className="grid size-11 shrink-0 place-items-center rounded-full border border-warm-ivory/20 bg-warm-ivory/5 transition-all duration-300 hover:border-brass/60 hover:bg-brass/15"
+                className="grid size-12 shrink-0 place-items-center rounded-full border border-white/20 bg-white/5 transition-all duration-300 hover:border-cyan hover:bg-cyan/15 text-white"
                 aria-label={labels.previous}
               >
-                <ChevronLeft className="size-5" aria-hidden="true" />
+                <ChevronLeft className="size-6" aria-hidden="true" />
               </button>
-              <p className="min-w-0 max-w-xl text-center text-sm leading-relaxed text-warm-ivory/75">
+              <p className="min-w-0 max-w-xl text-center text-sm font-medium leading-relaxed text-warm-ivory/80">
                 {active.caption || active.altText}
               </p>
               <button
                 type="button"
                 onClick={() => go(1)}
-                className="grid size-11 shrink-0 place-items-center rounded-full border border-warm-ivory/20 bg-warm-ivory/5 transition-all duration-300 hover:border-brass/60 hover:bg-brass/15"
+                className="grid size-12 shrink-0 place-items-center rounded-full border border-white/20 bg-white/5 transition-all duration-300 hover:border-cyan hover:bg-cyan/15 text-white"
                 aria-label={labels.next}
               >
-                <ChevronRight className="size-5" aria-hidden="true" />
+                <ChevronRight className="size-6" aria-hidden="true" />
               </button>
             </div>
 
@@ -210,7 +210,7 @@ export function GalleryGrid({ items, labels }: GalleryGridProps) {
               ref={closeRef}
               type="button"
               onClick={() => dialogRef.current?.close()}
-              className="absolute right-5 top-5 grid size-10 place-items-center rounded-full bg-warm-ivory text-carbon transition-all duration-300 hover:bg-brass hover:text-warm-ivory sm:right-6 sm:top-6"
+              className="absolute right-5 top-5 grid size-11 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md transition-all duration-300 hover:bg-solar hover:text-midnight sm:right-8 sm:top-8"
               aria-label={labels.close}
             >
               <X className="size-5" aria-hidden="true" />

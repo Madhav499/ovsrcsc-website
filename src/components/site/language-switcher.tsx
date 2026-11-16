@@ -29,6 +29,7 @@ export function LanguageSwitcher({ currentLocale, label, light = false }: Langua
       {LOCALES.map((locale) => {
         const href = `${switchLocalePath(pathname, locale)}${query ? `?${query}` : ''}`;
         const active = locale === currentLocale;
+        const displayLabel = locale === 'en' ? 'EN' : locale === 'gu' ? 'ગુજરાતી' : 'हिन्दी';
         return (
           <Link
             key={locale}
@@ -37,17 +38,17 @@ export function LanguageSwitcher({ currentLocale, label, light = false }: Langua
             lang={LOCALE_LABELS[locale].htmlLang}
             aria-current={active ? 'true' : undefined}
             className={cn(
-              'rounded-full px-2 py-1 text-[11px] font-bold leading-none transition-colors',
+              'rounded-full px-2.5 py-1 text-[11px] font-bold leading-none transition-all duration-200',
               active
                 ? light
-                  ? 'bg-paper text-ink'
-                  : 'bg-ink text-paper'
+                  ? 'bg-solar text-midnight shadow-sm'
+                  : 'bg-midnight text-warm-ivory shadow-sm'
                 : light
-                  ? 'text-paper/70 hover:text-paper'
-                  : 'text-ink-muted hover:text-ink',
+                  ? 'text-warm-ivory/70 hover:text-warm-ivory hover:bg-white/10'
+                  : 'text-slate-muted hover:text-midnight hover:bg-cream',
             )}
           >
-            {locale.toUpperCase()}
+            {displayLabel}
           </Link>
         );
       })}

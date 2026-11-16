@@ -50,37 +50,43 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
   ].filter((social) => Boolean(social.href));
 
   return (
-    <footer className="relative mt-24 overflow-hidden bg-carbon text-warm-ivory">
+    <footer className="relative mt-24 overflow-hidden bg-midnight text-warm-ivory border-t border-cosmic">
+      <div className="science-grid-dark absolute inset-0 opacity-40" aria-hidden="true" />
       <div
-        className="pointer-events-none absolute -right-40 -top-48 size-[34rem] rounded-full border border-warm-ivory/8"
+        className="pointer-events-none absolute -right-40 -top-48 size-[34rem] rounded-full border border-cyan/10"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute -right-20 -top-24 size-[20rem] rounded-full border border-warm-ivory/8"
+        className="pointer-events-none absolute -right-20 -top-24 size-[20rem] rounded-full border border-solar/15"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute -right-2 top-2 size-2 rounded-full bg-brass"
+        className="pointer-events-none absolute -right-2 top-2 size-2 rounded-full bg-solar shadow-[0_0_8px_#E9A94B]"
         aria-hidden="true"
       />
 
       <div className="site-container relative py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.35fr_0.8fr_1fr_1.15fr]">
           <div>
-            <p className="font-display text-3.5xl font-medium leading-[1.1] tracking-[-0.03em] text-warm-ivory lg:text-4xl">
+            <p className="font-display text-3xl font-medium leading-[1.1] tracking-[-0.03em] text-warm-ivory lg:text-4xl">
               {dict['site.tagline']}
-              <span className="text-brass">.</span>
+              <span className="text-solar">.</span>
             </p>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-warm-ivory/55">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-warm-ivory/65">
               {dict['footer.about']}
             </p>
-            <p className="mt-6 max-w-sm text-xs leading-relaxed text-warm-ivory/35">
-              {dict['footer.parent']}
-            </p>
+            <div className="mt-6 rounded-xl border border-white/8 bg-white/[0.03] p-3.5 max-w-sm">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-cyan">
+                Institutional Affiliation
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-warm-ivory/50">
+                {dict['footer.parent']}
+              </p>
+            </div>
           </div>
 
           <div>
-            <h2 className="section-label text-warm-ivory/40">
+            <h2 className="section-label !text-cyan">
               {dict['footer.quickLinks']}
             </h2>
             <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm">
@@ -88,7 +94,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-warm-ivory/60 transition-colors duration-300 hover:text-brass"
+                    className="text-warm-ivory/70 transition-colors duration-200 hover:text-cyan"
                   >
                     {link.label}
                   </Link>
@@ -98,7 +104,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
           </div>
 
           <div>
-            <h2 className="section-label text-warm-ivory/40">
+            <h2 className="section-label !text-cyan">
               {dict['footer.programmes']}
             </h2>
             <ul className="mt-5 space-y-2.5 text-sm">
@@ -106,7 +112,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-warm-ivory/60 transition-colors duration-300 hover:text-brass"
+                    className="text-warm-ivory/70 transition-colors duration-200 hover:text-solar"
                   >
                     {link.label}
                   </Link>
@@ -116,48 +122,48 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
           </div>
 
           <div>
-            <h2 className="section-label text-warm-ivory/40">
+            <h2 className="section-label !text-cyan">
               {dict['footer.connect']}
             </h2>
-            <address className="mt-5 space-y-3 text-sm not-italic text-warm-ivory/60">
-              <p className="flex gap-2.5">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-brass" aria-hidden="true" />
+            <address className="mt-5 space-y-3.5 text-sm not-italic text-warm-ivory/70">
+              <div className="flex gap-2.5">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-cyan" aria-hidden="true" />
                 <span>
                   {settings.contact.address}
                   <a
                     href={settings.contact.mapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 flex items-center gap-1 text-xs font-medium text-warm-ivory/40 hover:text-brass"
+                    className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-cyan hover:underline"
                   >
                     {dict['home.visit.map']}
                     <ArrowUpRight className="size-3" aria-hidden="true" />
                   </a>
                 </span>
-              </p>
-              <p>
+              </div>
+              <div>
                 <a
                   href={`tel:${settings.contact.phone.replace(/[^\d+]/g, '')}`}
-                  className="flex items-center gap-2.5 hover:text-brass"
+                  className="flex items-center gap-2.5 hover:text-cyan transition-colors"
                 >
-                  <Phone className="size-4 shrink-0 text-brass" aria-hidden="true" />
+                  <Phone className="size-4 shrink-0 text-cyan" aria-hidden="true" />
                   {settings.contact.phone}
                 </a>
-              </p>
-              <p>
+              </div>
+              <div>
                 <a
                   href={`mailto:${settings.contact.email}`}
-                  className="flex items-center gap-2.5 break-all hover:text-brass"
+                  className="flex items-center gap-2.5 break-all hover:text-cyan transition-colors"
                 >
-                  <Mail className="size-4 shrink-0 text-brass" aria-hidden="true" />
+                  <Mail className="size-4 shrink-0 text-cyan" aria-hidden="true" />
                   {settings.contact.email}
                 </a>
-              </p>
+              </div>
             </address>
 
             {socials.length > 0 ? (
               <div className="mt-6">
-                <p className="section-label text-warm-ivory/30">
+                <p className="section-label text-warm-ivory/40">
                   {dict['footer.social']}
                 </p>
                 <div className="mt-3 flex gap-2">
@@ -168,9 +174,9 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`${label} (${dict['a11y.newTab']})`}
-                      className="grid size-8 place-items-center rounded-full border border-warm-ivory/12 text-warm-ivory/60 transition-all duration-300 hover:border-brass hover:text-brass"
+                      className="grid size-9 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-warm-ivory/70 transition-all duration-300 hover:border-cyan hover:text-cyan hover:shadow-[0_0_12px_rgba(82,213,232,0.3)]"
                     >
-                      <Icon className="size-3.5" aria-hidden="true" />
+                      <Icon className="size-4" aria-hidden="true" />
                     </a>
                   ))}
                 </div>
@@ -179,7 +185,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-warm-ivory/10 pt-6 text-xs text-warm-ivory/35 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-warm-ivory/45 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {dict['site.name']}. {dict['footer.legal']}
           </p>
@@ -188,14 +194,11 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
               href={settings.external.upcomingEvents}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 transition-colors hover:text-warm-ivory"
+              className="inline-flex items-center gap-1 transition-colors hover:text-cyan"
             >
               {dict['footer.external']}
               <ArrowUpRight className="size-3" aria-hidden="true" />
             </a>
-            <Link href="/admin" className="transition-colors hover:text-warm-ivory">
-              {dict['footer.admin']}
-            </Link>
           </div>
         </div>
       </div>

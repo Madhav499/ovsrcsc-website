@@ -60,14 +60,14 @@ export default async function EventDetailPage({ params }: EventDetailProps) {
         />
       </div>
       <PageHeader tone="ink" eyebrow={event.sectionName} title={event.title}>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-warm-ivory/55">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-warm-ivory/70">
           <span className="inline-flex items-center gap-1.5">
-            <CalendarDays className="size-3.5 text-brass" aria-hidden="true" />
+            <CalendarDays className="size-3.5 text-solar" aria-hidden="true" />
             {formatEventRange(event.startAt, event.endAt, locale, event.allDay)}
           </span>
           {event.location ? (
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="size-3.5 text-brass" aria-hidden="true" />
+              <MapPin className="size-3.5 text-cyan" aria-hidden="true" />
               {event.location}
             </span>
           ) : null}
@@ -83,7 +83,7 @@ export default async function EventDetailPage({ params }: EventDetailProps) {
               </div>
             ) : null}
             {event.coverKey ? (
-              <div className="image-reveal relative mb-8 aspect-[16/8] overflow-hidden rounded-3xl bg-graphite shadow-card">
+              <div className="image-reveal relative mb-8 aspect-[16/8] overflow-hidden rounded-3xl bg-midnight shadow-card border border-line">
                 <AppImage
                   storageKey={event.coverKey}
                   alt={event.title}
@@ -99,56 +99,56 @@ export default async function EventDetailPage({ params }: EventDetailProps) {
             />
             <Link
               href={`/${locale}/events`}
-              className="group mt-10 inline-flex items-center gap-1.5 text-sm font-bold text-sage transition-colors hover:text-carbon"
+              className="group mt-10 inline-flex items-center gap-1.5 text-sm font-bold text-teal-600 transition-colors hover:text-midnight"
             >
               <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
               {dict['common.back']}
             </Link>
           </article>
 
-          <aside className="space-y-5">
-            <div className="rounded-2xl border border-line bg-paper p-5">
-              <h2 className="font-display text-lg font-semibold">{dict['events.venue']}</h2>
-              <dl className="mt-4 space-y-3 text-sm">
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-line bg-white p-6 shadow-xs">
+              <h2 className="font-display text-lg font-semibold text-midnight">{dict['events.venue']}</h2>
+              <dl className="mt-5 space-y-4 text-sm">
                 <div className="flex gap-3">
-                  <CalendarDays className="mt-0.5 size-4 shrink-0 text-sage" aria-hidden="true" />
+                  <CalendarDays className="mt-0.5 size-4 shrink-0 text-solar" aria-hidden="true" />
                   <div>
-                    <dt className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
+                    <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-muted">
                       {dict['events.start']}
                     </dt>
-                    <dd className="font-semibold text-ink">{formatDateTime(event.startAt, locale)}</dd>
+                    <dd className="font-semibold text-midnight">{formatDateTime(event.startAt, locale)}</dd>
                   </div>
                 </div>
                 {event.endAt ? (
                   <div className="flex gap-3">
-                    <Clock className="mt-0.5 size-4 shrink-0 text-sage" aria-hidden="true" />
+                    <Clock className="mt-0.5 size-4 shrink-0 text-solar" aria-hidden="true" />
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-muted">
                         {dict['events.end']}
                       </dt>
-                      <dd className="font-semibold text-ink">{formatDateTime(event.endAt, locale)}</dd>
+                      <dd className="font-semibold text-midnight">{formatDateTime(event.endAt, locale)}</dd>
                     </div>
                   </div>
                 ) : null}
                 {event.location ? (
                   <div className="flex gap-3">
-                    <MapPin className="mt-0.5 size-4 shrink-0 text-sage" aria-hidden="true" />
+                    <MapPin className="mt-0.5 size-4 shrink-0 text-cyan" aria-hidden="true" />
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-muted">
                         {dict['common.location']}
                       </dt>
-                      <dd className="font-semibold text-ink">{event.location}</dd>
+                      <dd className="font-semibold text-midnight">{event.location}</dd>
                     </div>
                   </div>
                 ) : null}
                 {event.capacity !== null ? (
                   <div className="flex gap-3">
-                    <Users className="mt-0.5 size-4 shrink-0 text-sage" aria-hidden="true" />
+                    <Users className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-muted">
                         {dict['events.participants']}
                       </dt>
-                      <dd className="font-semibold text-ink">
+                      <dd className="font-semibold text-midnight">
                         {event.remainingSeats ?? 0} / {event.capacity}
                       </dd>
                     </div>
@@ -156,25 +156,25 @@ export default async function EventDetailPage({ params }: EventDetailProps) {
                 ) : null}
               </dl>
               {event.registrationDeadline ? (
-                <p className="mt-4 rounded-lg bg-sky px-3 py-2 text-xs text-ink-soft">
+                <p className="mt-5 rounded-xl bg-solar/10 border border-solar/20 px-3.5 py-2.5 text-xs text-amber-950 font-medium">
                   {dict['events.registrationDeadline']}: {formatDateTime(event.registrationDeadline, locale)}
                 </p>
               ) : null}
             </div>
 
-            <div className="rounded-2xl border border-line bg-paper p-5">
-              <h2 className="font-display text-lg font-semibold">
+            <div className="rounded-3xl border border-line bg-white p-6 shadow-xs">
+              <h2 className="font-display text-lg font-semibold text-midnight">
                 {dict['events.registrationTitle']}
               </h2>
               {showRegistration ? (
                 <>
-                  <p className="mt-1 text-xs text-ink-muted">{dict['events.registrationIntro']}</p>
-                  <div className="mt-4">
+                  <p className="mt-1 text-xs text-slate-muted">{dict['events.registrationIntro']}</p>
+                  <div className="mt-5">
                     <EventRegistrationForm eventId={event.id} locale={locale} dict={dict} />
                   </div>
                 </>
               ) : (
-                <p className="mt-2 text-sm text-ink-muted">
+                <p className="mt-3 text-sm text-slate-muted">
                   {event.registrationEnabled
                     ? dict['events.registrationClosed']
                     : dict['events.registrationUnavailable']}

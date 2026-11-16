@@ -56,19 +56,19 @@ export default async function NoticeDetailPage({ params }: NoticeDetailProps) {
         />
       </div>
       <PageHeader tone="ink" eyebrow={notice.sectionLabel} title={notice.title}>
-        <div className="flex flex-wrap items-center gap-3 text-xs text-warm-ivory/55">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-warm-ivory/70 font-semibold">
           {notice.isPinned ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-brass/15 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-brass">
+            <span className="inline-flex items-center gap-1 rounded-full bg-solar/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-solar">
               <Pin className="size-3" aria-hidden="true" />
               {dict['notices.pinned']}
             </span>
           ) : null}
-          <span>
+          <span className="text-solar">
             {dict['notices.publishDate']}: {formatDate(notice.publishAt, locale)}
           </span>
           {notice.expireAt ? (
             <span>
-              {dict['notices.validUntil']}: {formatDate(notice.expireAt, locale)}
+              · {dict['notices.validUntil']}: {formatDate(notice.expireAt, locale)}
             </span>
           ) : null}
         </div>
@@ -83,7 +83,7 @@ export default async function NoticeDetailPage({ params }: NoticeDetailProps) {
           ) : null}
 
           <div
-            className="prose-content"
+            className="prose-content rounded-3xl border border-line/70 bg-white p-7 sm:p-10 shadow-xs"
             dangerouslySetInnerHTML={{ __html: notice.translation.bodyHtml }}
           />
 
@@ -100,29 +100,31 @@ export default async function NoticeDetailPage({ params }: NoticeDetailProps) {
           ) : null}
 
           {notice.attachments.length > 0 ? (
-            <section className="mt-10 border-t border-line pt-7">
-              <h2 className="font-display text-xl font-semibold">
+            <section className="mt-10 border-t border-line/70 pt-8">
+              <h2 className="font-display text-xl font-semibold text-midnight">
                 {dict['common.downloads']}
               </h2>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-3">
                 {notice.attachments.map((attachment) => (
                   <li key={attachment.id}>
                     <a
                       href={`${mediaUrl(attachment.storageKey)}?download=1`}
-                       className="group flex items-center gap-3 rounded-xl border border-line bg-paper px-4 py-3 transition-colors hover:border-brass/40"
-                     >
-                       <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-carbon text-warm-ivory">
-                        <FileText className="size-4" aria-hidden="true" />
+                      className="group flex items-center gap-4 rounded-2xl border border-line bg-white px-5 py-4 transition-all duration-300 hover:border-cyan hover:shadow-xs"
+                    >
+                      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-midnight text-cyan">
+                        <FileText className="size-5" aria-hidden="true" />
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-semibold text-ink">
+                        <span className="block truncate text-sm font-semibold text-midnight group-hover:text-solar">
                           {attachment.title}
                         </span>
-                        <span className="text-[11px] text-ink-muted">
+                        <span className="text-xs text-slate-muted font-medium">
                           {formatFileSize(attachment.sizeBytes)}
                         </span>
                       </span>
-                      <Download className="size-4 text-ink-muted" aria-hidden="true" />
+                      <span className="grid size-8 place-items-center rounded-full bg-cream text-slate-muted group-hover:bg-cyan/15 group-hover:text-cyan transition-colors">
+                        <Download className="size-4" aria-hidden="true" />
+                      </span>
                     </a>
                   </li>
                 ))}
@@ -130,13 +132,15 @@ export default async function NoticeDetailPage({ params }: NoticeDetailProps) {
             </section>
           ) : null}
 
-           <Link
-             href={`/${locale}/notices`}
-             className="group mt-10 inline-flex items-center gap-1.5 text-sm font-bold text-sage transition-colors hover:text-carbon"
-           >
-             <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
-             {dict['common.back']}
-           </Link>
+          <div className="mt-10 border-t border-line/60 pt-6">
+            <Link
+              href={`/${locale}/notices`}
+              className="group inline-flex items-center gap-2 text-sm font-bold text-teal-600 transition-colors hover:text-midnight"
+            >
+              <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
+              <span>{dict['common.back']}</span>
+            </Link>
+          </div>
         </div>
       </div>
     </>

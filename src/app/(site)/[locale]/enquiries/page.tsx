@@ -71,51 +71,51 @@ export default async function EnquiriesPage({ params }: EnquiriesPageProps) {
           </Reveal>
 
           <Reveal delay={0.12} className="space-y-6">
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <div className="grid gap-3.5 sm:grid-cols-3 lg:grid-cols-1">
               {ENQUIRY_TRACKS.map(({ Icon, key }) => (
                 <div
                   key={key}
-                  className="flex items-start gap-3 rounded-xl border border-line bg-paper p-4"
+                  className="flex items-start gap-4 rounded-2xl border border-line bg-white p-5 shadow-xs"
                 >
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-carbon text-warm-ivory">
-                    <Icon className="size-4" aria-hidden="true" />
+                  <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-midnight text-cyan">
+                    <Icon className="size-5" aria-hidden="true" />
                   </span>
-                  <p className="text-sm leading-snug text-ink-soft">{dict[key]}</p>
+                  <p className="text-sm font-medium leading-snug text-midnight pt-0.5">{dict[key]}</p>
                 </div>
               ))}
             </div>
 
-            <div className="rounded-xl border border-line bg-paper p-6">
-              <h2 className="font-display text-lg font-medium">{dict['contact.detailsTitle']}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+            <div className="rounded-3xl border border-line bg-white p-7 shadow-xs">
+              <h2 className="font-display text-lg font-semibold text-midnight">{dict['contact.detailsTitle']}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-muted">
                 {settings.contact.address}
               </p>
-              <div className="mt-4 space-y-2 text-sm">
+              <div className="mt-5 space-y-2.5 text-sm font-medium">
                 <a
                   href={`tel:${settings.contact.phone.replace(/[^\d+]/g, '')}`}
-                  className="block font-medium text-ink-soft transition-colors hover:text-carbon"
+                  className="block text-midnight transition-colors hover:text-solar"
                 >
                   {settings.contact.phone}
                 </a>
                 <a
                   href={`mailto:${settings.contact.email}`}
-                  className="block break-all font-medium text-ink-soft transition-colors hover:text-carbon"
+                  className="block break-all text-midnight transition-colors hover:text-cyan"
                 >
                   {settings.contact.email}
                 </a>
               </div>
             </div>
 
-            <div className="flex items-start gap-2.5 rounded-xl border border-line bg-warm-ivory p-4 text-xs leading-relaxed text-ink-muted">
-              <Clock className="mt-0.5 size-3.5 shrink-0 text-sage" aria-hidden="true" />
+            <div className="flex items-start gap-3 rounded-2xl border border-line bg-warm-ivory/60 p-4.5 text-xs leading-relaxed text-slate-muted">
+              <Clock className="mt-0.5 size-4 shrink-0 text-teal-600" aria-hidden="true" />
               <span>{dict['contact.responseNote']}</span>
             </div>
 
             <Link
               href={`/${locale}/notices`}
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-sage transition-colors hover:text-carbon"
+              className="group inline-flex items-center gap-2 text-sm font-bold text-teal-600 transition-colors hover:text-midnight pt-2"
             >
-              {dict['enquiries.noticesCta']}
+              <span>{dict['enquiries.noticesCta']}</span>
               <ArrowRight
                 className="size-4 transition-transform duration-300 group-hover:translate-x-1"
                 aria-hidden="true"

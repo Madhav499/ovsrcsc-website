@@ -74,37 +74,39 @@ export default async function DownloadsPage({ params }: DownloadsPageProps) {
           <div className="space-y-12">
             {categories.size > 0 ? (
               <section>
-                <h2 className="font-display text-2xl font-semibold">{dict['downloads.links']}</h2>
-                <p className="mt-1 text-sm text-ink-muted">{dict['downloads.externalNote']}</p>
-                <div className="mt-5 space-y-7">
+                <h2 className="font-display text-2xl font-semibold text-midnight">{dict['downloads.links']}</h2>
+                <p className="mt-1 text-sm text-slate-muted">{dict['downloads.externalNote']}</p>
+                <div className="mt-6 space-y-8">
                   {Array.from(categories.entries()).map(([category, items]) => (
                     <div key={category}>
-                      <h3 className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-sage">
-                        <FolderOpen className="size-3.5" aria-hidden="true" />
+                      <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-solar">
+                        <FolderOpen className="size-4 text-cyan" aria-hidden="true" />
                         {category}
                       </h3>
-                      <ul className="mt-3 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-paper">
+                      <ul className="mt-3.5 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white shadow-xs">
                         {items.map((link) => (
                           <li key={link.id}>
                             <a
                               href={link.url}
                               target={link.isExternal ? '_blank' : undefined}
                               rel={link.isExternal ? 'noopener noreferrer' : undefined}
-                              className="flex items-start gap-3 px-4 py-4 transition-colors hover:bg-cream sm:px-5"
+                              className="group flex items-start gap-4 px-5 py-4 transition-colors hover:bg-warm-ivory/40"
                             >
-                              <span className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg bg-carbon text-warm-ivory">
-                                <FileText className="size-4" aria-hidden="true" />
+                              <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-xl bg-midnight text-cyan">
+                                <FileText className="size-5" aria-hidden="true" />
                               </span>
                               <span className="min-w-0 flex-1">
-                                <span className="block font-semibold text-ink">{link.title}</span>
+                                <span className="block font-semibold text-midnight group-hover:text-solar transition-colors">
+                                  {link.title}
+                                </span>
                                 {link.description ? (
-                                  <span className="mt-0.5 block text-sm text-ink-muted">
+                                  <span className="mt-0.5 block text-xs leading-relaxed text-slate-muted">
                                     {link.description}
                                   </span>
                                 ) : null}
                               </span>
                               {link.isExternal ? (
-                                <ArrowUpRight className="mt-1 size-4 shrink-0 text-ink-muted" aria-hidden="true" />
+                                <ArrowUpRight className="mt-1 size-4 shrink-0 text-slate-muted group-hover:text-solar transition-colors" aria-hidden="true" />
                               ) : null}
                             </a>
                           </li>
@@ -117,27 +119,29 @@ export default async function DownloadsPage({ params }: DownloadsPageProps) {
             ) : null}
 
             <section>
-              <h2 className="font-display text-2xl font-semibold">{dict['downloads.documents']}</h2>
+              <h2 className="font-display text-2xl font-semibold text-midnight">{dict['downloads.documents']}</h2>
               {documents.length > 0 ? (
-                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                <ul className="mt-6 grid gap-4 sm:grid-cols-2">
                   {documents.map((document) => (
                     <li key={document.id}>
                       <a
                         href={`${mediaUrl(document.storageKey)}?download=1`}
-                        className="flex h-full items-start gap-3 rounded-2xl border border-line bg-paper p-4 transition-all hover:-translate-y-0.5 hover:border-brass/40 hover:shadow-card"
+                        className="meridian-card group flex h-full items-start gap-4 p-5"
                       >
-                        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-carbon text-warm-ivory">
-                          <FileText className="size-4" aria-hidden="true" />
+                        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-midnight text-cyan">
+                          <FileText className="size-5" aria-hidden="true" />
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="line-clamp-2 font-semibold leading-snug text-ink">
+                          <span className="line-clamp-2 font-semibold leading-snug text-midnight group-hover:text-solar transition-colors">
                             {document.title}
                           </span>
-                          <span className="mt-1 block text-[11px] text-ink-muted">
+                          <span className="mt-1.5 block text-xs font-medium text-slate-muted">
                             {formatFileSize(document.sizeBytes)} · {formatDate(document.createdAt, locale)}
                           </span>
                         </span>
-                        <Download className="mt-1 size-4 shrink-0 text-ink-muted" aria-hidden="true" />
+                        <span className="grid size-8 place-items-center rounded-full bg-cream text-slate-muted group-hover:bg-cyan/15 group-hover:text-cyan transition-colors">
+                          <Download className="size-4" aria-hidden="true" />
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -147,28 +151,39 @@ export default async function DownloadsPage({ params }: DownloadsPageProps) {
                   {dict['downloads.empty']}
                 </EmptyState>
               ) : (
-                <p className="mt-4 rounded-2xl border border-dashed border-ink/15 bg-paper/60 p-5 text-sm text-ink-muted">
+                <p className="mt-4 rounded-2xl border border-dashed border-line bg-white/60 p-6 text-sm text-slate-muted">
                   {dict['downloads.empty']}
                 </p>
               )}
             </section>
           </div>
 
-          <aside className="space-y-5">
-            <div className="rounded-2xl border border-line bg-paper p-5">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-sage">
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-line bg-white p-6 shadow-xs">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-solar">
                 {dict['downloads.categories']}
               </p>
-              <ul className="mt-3 space-y-2 text-sm text-ink-soft">
+              <ul className="mt-4 space-y-2.5 text-sm font-medium text-slate-muted">
                 {Array.from(categories.keys()).map((category) => (
-                  <li key={category}>{category}</li>
+                  <li key={category} className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-cyan" />
+                    <span>{category}</span>
+                  </li>
                 ))}
-                {documents.length > 0 ? <li>{dict['downloads.documents']}</li> : null}
+                {documents.length > 0 ? (
+                  <li className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-solar" />
+                    <span>{dict['downloads.documents']}</span>
+                  </li>
+                ) : null}
               </ul>
             </div>
-            <div className="rounded-2xl bg-ink p-5 text-paper">
-              <p className="font-display text-lg font-semibold">{dict['site.tagline']}</p>
-              <p className="mt-2 text-xs leading-relaxed text-paper/60">{dict['footer.about']}</p>
+            <div className="relative overflow-hidden rounded-3xl bg-midnight p-6 text-warm-ivory border border-cosmic">
+              <div className="science-grid-dark absolute inset-0 opacity-40" aria-hidden="true" />
+              <div className="relative">
+                <p className="font-display text-lg font-semibold text-white">{dict['site.tagline']}</p>
+                <p className="mt-2 text-xs leading-relaxed text-warm-ivory/70">{dict['footer.about']}</p>
+              </div>
             </div>
           </aside>
         </div>

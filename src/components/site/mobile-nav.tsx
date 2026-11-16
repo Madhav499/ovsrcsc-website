@@ -18,12 +18,12 @@ interface MobileNavProps {
     menu: string;
     search: string;
     language: string;
-    admin: string;
+    admin?: string;
   };
-  adminHref: string;
+  adminHref?: string;
 }
 
-export function MobileNav({ items, locale, labels, adminHref }: MobileNavProps) {
+export function MobileNav({ items, locale, labels }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -136,29 +136,21 @@ export function MobileNav({ items, locale, labels, adminHref }: MobileNavProps) 
             </ul>
           </nav>
 
-          <div className="border-t border-line px-5 py-4">
+          <div className="border-t border-line/80 bg-warm-ivory/40 p-5">
             <Link
               href={`/${locale}/search`}
               onClick={() => setOpen(false)}
-              className="mb-4 flex items-center gap-2 rounded-xl border border-line px-3 py-3 text-sm font-semibold text-ink-muted"
+              className="mb-4 flex items-center gap-2.5 rounded-xl border border-line bg-white px-3.5 py-3 text-sm font-semibold text-midnight shadow-xs"
             >
-              <Search className="size-4" aria-hidden="true" />
-              {labels.search}
+              <Search className="size-4 text-cyan" aria-hidden="true" />
+              <span>{labels.search}</span>
             </Link>
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-xs font-bold uppercase tracking-[0.12em] text-ink-muted">
+            <div className="flex items-center justify-between gap-3 pt-1">
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-muted">
                 {labels.language}
               </span>
               <LanguageSwitcher currentLocale={locale} label={labels.language} />
             </div>
-            <Link
-              href={adminHref}
-              onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-ink-muted hover:text-ink"
-            >
-              {labels.admin}
-              <ChevronDown className="size-3 -rotate-90" aria-hidden="true" />
-            </Link>
           </div>
         </div>
       ) : null}

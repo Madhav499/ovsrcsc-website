@@ -58,10 +58,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         />
       </div>
       <PageHeader tone="ink" eyebrow={post.category || post.sectionLabel} title={post.title}>
-        <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-warm-ivory/50">
-          <CalendarDays className="size-3.5 text-brass" aria-hidden="true" />
-          {formatDate(post.publishedAt, locale)}
-        </p>
+        <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-warm-ivory/70">
+          <span className="inline-flex items-center gap-1.5">
+            <CalendarDays className="size-3.5 text-solar" aria-hidden="true" />
+            {formatDate(post.publishedAt, locale)}
+          </span>
+          {post.category ? (
+            <>
+              <span className="text-white/30">·</span>
+              <span className="rounded-full bg-cyan/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cyan">
+                {post.category}
+              </span>
+            </>
+          ) : null}
+        </div>
       </PageHeader>
 
       <div className="site-container py-12 lg:py-16">
@@ -72,27 +82,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           ) : null}
           {post.coverKey ? (
-            <div className="image-reveal relative mb-8 aspect-[16/9] overflow-hidden rounded-3xl bg-graphite shadow-card">
+            <div className="image-reveal relative mb-10 aspect-[16/9] overflow-hidden rounded-3xl border border-line bg-midnight shadow-card">
               <AppImage
                 storageKey={post.coverKey}
                 alt={post.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 48rem"
                 priority
+                className="object-cover"
               />
             </div>
           ) : null}
           <div
-            className="prose-content"
+            className="prose-content rounded-3xl border border-line/70 bg-white p-7 sm:p-10 shadow-xs"
             dangerouslySetInnerHTML={{ __html: post.translation.bodyHtml }}
           />
-          <Link
-            href={`/${locale}/blog`}
-            className="group mt-10 inline-flex items-center gap-1.5 text-sm font-bold text-sage transition-colors hover:text-carbon"
-          >
-            <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
-            {dict['blog.back']}
-          </Link>
+          <div className="mt-10 flex items-center justify-between border-t border-line/60 pt-6">
+            <Link
+              href={`/${locale}/blog`}
+              className="group inline-flex items-center gap-2 text-sm font-bold text-teal-600 transition-colors hover:text-midnight"
+            >
+              <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
+              <span>{dict['blog.back']}</span>
+            </Link>
+          </div>
         </article>
       </div>
     </>

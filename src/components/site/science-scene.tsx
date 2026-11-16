@@ -4,9 +4,10 @@ import { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const BRASS = '#A58B62';
-const IVORY = '#EAE7DF';
-const STONE = '#C7C0B2';
+const CYAN = '#52D5E8';
+const SOLAR = '#E9A94B';
+const IVORY = '#F6F3EC';
+const TEAL = '#24A6A0';
 
 function OrbitRing({
   radius,
@@ -29,15 +30,15 @@ function OrbitRing({
     <group ref={group} rotation={tilt}>
       <mesh>
         <torusGeometry args={[radius, 0.012, 12, 96]} />
-        <meshBasicMaterial color={BRASS} transparent opacity={0.55} />
+        <meshBasicMaterial color={CYAN} transparent opacity={0.65} />
       </mesh>
       <mesh position={[radius, 0, 0]}>
-        <sphereGeometry args={[0.045, 16, 16]} />
-        <meshBasicMaterial color={IVORY} />
+        <sphereGeometry args={[0.048, 16, 16]} />
+        <meshBasicMaterial color={SOLAR} />
       </mesh>
       <mesh position={[-radius, 0, 0]}>
-        <sphereGeometry args={[0.032, 16, 16]} />
-        <meshBasicMaterial color={STONE} />
+        <sphereGeometry args={[0.035, 16, 16]} />
+        <meshBasicMaterial color={CYAN} />
       </mesh>
     </group>
   );
@@ -56,15 +57,15 @@ function Nucleus({ animate }: { animate: boolean }) {
     <group>
       <mesh ref={core}>
         <icosahedronGeometry args={[0.42, 2]} />
-        <meshBasicMaterial color={IVORY} wireframe transparent opacity={0.35} />
+        <meshBasicMaterial color={CYAN} wireframe transparent opacity={0.45} />
       </mesh>
       <lineSegments>
         <edgesGeometry args={[points]} />
-        <lineBasicMaterial color={BRASS} transparent opacity={0.85} />
+        <lineBasicMaterial color={SOLAR} transparent opacity={0.9} />
       </lineSegments>
       <mesh>
-        <sphereGeometry args={[0.1, 20, 20]} />
-        <meshBasicMaterial color={BRASS} />
+        <sphereGeometry args={[0.11, 20, 20]} />
+        <meshBasicMaterial color={SOLAR} />
       </mesh>
     </group>
   );
@@ -73,8 +74,8 @@ function Nucleus({ animate }: { animate: boolean }) {
 function Dust({ animate }: { animate: boolean }) {
   const field = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
-    const array = new Float32Array(220 * 3);
-    for (let i = 0; i < 220; i += 1) {
+    const array = new Float32Array(240 * 3);
+    for (let i = 0; i < 240; i += 1) {
       const angle = Math.random() * Math.PI * 2;
       const radius = 0.85 + Math.random() * 0.85;
       array[i * 3] = Math.cos(angle) * radius;
@@ -93,7 +94,7 @@ function Dust({ animate }: { animate: boolean }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial color={STONE} size={0.022} transparent opacity={0.5} sizeAttenuation />
+      <pointsMaterial color={CYAN} size={0.024} transparent opacity={0.65} sizeAttenuation />
     </points>
   );
 }

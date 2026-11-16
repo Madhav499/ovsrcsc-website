@@ -149,13 +149,19 @@ export function SiteHeader({ locale, dict, settings, activePath }: SiteHeaderPro
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Link
               href={`/${locale}/search`}
-              className="hidden size-9 place-items-center rounded-full border border-line text-ink-muted transition-all duration-300 hover:border-brass hover:text-brass sm:grid"
+              className="grid size-9.5 place-items-center rounded-full border border-line text-slate-muted transition-all duration-300 hover:border-cyan hover:text-cyan hover:shadow-xs"
               aria-label={dict['nav.search']}
             >
               <Search className="size-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href={`/${locale}/events`}
+              className="hidden xl:inline-flex btn btn-accent !py-2 !px-4.5 !text-xs !font-bold uppercase tracking-wider"
+            >
+              {dict['nav.events']}
             </Link>
             <MobileNav
               items={navigation}
@@ -166,9 +172,7 @@ export function SiteHeader({ locale, dict, settings, activePath }: SiteHeaderPro
                 menu: dict['common.menu'],
                 search: dict['nav.search'],
                 language: dict['common.language'],
-                admin: dict['nav.admin'],
               }}
-              adminHref="/admin"
             />
           </div>
         </div>
