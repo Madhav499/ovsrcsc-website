@@ -7,8 +7,10 @@ import type { LocaleCode } from '@/lib/constants';
 import { formatDate } from '@/lib/dates';
 import { formatNumber, siteOrigin } from '@/lib/meridian/site';
 import { getAlbumBySlug, getPublishedAlbums } from '@/server/public/queries';
-import { PageHero } from '@/components/meridian/layout/page-hero';
-import { LightboxGallery } from '@/components/meridian/gallery/lightbox-gallery';
+import { repairText } from '@/lib/meridian/text';
+import { ArchiveViews } from '@/components/meridian/gallery/archive-views';
+import { ScienceFigure } from '@/components/meridian/journal/figures';
+import { EditorialHero } from '@/components/meridian/templates/editorial-hero';
 import { CmsImage } from '@/components/meridian/media/cms-image';
 import { Stagger, StaggerItem } from '@/components/meridian/motion/reveal';
 import { EmptyState, FallbackNotice } from '@/components/meridian/states/states';
@@ -40,7 +42,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   if (!isLocale(rawLocale)) notFound();
   const locale: LocaleCode = rawLocale;
   const dict = getDictionary(locale);
-  const albums = await getPublishedAlbums(locale);
+  const albums = (await getPublishedAlbums(locale)).map((entry) => ({ ...entry, title: repairText(entry.title), description: repairText(entry.description) }));
   const album = albums.find((candidate) => candidate.slug === slug);
   if (!album) notFound();
   const related = albums.filter((candidate) => candidate.id !== album.id).slice(0, 3);
@@ -48,31 +50,35 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
 
   return (
     <>
-      <PageHero
+      <EditorialHero
         locale={locale}
         homeLabel={dict['page.breadcrumbHome']}
         breadcrumbLabel={dict['nav.breadcrumb']}
         crumbs={[{ label: dict['gallery.title'], href: `${p}/gallery` }, { label: album.title }]}
         eyebrow={dict['gallery.album']}
         title={album.title}
-        intro={album.description || undefined}
-        motif="rings"
-        meta={
-          <p className="mx-meta flex flex-wrap gap-x-4 gap-y-1">
-            {album.eventDate ? <span>{formatDate(album.eventDate, locale)}</span> : null}
-            <span>
-              {formatNumber(album.items.length, locale)} {dict['gallery.photos']}
-            </span>
-          </p>
-        }
+        lede={album.description || dict['gallery.intro']}
+        folio={[
+          album.eventDate ? formatDate(album.eventDate, locale) : dict['mx.brand.familiar'],
+          `${formatNumber(album.items.length, locale)} ${dict['gallery.photos']}`,
+        ]}
       />
 
       <section aria-label={album.title} className="mx-surface-ivory mx-section !pt-14">
         <div className="mx-container">
           {album.isFallback ? <FallbackNotice className="mb-10">{dict['page.notTranslated']}</FallbackNotice> : null}
           {album.items.length ? (
-            <LightboxGallery
+            <ArchiveViews
               items={album.items}
+              plateLabel={dict['mx.gallery.plate']}
+              dateline={album.eventDate ? formatDate(album.eventDate, locale) : undefined}
+              viewLabels={{ group: dict['mx.gallery.views'], editorial: dict['mx.gallery.viewEditorial'], sheet: dict['mx.gallery.viewSheet'] }}
+              marginFigure={
+                <div>
+                  <ScienceFigure name="lens" dict={dict} number={1} />
+                  <p className="mt-4 text-[0.875rem] text-(--mx-fg-2)">{dict['mx.gallery.lensNote']}</p>
+                </div>
+              }
               labels={{
                 open: dict['a11y.openImage'],
                 close: dict['a11y.closeImage'],
@@ -81,6 +87,8 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
                 counter: dict['mx.gallery.counter'],
                 of: dict['common.of'],
                 viewer: dict['gallery.exhibition'],
+                fullSize: dict['mx.gallery.fullSize'],
+                newTab: dict['a11y.newTab'],
               }}
             />
           ) : (

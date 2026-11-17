@@ -113,7 +113,8 @@ export function LabChapters({ chapters, labels, allHref }: LabChaptersProps) {
             data-index={index}
             className={cn(
               'flex flex-col justify-center transition-opacity duration-500 motion-reduce:transition-none lg:min-h-[72svh]',
-              index === active ? 'lg:opacity-100' : 'lg:opacity-35',
+              // Active chapter is marked by the plate and index, not by dimming text
+              // (dimmed text would fail WCAG contrast).
             )}
           >
             <div className="mx-plate relative mb-7 aspect-[16/10] lg:hidden">

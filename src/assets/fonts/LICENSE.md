@@ -8,6 +8,7 @@ production build never depends on a Google Fonts request.
 |---|---|
 | Instrument Serif — © 2022 The Instrument Serif Project Authors | instrument-serif-* |
 | Manrope — © 2019 The Manrope Project Authors | manrope-* |
+| Sora — © 2019 The Sora Project Authors (admin display face) | sora-* |
 | IBM Plex Mono — © 2017 IBM Corp. | ibm-plex-mono-* |
 | Noto Sans/Serif Gujarati, Noto Sans/Serif Devanagari — © The Noto Project Authors | noto-* |
 

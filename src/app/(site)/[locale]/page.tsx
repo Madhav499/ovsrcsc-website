@@ -25,6 +25,7 @@ import { HomeLabs } from '@/components/meridian/sections/home/home-labs';
 import { HomePendulum } from '@/components/meridian/sections/home/home-pendulum';
 import { HomeShadow } from '@/components/meridian/sections/home/home-shadow';
 import { ScrollProgress } from '@/components/meridian/story/scroll-progress';
+import { JournalThread } from '@/components/meridian/journal/journal-thread';
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -69,6 +70,7 @@ export default async function HomePage({ params }: HomePageProps) {
     <>
       <ScrollProgress />
       <HomeHero locale={locale} dict={dict} nextEvent={events[0] ?? null} latestNotice={notices[0] ?? null} />
+      <JournalThread>
       <HomeIntro locale={locale} dict={dict} index={next()} />
       <HomeGlance locale={locale} dict={dict} index={next()} />
       <HomeLabs locale={locale} dict={dict} index={next()} />
@@ -87,6 +89,7 @@ export default async function HomePage({ params }: HomePageProps) {
       {gallery.length ? <HomeGallery locale={locale} dict={dict} items={gallery} index={next()} /> : null}
       <HomeNotices locale={locale} dict={dict} notices={notices} index={next()} />
       <HomeVisit locale={locale} dict={dict} settings={settings} index={next()} />
+      </JournalThread>
     </>
   );
 }

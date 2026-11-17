@@ -1932,3 +1932,37 @@
     font-variant-numeric: lining-nums;
   }
 }
+
+@keyframes mx-lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(1.025);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Drop cap for Latin-script journal articles only */
+  [data-site='meridian']:lang(en) .mx-dropcap > p:first-of-type::first-letter {
+    float: left;
+    margin: 0.06em 0.12em 0 0;
+    font-family: var(--mx-font-display);
+    font-size: 4.1em;
+    line-height: 0.8;
+    color: var(--mx-accent);
+  }
+}
+
+/* Reduced motion: scroll-entrance wrappers never hold content back, even
+   before hydration (Framer Motion server-renders the hidden state). */
+@media (prefers-reduced-motion: reduce) {
+  [data-site='meridian'] [data-mx-reveal],
+  [data-site='meridian'] [data-mx-reveal] > * {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+}

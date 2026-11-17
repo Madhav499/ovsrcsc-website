@@ -47,7 +47,8 @@ export function CountUp({ value, numberLocale, suffix = '', durationSeconds = 1.
   }, [inView, value, durationSeconds]);
 
   return (
-    <span ref={ref} aria-label={`${format(value)}${suffix}`}>
+    <span ref={ref}>
+      <span className="sr-only">{`${format(value)}${suffix}`}</span>
       <span aria-hidden="true">
         {format(display)}
         {suffix}

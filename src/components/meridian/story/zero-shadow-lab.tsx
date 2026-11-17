@@ -178,7 +178,7 @@ export function ZeroShadowLab({ labels, locale }: { labels: ZeroShadowLabels; lo
               className="mx-chip min-h-11"
             >
               {jump.label}
-              <span className="text-[0.75rem] opacity-70">{dateLabel(jump.value)}</span>
+              <span className="text-[0.75rem]">{dateLabel(jump.value)}</span>
             </button>
           ))}
         </div>

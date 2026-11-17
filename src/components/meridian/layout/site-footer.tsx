@@ -21,7 +21,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
     { label: dict['nav.about'], href: `${p}/about` },
     { label: dict['nav.projects'], href: `${p}/projects` },
     { label: dict['nav.activities'], href: `${p}/activities` },
-    { label: dict['nav.infrastructure'], href: `${p}/infrastructure` },
+    { label: dict['mx.nav.labs'], href: `${p}/infrastructure` },
     { label: dict['nav.publications'], href: `${p}/publications` },
     { label: dict['nav.gallery'], href: `${p}/gallery` },
   ];
@@ -58,7 +58,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
             <span className="mx-serif-accent text-(--mx-amber)">.</span>
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href={`${p}/contact`} className="mx-btn mx-btn-primary">
+            <Link href={`${p}/visit`} className="mx-btn mx-btn-primary">
               {dict['mx.nav.visit']}
               <ArrowRight className="mx-btn-icon" aria-hidden="true" />
             </Link>

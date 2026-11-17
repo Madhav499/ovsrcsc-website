@@ -23,8 +23,9 @@ interface PageHeroProps {
 }
 
 /**
- * Shared hero for inner pages. Dark by default so the fixed header overlays
- * it; `data-mx-hero` tells the header which tone to adopt while overlapping.
+ * Shared hero for inner pages: a light Stone journal opener by default (dark
+ * only when a page asks for it); `data-mx-hero` tells the fixed header which
+ * tone to adopt while overlapping.
  */
 export function PageHero({
   locale,
@@ -38,7 +39,7 @@ export function PageHero({
   meta,
   aside,
   motif = 'rings',
-  tone = 'dark',
+  tone = 'light',
   children,
   className,
 }: PageHeroProps) {
@@ -48,7 +49,7 @@ export function PageHero({
       data-mx-hero={tone}
       className={cn(
         'relative isolate overflow-hidden',
-        dark ? 'mx-surface-dark' : 'mx-surface-ivory',
+        dark ? 'mx-surface-dark' : 'mx-surface-stone mx-grain',
         className,
       )}
     >
@@ -58,14 +59,14 @@ export function PageHero({
           <div aria-hidden="true" className="mx-starfield pointer-events-none absolute inset-0 -z-10 opacity-60" />
         </>
       ) : (
-        <div aria-hidden="true" className="mx-gridlines pointer-events-none absolute inset-0 -z-10 opacity-60" />
+        <div aria-hidden="true" className="mx-gridlines pointer-events-none absolute inset-0 -z-10 opacity-40" />
       )}
       {motif !== 'none' && !aside ? (
         <OrbitMotif
           variant={motif}
           className={cn(
             'pointer-events-none absolute -right-24 top-1/2 -z-10 hidden w-[34rem] -translate-y-1/3 md:block lg:-right-10 lg:w-[40rem]',
-            dark ? 'text-(--mx-ivory) opacity-70' : 'text-(--mx-ink) opacity-40',
+            dark ? 'text-(--mx-ivory) opacity-70' : 'text-(--mx-ink) opacity-30',
           )}
         />
       ) : null}

@@ -79,7 +79,7 @@ export function HomeHero({ locale, dict, nextEvent, latestNotice }: HomeHeroProp
                 {dict['home.ctaPrimary']}
                 <ArrowRight className="mx-btn-icon" aria-hidden="true" />
               </Link>
-              <Link href={`${p}/contact`} className="mx-btn mx-btn-ghost">
+              <Link href={`${p}/visit`} className="mx-btn mx-btn-ghost">
                 {dict['home.ctaSecondary']}
               </Link>
             </div>
@@ -90,6 +90,13 @@ export function HomeHero({ locale, dict, nextEvent, latestNotice }: HomeHeroProp
           </ScrollLinked>
 
           <div className="mx-enter-fade pointer-events-none absolute -right-36 -top-6 -z-10 aspect-square w-[22rem] opacity-[0.22] sm:-right-28 sm:top-24 sm:w-[30rem] sm:opacity-40 lg:pointer-events-auto lg:relative lg:right-auto lg:top-auto lg:z-0 lg:w-full lg:max-w-[40rem] lg:justify-self-end lg:opacity-100" style={delay(200)}>
+            {/* Specimen-plate labels (desktop, where the atom is the hero's figure) */}
+            <div className="absolute left-0 top-0 z-10 hidden max-w-[19rem] lg:block">
+              <p className="mx-annot">
+                {dict['mx.figure']} 00 · {dict['mx.home.atomFig']}
+              </p>
+              <p className="mt-2 pl-[2.05rem] text-[0.75rem] leading-snug text-(--mx-fg-3)">{dict['mx.home.atomScale']}</p>
+            </div>
             <AtomExplorer
               className="size-full"
               labels={{

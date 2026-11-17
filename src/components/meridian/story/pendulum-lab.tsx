@@ -290,7 +290,7 @@ export function PendulumLab({ labels, locale }: { labels: PendulumLabels; locale
                 <label key={option} className="mx-chip min-h-11 cursor-pointer has-[:checked]:border-(--mx-fg) has-[:checked]:bg-(--mx-fg) has-[:checked]:text-(--mx-bg) has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-(--mx-focus)">
                   <input type="radio" name={`${id}-body`} value={option} checked={body === option} onChange={() => onBody(option)} className="sr-only" />
                   {labels.bodies[option]}
-                  <span className="mx-numeric text-[0.75rem] opacity-70">{num(GRAVITY[option], 2)}</span>
+                  <span className="mx-numeric text-[0.75rem] text-current">{num(GRAVITY[option], 2)}</span>
                 </label>
               ))}
             </div>

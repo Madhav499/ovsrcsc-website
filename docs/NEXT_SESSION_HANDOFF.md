@@ -1,34 +1,55 @@
 # Next Session Handoff
 
-Updated: 2026-11-17 · Branch: `redesign/meridian-public`
+Updated: 2026-11-17 · Branch: `redesign/heritage-journal` (from `main` @ `1219456`)
 
 ## State
 
-The complete public-site MERIDIAN redesign is implemented on `redesign/meridian-public`
-(uncommitted on top of WIP checkpoint `5b10bdf`). Admin, backend, auth, Prisma, middleware and
-config are untouched (0 diff lines vs tag `meridian-admin-baseline` = `62d93f5`).
-`src/app/globals.css` has been restored byte-for-byte to the baseline, so the admin looks exactly as
-committed. Typecheck ✅ · lint ✅ (0 errors; 1 pre-existing admin warning) · `next build` ✅.
+The public website has been redesigned to the approved **Heritage Science × Illustrated Journal ×
+Contemporary Discovery** identity. Design system: `design-system/ovsrcsc-meridian/MASTER.md`.
 
-Design system: `design-system/ovsrcsc-meridian/MASTER.md`.
+Verified on a clean production build (`npm run build`, three consecutive clean builds pass):
+typecheck ✅ · ESLint 0 errors (1 pre-existing admin warning) · Vitest ✅ · 49 browser regression
+checks ✅ · axe-core WCAG 2 A/AA: 0 violations on 16 pages across en/gu/hi.
 
-## Architecture
+Nothing has been pushed or deployed.
 
-- Public stylesheet `src/styles/meridian/meridian.css` (scoped `body[data-site='meridian']`), public
-  fonts `src/lib/meridian-fonts.ts`, components `src/components/meridian/**`, helpers `src/lib/meridian/site.ts`.
-- Legacy `src/components/site/**` and `src/components/ui/**` were removed (public-only, unreferenced).
-- New: `src/app/sitemap.ts`, `src/app/robots.ts`, `search/loading.tsx`, brand assets `src/assets/meridian/**`.
-- i18n: new `mx.*` keys in en/gu/hi (no existing keys renamed/removed).
+## Backend / protected areas
+
+No changes to `src/app/(admin)/**`, `src/components/admin/**`, `src/server/**`, `prisma/**`,
+`src/middleware.ts` or migrations. Two shared files changed:
+
+- `src/lib/fonts.ts` (admin fonts) — same families and CSS variables, now self-hosted.
+  Reason: build-time Google Fonts requests failed 2 of 3 clean production builds.
+- `src/lib/navigation.ts` — public nav only (mega-menu data). Removed the link to
+  `/about/eminent-visitors`, which has no CMS page and returned 404.
+
+## Open items (genuine dependencies)
+
+1. **Multilingual CMS translation workflow (brief Part 10) — not implemented.** The current schema
+   has no provenance, source-version or stale-status fields, and no Google Cloud Translation
+   credentials exist in any environment. Implementing it needs a Prisma migration on production
+   data and new admin UI, which is outside this public-site task's safe scope. Proposed design:
+   - Add to `PageTranslation`, `BlogTranslation`, `EventTranslation`, `NoticeTranslation`,
+     `AlbumTranslation`: `origin` enum (`MANUAL` | `MACHINE` | `MACHINE_REVIEWED`),
+     `sourceHash` (hash of the English fields it was made from), `translatedAt`, `reviewedById`.
+   - Stale = `sourceHash` ≠ current hash of the English translation.
+   - Server-only job (`src/server/services/translation.ts`) calls Google Cloud Translation v3 with a
+     service-account key in `GOOGLE_TRANSLATE_*` env vars; it only fills missing locales or
+     refreshes rows whose `origin = MACHINE`; never overwrites `MANUAL`; failures keep the last
+     good row and never block publishing. Machine rows stay `DRAFT` until reviewed.
+   - Admin: a per-locale badge (manual / machine / stale) and a "review & publish" action.
+2. **Content:** all CMS pages exist only in English (gu/hi fall back with a notice). No events or
+   notices are published locally, so those layouts were verified with empty states only.
+3. **Data quality:** some migrated CMS text contains mojibake (e.g. "Childrenâ€™s"). It is repaired
+   at render time (`src/lib/meridian/text.ts`, unit-tested); fix it at source in the CMS.
+4. **Opening hours** are not published anywhere; the Visit page asks visitors to call ahead.
+   If the center publishes hours, add them to site settings and the Visit essentials block.
+5. **Performance:** no Lighthouse/field measurement was run. Three.js is code-split (not in first
+   load JS); the telescope GLB (411 KB) loads only on capable desktops near the exhibit.
+6. Admin screens behind login were not visually re-checked (login page and auth redirect verified).
 
 ## Do not
 
 - Never use custom classes/tokens from `globals.css` in public code (admin shares that file).
+- Never put formulas in uppercase labels (π → Π, g → G).
 - Do not reset/drop the DB or overwrite `.env`.
-
-## Open items
-
-1. The local `ovsrcsc` DB contains no CMS pages/posts/events/albums (only 12 sections, 1 user,
-   1 test notice), so CMS-populated layouts were verified structurally, not with real content.
-   Load content (see final report) and review About/Programmes/Blog/Gallery populated.
-2. Admin screens behind login need a signed-in visual check (login page verified).
-3. `/admin/change-password` throws when visited without a session (pre-existing admin behaviour).
