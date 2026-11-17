@@ -111,7 +111,7 @@ export function TranslationsPanel({ rows, configured, provider, configMessage }:
             <strong>Connected</strong> · provider {provider === 'google-v3' ? 'Google Cloud Translation v3 (service account)' : 'Google Cloud Translation v2 (API key)'}
           </p>
         ) : (
-          <p className="text-danger">
+          <p className="text-danger [overflow-wrap:anywhere]">
             <strong>Not connected.</strong> {configMessage} Nothing is translated until a server administrator adds the credentials; English is shown
             in the meantime.
           </p>
@@ -139,7 +139,7 @@ export function TranslationsPanel({ rows, configured, provider, configMessage }:
         <p className="px-6 py-10 text-center text-sm text-ink-muted">Everything is translated and up to date.</p>
       ) : (
         <div className="overflow-x-auto px-2 pb-4 pt-3">
-          <table className="w-full min-w-[44rem] text-left text-sm">
+          <table className="admin-table w-full text-left text-sm md:min-w-[44rem]">
             <thead>
               <tr className="border-b border-line text-[10px] uppercase tracking-wider text-ink-muted">
                 <th className="px-4 py-3 font-semibold">Content</th>
@@ -158,7 +158,7 @@ export function TranslationsPanel({ rows, configured, provider, configMessage }:
                     <p className="text-[11px] text-ink-muted">{row.typeLabel}</p>
                   </td>
                   {row.locales.map((locale) => (
-                    <td key={locale.locale} className="px-3 py-3">
+                    <td key={locale.locale} data-label={locale.locale === 'GU' ? 'ગુજરાતી' : 'हिन्दी'} className="px-3 py-3">
                       <span className={cn('inline-flex whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider', STATUS_STYLE[locale.status])}>
                         {STATUS_LABEL[locale.status] ?? locale.status}
                       </span>

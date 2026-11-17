@@ -100,7 +100,7 @@ export function SiteFooter({ locale, dict, settings }: SiteFooterProps) {
                       href={mapUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 flex items-center gap-1 text-[0.875rem] font-semibold text-(--mx-fg) hover:text-(--mx-cyan)"
+                      className="mt-1 flex min-h-6 items-center gap-1 pointer-coarse:min-h-11 text-[0.875rem] font-semibold text-(--mx-fg) hover:text-(--mx-cyan)"
                     >
                       {dict['home.visit.map']}
                       <ArrowUpRight className="size-3.5" aria-hidden="true" />

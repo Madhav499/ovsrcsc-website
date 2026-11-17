@@ -55,7 +55,7 @@ export function AdminLogo({
         <span
           className={cn(
             'mt-0.5 block text-[9px] font-bold uppercase tracking-[0.16em]',
-            light ? 'text-paper/55' : 'text-ink-muted',
+            light ? 'text-paper/70' : 'text-ink-muted',
           )}
         >
           Website admin

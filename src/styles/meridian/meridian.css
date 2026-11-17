@@ -901,9 +901,9 @@
   }
 
   [data-site='meridian'] .mx-checkbox {
-    width: 1.15rem;
-    height: 1.15rem;
-    margin-top: 0.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0;
     flex-shrink: 0;
     accent-color: var(--mx-teal-ink);
   }
@@ -1198,6 +1198,11 @@
 
   [data-site='meridian'] .mx-header[data-hidden='true'] {
     transform: translateY(-100%);
+  }
+
+  /* WCAG 2.4.11: a keyboard user tabbing into the auto-hidden header sees it. */
+  [data-site='meridian'] .mx-header[data-hidden='true']:focus-within {
+    transform: none;
   }
 
   [data-site='meridian'] .mx-nav-link {
@@ -2815,5 +2820,15 @@
   [data-site='meridian']:is(:lang(gu), :lang(hi)) :is(.mx-film-mark, .mx-film-mode, .mx-film-hud-caption, .mx-film-hud-meta, .mx-film-hint, .mx-film-empty-title, .mx-film-menu button, .mx-proj-back, .mx-proj-meta, .mx-proj-ring, .mx-proj-link) {
     letter-spacing: 0;
     font-size: 0.8125rem;
+  }
+}
+
+@layer components {
+  /* The narrowest phones keep the view switcher on one line (the page h1
+     still names the archive for assistive technology). */
+  @media (max-width: 359px) {
+    [data-site='meridian'] .mx-film-mark {
+      display: none;
+    }
   }
 }

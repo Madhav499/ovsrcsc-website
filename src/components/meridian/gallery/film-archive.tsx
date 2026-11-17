@@ -34,6 +34,8 @@ function detectMode(): Mode {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'dom';
   const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
   if (nav.connection?.saveData || (nav.deviceMemory ?? 8) <= 2) return 'dom';
+  // Low-powered touch devices get the native strip instead of continuous WebGL.
+  if (window.matchMedia('(pointer: coarse)').matches && (navigator.hardwareConcurrency ?? 8) <= 4) return 'dom';
   try {
     const canvas = document.createElement('canvas');
     if (!(canvas.getContext('webgl2') ?? canvas.getContext('webgl'))) return 'dom';

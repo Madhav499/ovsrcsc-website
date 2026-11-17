@@ -26,7 +26,7 @@ export function Breadcrumbs({ homeHref, homeLabel, ariaLabel, items, className }
               {item.href && !last ? (
                 <Link
                   href={item.href}
-                  className="truncate transition-colors duration-200 hover:text-(--mx-fg)"
+                  className="inline-flex min-h-6 min-w-6 items-center justify-center truncate transition-colors duration-200 hover:text-(--mx-fg) pointer-coarse:min-h-11"
                 >
                   {item.label}
                 </Link>

@@ -15,6 +15,7 @@ import {
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
 import { scheduleTranslation } from '@/server/translation/service';
+import { englishSource } from '@/server/translation/source';
 
 export interface NoticeTranslationInput {
   locale: LocaleCode;
@@ -100,9 +101,9 @@ function nextStatus(
 export async function createNotice(actor: Actor, input: NoticeInput) {
   assertPermission(actor, 'notice.manage');
   assertSectionAccess(actor, input.sectionId);
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the notice title and text in at least one language.');
+    throw new ValidationError('Add the English notice title and text.');
   }
   validateDates(input.publishAt, input.expireAt);
   const slug = resolveSlug(input.slug, translations);
@@ -166,9 +167,9 @@ export async function updateNotice(
     }
   }
 
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the notice title and text in at least one language.');
+    throw new ValidationError('Add the English notice title and text.');
   }
   validateDates(input.publishAt, input.expireAt);
   const slug = resolveSlug(input.slug || existing.slug, translations);
@@ -192,7 +193,7 @@ export async function updateNotice(
         updatedById: actor.id,
       },
     });
-    await transaction.noticeTranslation.deleteMany({ where: { noticeId } });
+    await transaction.noticeTranslation.deleteMany({ where: { noticeId, locale: 'EN' } });
     await transaction.noticeTranslation.createMany({
       data: translations.map((translation) => ({
         noticeId,

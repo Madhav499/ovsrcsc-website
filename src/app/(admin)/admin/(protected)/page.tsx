@@ -70,7 +70,7 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal">Dashboard</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-dark">Dashboard</p>
           <h1 className="mt-1 font-display text-3xl font-semibold">Welcome, {actor.name.split(' ')[0]}</h1>
           <p className="mt-1 text-sm text-ink-muted">
             Here is what is happening across the website.
@@ -88,19 +88,19 @@ export default async function AdminDashboardPage() {
         ) : null}
       </div>
 
-      <section aria-label="Website overview" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section aria-label="Website overview" className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
             <Link
               key={stat.label}
               href={stat.href}
-              className="group rounded-2xl border border-line bg-paper p-5 transition-shadow hover:shadow-card"
+              className="group rounded-2xl border border-line bg-paper p-4 transition-shadow hover:shadow-card sm:p-5"
             >
               <span className="grid size-9 place-items-center rounded-lg bg-sky text-teal-dark">
                 <Icon className="size-4.5" aria-hidden="true" />
               </span>
-              <p className="mt-4 font-display text-3xl font-semibold tabular-nums">{stat.value}</p>
+              <p className="mt-3 font-display text-2xl font-semibold tabular-nums sm:mt-4 sm:text-3xl">{stat.value}</p>
               <p className="mt-0.5 flex items-center justify-between text-xs font-semibold text-ink-muted">
                 {stat.label}
                 <ArrowRight className="size-3.5 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
@@ -115,7 +115,7 @@ export default async function AdminDashboardPage() {
           <div className="flex items-center justify-between gap-3">
             <h2 className="font-display text-lg font-semibold">Next events</h2>
             {hasPermission(actor, 'event.view') ? (
-              <Link href="/admin/events" className="text-xs font-bold text-teal-dark hover:underline">
+              <Link href="/admin/events" className="inline-flex min-h-6 items-center text-xs font-bold text-teal-dark hover:underline pointer-coarse:min-h-11">
                 View all
               </Link>
             ) : null}
@@ -218,7 +218,7 @@ export default async function AdminDashboardPage() {
             <section className="rounded-2xl border border-line bg-paper p-6">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="font-display text-lg font-semibold">Recent activity</h2>
-                <Link href="/admin/audit" className="text-xs font-bold text-teal-dark hover:underline">
+                <Link href="/admin/audit" className="inline-flex min-h-6 items-center text-xs font-bold text-teal-dark hover:underline pointer-coarse:min-h-11">
                   Audit log
                 </Link>
               </div>

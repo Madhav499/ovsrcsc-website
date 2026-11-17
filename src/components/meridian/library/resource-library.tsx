@@ -104,7 +104,7 @@ export function ResourceLibrary({ links, documents, labels }: ResourceLibraryPro
           <h2 id={`${inputId}-documents`} className="mx-h3">
             {labels.documents}
           </h2>
-          <ul className="mt-6 grid gap-3 md:grid-cols-2">
+          <ul className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2">
             {visibleDocuments.map((document) => (
               <li key={document.id}>
                 <a
@@ -115,7 +115,7 @@ export function ResourceLibrary({ links, documents, labels }: ResourceLibraryPro
                     {document.type || <FileText className="size-5" aria-hidden="true" />}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block font-semibold leading-snug group-hover:text-(--mx-accent)">{document.title}</span>
+                    <span className="block font-semibold leading-snug [overflow-wrap:anywhere] group-hover:text-(--mx-accent)">{document.title}</span>
                     <span className="mx-meta mt-1 block truncate">
                       {document.size} · {document.date}
                     </span>

@@ -69,8 +69,9 @@ export default function MediaLibrary({ items, canManage }: { items: MediaLibrary
         <form action={uploadAction} className="mt-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">File *</label>
+              <label htmlFor="media-upload-file" className="admin-label">File *</label>
               <input
+                id="media-upload-file"
                 name="file"
                 type="file"
                 accept="image/png,image/jpeg,image/webp,image/gif,image/avif,.pdf"
@@ -79,19 +80,19 @@ export default function MediaLibrary({ items, canManage }: { items: MediaLibrary
               />
             </div>
             <div>
-              <label className="admin-label">Title *</label>
-              <input name="title" className="admin-input" placeholder="Exhibition opening night" required />
+              <label htmlFor="media-up-title" className="admin-label">Title *</label>
+              <input id="media-up-title" name="title" className="admin-input" placeholder="Exhibition opening night" required />
             </div>
             <div>
-              <label className="admin-label">Alt text</label>
-              <input name="altText" className="admin-input" placeholder="Visitors gathered around the exhibit" />
+              <label htmlFor="media-up-alt" className="admin-label">Alt text</label>
+              <input id="media-up-alt" name="altText" className="admin-input" placeholder="Visitors gathered around the exhibit" />
             </div>
             <div>
-              <label className="admin-label">Caption</label>
-              <input name="caption" className="admin-input" placeholder="Optional caption shown in galleries" />
+              <label htmlFor="media-up-caption" className="admin-label">Caption</label>
+              <input id="media-up-caption" name="caption" className="admin-input" placeholder="Optional caption shown in galleries" />
             </div>
             <label className="flex items-center gap-2.5 text-sm text-ink-soft">
-              <input name="isPublic" type="checkbox" defaultChecked className="size-4 rounded" />
+              <input name="isPublic" type="checkbox" defaultChecked className="size-5 rounded" />
               Visible to visitors
             </label>
           </div>
@@ -151,7 +152,7 @@ export default function MediaLibrary({ items, canManage }: { items: MediaLibrary
             <p className="mt-3 text-sm text-ink-muted">No media found — upload the first asset above.</p>
           </div>
         ) : (
-          <ul className="grid gap-4 p-4 sm:grid-cols-3 lg:grid-cols-5">
+          <ul className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 lg:grid-cols-5">
             {filtered.map((item) => {
               const href = mediaUrl(item.storageKey);
               const isImg = isImageKey(item.storageKey);
@@ -180,7 +181,7 @@ export default function MediaLibrary({ items, canManage }: { items: MediaLibrary
                     <p className="text-[10px] text-ink-muted">
                       {formatFileSize(item.sizeBytes)} · {new Date(item.createdAt).toLocaleDateString('en-IN')}
                     </p>
-                    <div className="flex items-center gap-1.5 pt-1">
+                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
                       <button
                         type="button"
                         onClick={() => setEditing(item)}
@@ -230,19 +231,19 @@ export default function MediaLibrary({ items, canManage }: { items: MediaLibrary
             <input type="hidden" name="id" value={editing.id} />
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="admin-label">Title *</label>
-                <input name="title" defaultValue={editing.title} className="admin-input" required />
+                <label htmlFor="media-ed-title" className="admin-label">Title *</label>
+                <input id="media-ed-title" name="title" defaultValue={editing.title} className="admin-input" required />
               </div>
               <div>
-                <label className="admin-label">Alt text</label>
-                <input name="altText" defaultValue={editing.altText} className="admin-input" />
+                <label htmlFor="media-ed-alt" className="admin-label">Alt text</label>
+                <input id="media-ed-alt" name="altText" defaultValue={editing.altText} className="admin-input" />
               </div>
               <div className="sm:col-span-2">
-                <label className="admin-label">Caption</label>
-                <input name="caption" defaultValue={editing.caption} className="admin-input" />
+                <label htmlFor="media-ed-caption" className="admin-label">Caption</label>
+                <input id="media-ed-caption" name="caption" defaultValue={editing.caption} className="admin-input" />
               </div>
               <label className="flex items-center gap-2.5 text-sm text-ink-soft">
-                <input name="isPublic" type="checkbox" defaultChecked={editing.isPublic} className="size-4 rounded" />
+                <input name="isPublic" type="checkbox" defaultChecked={editing.isPublic} className="size-5 rounded" />
                 Visible to visitors
               </label>
               <p className="self-end text-[11px] text-ink-muted">

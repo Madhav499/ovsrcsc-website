@@ -15,6 +15,7 @@ import {
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
 import { scheduleTranslation } from '@/server/translation/service';
+import { englishSource } from '@/server/translation/source';
 
 export interface EventTranslationInput {
   locale: LocaleCode;
@@ -100,9 +101,9 @@ function nextStatus(
 export async function createEvent(actor: Actor, input: EventInput) {
   assertPermission(actor, 'event.manage');
   assertSectionAccess(actor, input.sectionId);
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the event title and description in at least one language.');
+    throw new ValidationError('Add the English event title and description.');
   }
   validateDates(input.startAt, input.endAt);
   const slug = resolveSlug(input.slug, translations);
@@ -166,9 +167,9 @@ export async function updateEvent(
     }
   }
 
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the event title and description in at least one language.');
+    throw new ValidationError('Add the English event title and description.');
   }
   validateDates(input.startAt, input.endAt);
   const slug = resolveSlug(input.slug || existing.slug, translations);
@@ -196,7 +197,7 @@ await db.$transaction(async (transaction) => {
         updatedById: actor.id,
       } as any, // eslint-disable-line @typescript-eslint/no-explicit-any,
     });
-    await transaction.eventTranslation.deleteMany({ where: { eventId } });
+    await transaction.eventTranslation.deleteMany({ where: { eventId, locale: 'EN' } });
     await transaction.eventTranslation.createMany({
       data: translations.map((translation) => ({
         eventId,

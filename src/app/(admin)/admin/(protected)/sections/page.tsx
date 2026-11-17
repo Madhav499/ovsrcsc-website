@@ -33,7 +33,7 @@ export default async function AdminSectionsPage() {
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
+        <table className="admin-table w-full text-left text-sm">
           <thead>
             <tr className="border-b border-line text-[10px] uppercase tracking-wider text-ink-muted">
               <th className="px-6 py-3 font-semibold">Key</th>
@@ -51,16 +51,16 @@ export default async function AdminSectionsPage() {
           <tbody>
             {sections.map((section) => (
               <tr key={section.id} className="border-b border-line/60 last:border-0">
-                <td className="px-6 py-2.5 font-mono text-xs text-ink-soft">{section.key}</td>
-                <td className="px-3 py-2.5 font-semibold text-ink">{section.nameEn}</td>
-                <td className="px-3 py-2.5 text-ink-soft">{section.nameGu}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.pages}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.notices}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.events}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.blogPosts}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.albums}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.resources}</td>
-                <td className="px-3 py-2.5 text-ink-muted">{section._count.enquiries}</td>
+                <td data-label="Key" className="px-6 py-2.5 font-mono text-xs text-ink-soft">{section.key}</td>
+                <td data-label="Name (En)" className="px-3 py-2.5 font-semibold text-ink">{section.nameEn}</td>
+                <td data-label="Name (Gu)" className="px-3 py-2.5 text-ink-soft">{section.nameGu}</td>
+                <td data-label="Pages" className="px-3 py-2.5 text-ink-muted">{section._count.pages}</td>
+                <td data-label="Notices" className="px-3 py-2.5 text-ink-muted">{section._count.notices}</td>
+                <td data-label="Events" className="px-3 py-2.5 text-ink-muted">{section._count.events}</td>
+                <td data-label="Journal" className="px-3 py-2.5 text-ink-muted">{section._count.blogPosts}</td>
+                <td data-label="Albums" className="px-3 py-2.5 text-ink-muted">{section._count.albums}</td>
+                <td data-label="Links" className="px-3 py-2.5 text-ink-muted">{section._count.resources}</td>
+                <td data-label="Enquiries" className="px-3 py-2.5 text-ink-muted">{section._count.enquiries}</td>
               </tr>
             ))}
           </tbody>

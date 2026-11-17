@@ -704,7 +704,7 @@ function UserForm({
                   type="checkbox"
                   checked={values.status === 'ACTIVE'}
                   onChange={(event) => setValues((previous) => ({ ...previous, status: event.target.checked ? 'ACTIVE' : 'DISABLED' }))}
-                  className="size-4 rounded"
+                  className="size-5 rounded"
                 />
                 Account active (unchecking disables sign-in)
               </label>

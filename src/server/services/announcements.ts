@@ -8,6 +8,7 @@ import { hasPermission } from '@/lib/permissions';
 import { announcementDisplayState } from '@/lib/announcement';
 import { writeAuditLog } from './audit';
 import { scheduleTranslation } from '@/server/translation/service';
+import { englishSource } from '@/server/translation/source';
 import type { Actor } from '@/server/auth/actor';
 
 export interface AnnouncementTranslationInput {
@@ -114,9 +115,9 @@ export async function createAnnouncement(actor: Actor, input: AnnouncementInput)
     throw new ForbiddenError('You do not have permission to create announcements.');
   }
 
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add at least one translation with a title.');
+    throw new ValidationError('Add the English title and message.');
   }
 
   validateDates(input.startAt, input.endAt);
@@ -203,9 +204,9 @@ export async function updateAnnouncement(actor: Actor, id: string, input: Announ
     throw new NotFoundError('Section not found.');
   }
 
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add at least one translation with a title.');
+    throw new ValidationError('Add the English title and message.');
   }
 
   const startDate = input.startAt ? new Date(input.startAt) : new Date();
@@ -223,7 +224,7 @@ export async function updateAnnouncement(actor: Actor, id: string, input: Announ
       linkUrl: input.linkUrl,
       imageKey: input.imageKey,
       translations: {
-        deleteMany: {},
+        deleteMany: { locale: 'EN' },
         create: translations.map((t) => ({
           locale: t.locale.toUpperCase() as 'EN' | 'GU' | 'HI',
           title: t.title,

@@ -15,6 +15,7 @@ import {
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
 import { scheduleTranslation } from '@/server/translation/service';
+import { englishSource } from '@/server/translation/source';
 
 export interface BlogTranslationInput {
   locale: LocaleCode;
@@ -83,9 +84,9 @@ function nextStatus(
 export async function createBlogPost(actor: Actor, input: BlogInput) {
   assertPermission(actor, 'blog.manage');
   assertSectionAccess(actor, input.sectionId);
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the post title and content in at least one language.');
+    throw new ValidationError('Add the English post title and content.');
   }
   const slug = resolveSlug(input.slug, translations);
   const duplicate = await db.blogPost.findUnique({ where: { slug }, select: { id: true } });
@@ -140,9 +141,9 @@ export async function updateBlogPost(
       throw new ConflictError('This post was changed by someone else. Reload and try again.');
     }
   }
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the post title and content in at least one language.');
+    throw new ValidationError('Add the English post title and content.');
   }
   const slug = resolveSlug(input.slug || existing.slug, translations);
   if (slug !== existing.slug) {
@@ -164,7 +165,7 @@ export async function updateBlogPost(
           status === 'PUBLISHED' ? existing.publishedAt ?? new Date() : existing.publishedAt,
       },
     });
-    await transaction.blogTranslation.deleteMany({ where: { postId } });
+    await transaction.blogTranslation.deleteMany({ where: { postId, locale: 'EN' } });
     await transaction.blogTranslation.createMany({
       data: translations.map((translation) => ({
         postId,
