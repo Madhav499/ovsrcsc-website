@@ -508,3 +508,40 @@ model RateLimitBucket {
 
   @@index([resetAt])
 }
+
+enum TranslationStatus {
+  PENDING
+  DONE
+  FAILED
+  STALE
+  LEGACY
+}
+
+/// Machine-translation bookkeeping for one entity in one target locale.
+/// English is always the source; the translated text itself lives in the
+/// entity's own translation table (or `fields` when it has none, e.g. gallery
+/// captions). The last good translation is never removed on failure.
+model TranslationState {
+  id           String            @id @default(cuid())
+  entityType   String
+  entityId     String
+  locale       Locale
+  status       TranslationStatus @default(PENDING)
+  /// Hash of the English source the current translation was made from.
+  sourceHash   String?
+  /// Hash of the English source most recently seen (differs from sourceHash when stale).
+  latestHash   String?
+  provider     String?
+  attempts     Int               @default(0)
+  lastError    String?
+  translatedAt DateTime?
+  /// Extra translated fields for entities without a locale table.
+  fields       Json?
+  /// Copy of a pre-existing hand-written translation, kept before it is replaced.
+  legacyBackup Json?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@unique([entityType, entityId, locale])
+  @@index([status])
+}

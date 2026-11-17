@@ -3,12 +3,12 @@ import { notFound } from 'next/navigation';
 import { getDictionary, isLocale } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
 import { localeAlternates } from '@/lib/meridian/site';
-import { archiveLabels, getArchive } from '@/components/meridian/gallery/archive-data';
-import { GalleryArchive } from '@/components/meridian/gallery/gallery-archive';
-import { ScienceFigure } from '@/components/meridian/journal/figures';
+import { filmLabels, getArchive } from '@/components/meridian/gallery/archive-data';
+import { FilmArchive } from '@/components/meridian/gallery/film-archive';
 
 interface GalleryPageProps {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ view?: string; photo?: string }>;
 }
 
 export async function generateMetadata({ params }: GalleryPageProps): Promise<Metadata> {
@@ -22,24 +22,26 @@ export async function generateMetadata({ params }: GalleryPageProps): Promise<Me
   };
 }
 
-/** The photography archive — every published photograph ("All"). */
-export default async function GalleryPage({ params }: GalleryPageProps) {
+/** The photo archive — every published photograph, as a roll (default) or an index (?view=index). */
+export default async function GalleryPage({ params, searchParams }: GalleryPageProps) {
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale)) notFound();
   const locale: LocaleCode = rawLocale;
   const dict = getDictionary(locale);
   const archive = await getArchive(locale);
 
+  const query = await searchParams;
+
   return (
-    <GalleryArchive
-      title={dict['gallery.title']}
-      intro={dict['gallery.intro']}
+    <FilmArchive
       photos={archive.photos}
       albums={archive.albums}
       initialAlbum={null}
+      initialView={query.view === 'index' ? 'index' : 'strip'}
+      initialPhoto={typeof query.photo === 'string' ? query.photo : null}
       basePath={`/${locale}/gallery`}
-      labels={archiveLabels(dict)}
-      emptyFigure={<ScienceFigure name="lens" dict={dict} number={1} />}
+      labels={filmLabels(dict)}
+      locale={locale}
     />
   );
 }

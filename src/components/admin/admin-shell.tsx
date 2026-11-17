@@ -31,6 +31,7 @@ function buildNav(actor: Actor): AdminNavItem[] {
     items.push({ href: '/admin/users', label: 'Users & roles', icon: 'users' });
     items.push({ href: '/admin/sections', label: 'Sections', icon: 'sections' });
     items.push({ href: '/admin/settings', label: 'Site settings', icon: 'settings' });
+    items.push({ href: '/admin/translations', label: 'Translations', icon: 'translations' });
     items.push({ href: '/admin/audit', label: 'Audit log', icon: 'audit' });
   }
   items.push({ href: '/admin/account', label: 'My account', icon: 'account' });

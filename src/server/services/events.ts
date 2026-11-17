@@ -14,6 +14,7 @@ import {
   type Actor,
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
+import { scheduleTranslation } from '@/server/translation/service';
 
 export interface EventTranslationInput {
   locale: LocaleCode;
@@ -143,6 +144,7 @@ const event = await db.event.create({
     entityId: event.id,
     summary: `Created event ${event.slug}`,
   });
+  await scheduleTranslation('Event', event.id);
   return event;
 }
 
@@ -214,6 +216,7 @@ await db.$transaction(async (transaction) => {
     summary: `Updated event ${slug}`,
     metadata: { status },
   });
+  await scheduleTranslation('Event', eventId);
   return db.event.findUniqueOrThrow({ where: { id: eventId } });
 }
 

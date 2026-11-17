@@ -14,6 +14,7 @@ import {
   type Actor,
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
+import { scheduleTranslation } from '@/server/translation/service';
 
 export interface NoticeTranslationInput {
   locale: LocaleCode;
@@ -143,6 +144,7 @@ export async function createNotice(actor: Actor, input: NoticeInput) {
     entityId: notice.id,
     summary: `Created notice ${notice.slug}`,
   });
+  await scheduleTranslation('Notice', notice.id);
   return notice;
 }
 
@@ -217,6 +219,7 @@ export async function updateNotice(
     summary: `Updated notice ${slug}`,
     metadata: { status },
   });
+  await scheduleTranslation('Notice', noticeId);
   return db.notice.findUniqueOrThrow({ where: { id: noticeId } });
 }
 

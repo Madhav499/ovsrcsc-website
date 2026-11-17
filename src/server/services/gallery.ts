@@ -8,6 +8,7 @@ import { localeToPrismaLocale } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
 import { assertPermission, assertSectionAccess, type Actor } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
+import { scheduleTranslation } from '@/server/translation/service';
 
 export interface GalleryTranslationInput {
   locale: string;
@@ -76,6 +77,7 @@ export async function createAlbum(actor: Actor, input: GalleryAlbumInput) {
   }
   const status = input.intent === 'publish' ? 'PUBLISHED' : 'DRAFT';
   const slug = await resolveAlbumSlug(input.slug, translations);
+  input = { ...input, itemIds: await validateAlbumMedia(input.itemIds ?? []) };
 
   const album = await db.galleryAlbum.create({
     data: {
@@ -106,6 +108,7 @@ export async function createAlbum(actor: Actor, input: GalleryAlbumInput) {
     summary: `Created album ${album.slug} (${album.status})`,
     metadata: { itemCount: album.items.length },
   });
+  await scheduleTranslation('GalleryAlbum', album.id);
   return album;
 }
 
@@ -132,6 +135,7 @@ export async function updateAlbum(actor: Actor, albumId: string, input: GalleryA
     throw new ValidationError('Give the album a title in at least one language.');
   }
   const status = nextStatus(actor, input.sectionId, input.intent, existing.status);
+  input = { ...input, itemIds: await validateAlbumMedia(input.itemIds ?? []) };
   const slug = input.slug?.trim() ? await resolveAlbumSlug(input.slug, translations, existing.id) : existing.slug;
 
   const album = await db.$transaction(async (transaction) => {
@@ -170,6 +174,7 @@ export async function updateAlbum(actor: Actor, albumId: string, input: GalleryA
     summary: `Updated album ${album.slug}`,
     metadata: { status: album.status, itemCount: album.items.length },
   });
+  await scheduleTranslation('GalleryAlbum', album.id);
   return album;
 }
 
@@ -201,6 +206,29 @@ export async function deleteGalleryItem(actor: Actor, itemId: string): Promise<v
     entityId: itemId,
     summary: `Removed item from album ${item.album.slug}`,
   });
+}
+
+/**
+ * Server-side check of the photographs an album will show: each id must be an
+ * existing, unarchived image (never trust the editor's list). Duplicates are
+ * dropped, keeping the first position.
+ */
+async function validateAlbumMedia(ids: string[]): Promise<string[]> {
+  const unique = Array.from(new Set(ids.map((id) => id.trim()).filter(Boolean)));
+  if (unique.length > 200) throw new ValidationError('An album can hold at most 200 photographs.');
+  if (unique.length === 0) return [];
+  const found = await db.mediaAsset.findMany({
+    where: { id: { in: unique } },
+    select: { id: true, kind: true, archivedAt: true },
+  });
+  const byId = new Map(found.map((asset) => [asset.id, asset]));
+  const missing = unique.filter((id) => !byId.has(id)).length;
+  const archived = found.filter((asset) => asset.archivedAt).length;
+  const documents = found.filter((asset) => asset.kind !== 'IMAGE').length;
+  if (missing) throw new ValidationError(`${missing} selected photograph${missing === 1 ? ' no longer exists' : 's no longer exist'}. Refresh and try again.`);
+  if (archived) throw new ValidationError(`${archived} selected photograph${archived === 1 ? ' has' : 's have'} been archived in Media. Remove ${archived === 1 ? 'it' : 'them'} or restore from the library.`);
+  if (documents) throw new ValidationError('Only images can be added to an album.');
+  return unique;
 }
 
 function buildItems(input: GalleryAlbumInput): Array<{

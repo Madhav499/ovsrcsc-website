@@ -86,16 +86,28 @@ index; no invented categories) · `projects/big-bang-astronomy-club` → Editori
 everything else → EditorialPage. Standalone routes: Visit (new), Gallery (photography archive, below), Events (twelve-month ruler in Asia/Kolkata),
 Journal (featured story + table of contents; reading progress on articles), Contact.
 
-## Gallery — photography archive (`components/meridian/gallery/`)
+## Gallery — film archive (`components/meridian/gallery/`)
 
-After the ViV MGMT portfolio pattern, adapted: large serif title; the active album as a large
-label with a superscript count; a typographic album index ("Close" / slashed serif names /
-counts); a 10px-gutter masonry at each photo's true ratio (4 / 3 / 2 columns), distributed in JS
-from stored dimensions (no layout shift); 24 per page with "Load more (n)"; a floating ink toolbar
-(Albums · Grid · Large · Top); a minimal ivory full-screen viewer (click halves, ← →, swipe, Escape,
-"Open original", neighbours preloaded). Albums are the categories — there is no category field;
-editors create categories by creating albums. The album index appears only with 2+ albums.
-`/gallery` = All, `/gallery/[slug]` = album pre-selected; switching updates the URL in place.
+After HOLMCHROME's browsing experience (structure and motion only — none of its branding, text or
+photography). Three views, all derived at runtime from published albums (`film-model.ts`):
+
+- **Roll** (default): one WebGL 35 mm strip (`film-strip-gl.tsx`, three.js, loaded on demand) that
+  curves in depth, with sprockets, `OVSRCSC · RAJKOT` edge print and `07 ▸ 07A` frame numbers. Frames
+  keep each photo's proportions (clamped 0.62–1.9). Native page scroll in a sticky stage advances
+  the roll (no scroll hijack); blank leader film pads 0–2 photos. HUD: 11px mono, wide tracking —
+  modes top-left, round albums button top-right (2+ albums), `03 / 21 · CAPTION` (decode effect)
+  bottom-left, album · date bottom-right. Ring cursor with the frame number. A short iris reveal.
+  An sr-only list of frame buttons gives keyboard/screen-reader access.
+- **Index** (`?view=index`): a light table — justified rows of DOM film frames, every row one height.
+- **Viewing room** (`?photo=<mediaId>`, `photo-project.tsx`): the frame flies forward (FLIP) onto
+  near-black; metadata columns decode in (only real CMS data: frame, album, date, caption, size);
+  neighbours wait at the screen edges; round `Prev · 05 / Next · 07` rings; ← → ↑ ↓, swipe, Escape;
+  closes back into its frame and returns focus to the opener.
+- Fallbacks: reduced motion, no WebGL or Save-Data → a native horizontal DOM strip.
+
+Albums are the only grouping. `/gallery` = all, `/gallery/[slug]` = album pre-selected; view and
+photo live in the query string (shareable, back/forward-safe). gu/hi captions come from automatic
+translation (`TranslationState.fields`), falling back to English.
 
 ## 3D
 

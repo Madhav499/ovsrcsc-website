@@ -4,11 +4,12 @@ import { getDictionary, isLocale } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
 import { siteOrigin } from '@/lib/meridian/site';
 import { getAlbumBySlug } from '@/server/public/queries';
-import { archiveLabels, getArchive } from '@/components/meridian/gallery/archive-data';
-import { GalleryArchive } from '@/components/meridian/gallery/gallery-archive';
+import { filmLabels, getArchive } from '@/components/meridian/gallery/archive-data';
+import { FilmArchive } from '@/components/meridian/gallery/film-archive';
 
 interface AlbumPageProps {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ view?: string; photo?: string }>;
 }
 
 export async function generateMetadata({ params }: AlbumPageProps): Promise<Metadata> {
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: AlbumPageProps): Promise<Meta
  * with this album pre-selected. The URL, metadata and 404 behaviour are
  * unchanged; switching albums on the page updates the address in place.
  */
-export default async function AlbumPage({ params }: AlbumPageProps) {
+export default async function AlbumPage({ params, searchParams }: AlbumPageProps) {
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale)) notFound();
   const locale: LocaleCode = rawLocale;
@@ -42,15 +43,18 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   const archive = await getArchive(locale);
   if (!archive.slugs.includes(slug)) notFound();
 
+  const query = await searchParams;
+
   return (
-    <GalleryArchive
-      title={dict['gallery.title']}
-      intro={dict['gallery.intro']}
+    <FilmArchive
       photos={archive.photos}
       albums={archive.albums}
       initialAlbum={slug}
+      initialView={query.view === 'index' ? 'index' : 'strip'}
+      initialPhoto={typeof query.photo === 'string' ? query.photo : null}
       basePath={`/${locale}/gallery`}
-      labels={archiveLabels(dict)}
+      labels={filmLabels(dict)}
+      locale={locale}
     />
   );
 }

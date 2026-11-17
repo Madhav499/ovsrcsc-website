@@ -21,7 +21,9 @@
     "content:inventory": "tsx scripts/build-content-inventory.ts",
     "content:migrate": "tsx scripts/migrate-content.ts",
     "content:assets": "tsx scripts/download-assets.ts",
-    "admin:create": "tsx scripts/create-admin.ts"
+    "admin:create": "tsx scripts/create-admin.ts",
+    "media:migrate-to-blob": "tsx scripts/migrate-media-to-blob.ts",
+    "i18n:translate": "tsx scripts/translate-ui.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
@@ -32,6 +34,7 @@
     "@tiptap/pm": "3.32.1",
     "@tiptap/react": "3.32.1",
     "@tiptap/starter-kit": "3.32.1",
+    "@vercel/blob": "^2.9.0",
     "argon2": "0.45.1",
     "framer-motion": "^14.9.0",
     "gsap": "^3.15.0",
