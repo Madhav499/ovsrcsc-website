@@ -314,7 +314,7 @@ function DesktopDropdown({
         <button
           ref={toggleRef}
           type="button"
-          className="mx-nav-link !px-1.5"
+          className="mx-nav-link min-w-6 justify-center !px-1.5"
           aria-expanded={open}
           aria-controls={panelId}
           aria-label={`${submenuLabel} ${item.label}`}

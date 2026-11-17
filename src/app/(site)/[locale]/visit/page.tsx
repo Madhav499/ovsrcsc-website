@@ -142,11 +142,11 @@ export default async function VisitPage({ params }: VisitPageProps) {
           <ol className="mx-ledger mt-14">
             {ways.map((way, index) => (
               <li key={way.title}>
-                <Link href={way.href} className="group grid gap-4 py-8 md:grid-cols-[4rem_minmax(0,0.8fr)_minmax(0,1.2fr)_auto] md:items-baseline md:gap-10">
+                <Link href={way.href} className="group grid grid-cols-[minmax(0,1fr)] gap-4 py-8 md:grid-cols-[4rem_minmax(0,0.8fr)_minmax(0,1.2fr)_auto] md:items-baseline md:gap-10">
                   <span className="mx-numeric text-[2.5rem] leading-none text-(--mx-accent-2)">{index + 1}</span>
                   <h3 className="mx-h3 transition-colors group-hover:text-(--mx-accent)">{way.title}</h3>
                   <p className="text-(--mx-fg-2)">{way.text}</p>
-                  <span className="mx-link self-center whitespace-nowrap text-[0.9375rem]">
+                  <span className="mx-link self-start text-[0.9375rem] md:self-center md:whitespace-nowrap">
                     {way.cta}
                     <ArrowRight className="mx-btn-icon" aria-hidden="true" />
                   </span>

@@ -5,6 +5,7 @@ import { hasPermission, isSuperAdmin, ROLE_LABELS } from '@/lib/permissions';
 import { AdminLogo } from './admin-logo';
 import { logoutAction } from '@/server/actions/auth';
 import { AdminNav, type AdminNavItem } from './admin-nav';
+import { AdminMobileNav } from './admin-mobile-nav';
 
 interface AdminShellProps {
   actor: Actor;
@@ -53,18 +54,18 @@ export function AdminShell({ actor, children }: AdminShellProps) {
           <Link
             href="/en"
             target="_blank"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-paper/50 hover:bg-paper/5 hover:text-paper"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-paper/70 hover:bg-paper/5 hover:text-paper"
           >
             <ExternalLink className="size-3.5" aria-hidden="true" />
             View website
           </Link>
           <div className="mt-4 border-t border-paper/10 pt-4">
             <p className="px-3 text-sm font-semibold">{actor.name}</p>
-            <p className="px-3 text-[11px] leading-snug text-paper/45">{roleLabel}</p>
+            <p className="px-3 text-[11px] leading-snug text-paper/70">{roleLabel}</p>
             <form action={logoutAction} className="mt-3 px-3">
               <button
                 type="submit"
-                className="flex items-center gap-2 text-xs font-semibold text-paper/55 hover:text-saffron"
+                className="flex items-center gap-2 text-xs font-semibold text-paper/70 hover:text-saffron"
               >
                 <LogOut className="size-3.5" aria-hidden="true" />
                 Sign out
@@ -75,25 +76,7 @@ export function AdminShell({ actor, children }: AdminShellProps) {
       </aside>
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-30 border-b border-line/80 bg-[#f3f4f1]/95 backdrop-blur lg:hidden">
-          <div className="flex items-center justify-between gap-3 px-5 py-3">
-            <AdminLogo compact />
-            <details className="relative">
-              <summary className="list-none rounded-lg border border-line bg-paper px-3 py-2 text-xs font-bold">
-                Menu
-              </summary>
-              <div className="absolute right-0 z-40 mt-2 max-h-[70vh] w-64 overflow-y-auto rounded-xl bg-ink p-3 text-paper shadow-soft">
-                <AdminNav items={nav} />
-                <form action={logoutAction} className="mt-3 border-t border-paper/10 pt-3">
-                  <button type="submit" className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-paper/55">
-                    <LogOut className="size-3.5" aria-hidden="true" />
-                    Sign out
-                  </button>
-                </form>
-              </div>
-            </details>
-          </div>
-        </header>
+        <AdminMobileNav items={nav} name={actor.name} roleLabel={roleLabel} />
 
         {actor.mustChangePassword ? (
           <div className="border-b border-saffron/30 bg-saffron-light px-5 py-3">
@@ -110,7 +93,7 @@ export function AdminShell({ actor, children }: AdminShellProps) {
           </div>
         ) : null}
 
-        <main className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:py-10">{children}</main>
+        <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-8 lg:py-10">{children}</main>
       </div>
     </div>
   );

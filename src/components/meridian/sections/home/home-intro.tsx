@@ -58,7 +58,7 @@ export function HomeIntro({ locale, dict, index }: { locale: LocaleCode; dict: D
                 </figcaption>
               </figure>
             </Reveal>
-            <Reveal delay={0.15} className="relative z-10 -mt-14 ml-auto mr-3 w-[64%] sm:absolute sm:bottom-0 sm:left-[-2.5rem] sm:mr-0 sm:mt-0 sm:w-[52%] lg:-left-16">
+            <Reveal delay={0.15} className="relative z-10 mt-4 ml-auto mr-3 w-[72%] sm:absolute sm:bottom-0 sm:left-[-2.5rem] sm:mr-0 sm:mt-0 sm:w-[52%] lg:-left-16">
               <figure className="mx-surface-white rounded-(--mx-radius-sm) p-2 shadow-[var(--mx-shadow-lg)]">
                 <div className="mx-plate relative aspect-[4/3]">
                   <Image
@@ -72,7 +72,7 @@ export function HomeIntro({ locale, dict, index }: { locale: LocaleCode; dict: D
                 </div>
                 <figcaption className="flex items-center gap-3 px-2 pb-1 pt-3 text-[0.8125rem] text-(--mx-fg-3)">
                   <span className="mx-mono-label text-(--mx-accent)">{dict['mx.figure']} 02</span>
-                  <span className="truncate">{dict['mx.home.captionMuseum']}</span>
+                  <span className="sm:truncate">{dict['mx.home.captionMuseum']}</span>
                 </figcaption>
               </figure>
             </Reveal>

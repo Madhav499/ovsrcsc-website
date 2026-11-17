@@ -36,12 +36,26 @@ interface Props {
   onReady: () => void;
 }
 
-/** The wave the roll travels along, in normalised units (x' = distance from the gate). */
-function curve(x: number, out: THREE.Vector3) {
-  return out.set(x, 0.16 * Math.sin(0.95 * x + 0.5), 0.5 * (Math.cos(0.62 * x) - 1));
+/**
+ * The wave the roll travels along, in normalised units (x' = distance from the
+ * gate). Landscape screens get the full wave. Portrait phones get their own
+ * composition: the frame at the gate lies almost flat so the photograph reads
+ * large, while its neighbours bend away more steeply in depth.
+ */
+interface Shape {
+  lift: number;
+  depth: number;
+  bend: number;
+  twist: number;
 }
-function roll(x: number) {
-  return 0.2 * Math.sin(0.8 * x - 0.4);
+const LANDSCAPE: Shape = { lift: 0.16, depth: 0.5, bend: 0.62, twist: 0.2 };
+const PORTRAIT: Shape = { lift: 0.05, depth: 0.9, bend: 0.9, twist: 0.07 };
+
+function curve(x: number, out: THREE.Vector3, shape: Shape = LANDSCAPE) {
+  return out.set(x, shape.lift * Math.sin(0.95 * x + 0.5), shape.depth * (Math.cos(shape.bend * x) - 1));
+}
+function roll(x: number, shape: Shape = LANDSCAPE) {
+  return shape.twist * Math.sin(0.8 * x - 0.4);
 }
 
 function drawFilm(width: number, index: number | null, edge: string): HTMLCanvasElement {
@@ -159,7 +173,7 @@ function FrameMesh({
   frame: StripFrame;
   photo: GLPhoto | null;
   edge: string;
-  shared: React.RefObject<{ pos: number; scale: number }>;
+  shared: React.RefObject<{ pos: number; scale: number; shape: Shape }>;
   onHover: Props['onHover'];
   onOpen: Props['onOpen'];
 }) {
@@ -229,16 +243,16 @@ function FrameMesh({
   const tmp = useMemo(() => ({ c: new THREE.Vector3(), d: new THREE.Vector3(), t: new THREE.Vector3(), a: new THREE.Vector3(), n: new THREE.Vector3(), up: new THREE.Vector3(0, 1, 0) }), []);
 
   useFrame(() => {
-    const { pos, scale } = shared.current;
+    const { pos, scale, shape } = shared.current;
     const position = geometry.attributes.position as THREE.BufferAttribute;
     const normal = geometry.attributes.aNormal as THREE.BufferAttribute;
     for (let i = 0; i <= SEGMENTS; i += 1) {
       const x = start + (i / SEGMENTS) * full - pos;
-      curve(x, tmp.c);
-      curve(x + 0.01, tmp.d);
+      curve(x, tmp.c, shape);
+      curve(x + 0.01, tmp.d, shape);
       tmp.t.subVectors(tmp.d, tmp.c).normalize();
       tmp.a.copy(tmp.up).addScaledVector(tmp.t, -tmp.up.dot(tmp.t)).normalize();
-      const r = roll(x);
+      const r = roll(x, shape);
       tmp.n.crossVectors(tmp.t, tmp.a);
       const ax = tmp.a.x * Math.cos(r) + tmp.n.x * Math.sin(r);
       const ay = tmp.a.y * Math.cos(r) + tmp.n.y * Math.sin(r);
@@ -303,13 +317,23 @@ function FrameMesh({
 
 function Roll({ frames, photos, position, edge, onHover, onOpen }: Omit<Props, 'active' | 'onReady'>) {
   const { viewport, invalidate } = useThree();
-  const shared = useRef({ pos: position.get(), scale: 1 });
+  const shared = useRef({ pos: position.get(), scale: 1, shape: LANDSCAPE });
   const [range, setRange] = useState<[number, number]>([0, 0]);
 
   // Strip scale: the roll takes ~half the stage height (about three frames
-  // across on a desktop, as on the reference); on portrait phones a 1.6:1
-  // frame is capped at ~82% of the width.
-  shared.current.scale = Math.min((viewport.height * 0.5) / FILM_H, (viewport.width * 0.82) / 1.6);
+  // across on a desktop, as on the reference). On portrait screens the frame
+  // at the gate spans ~94% of the width; the reference width is taken from
+  // this collection's own proportions (85th percentile), so typical frames
+  // are never clipped and one panorama does not shrink the whole roll.
+  const portrait = viewport.width / viewport.height < 0.8;
+  const typicalWidth = useMemo(() => {
+    const widths = frames.filter((frame) => frame.photo !== null).map((frame) => frame.width).sort((a, b) => a - b);
+    return widths.length ? Math.max(1.3, widths[Math.floor((widths.length - 1) * 0.85)]) : 1.6;
+  }, [frames]);
+  shared.current.shape = portrait ? PORTRAIT : LANDSCAPE;
+  shared.current.scale = portrait
+    ? Math.min((viewport.height * 0.5) / FILM_H, (viewport.width * 0.94) / typicalWidth)
+    : Math.min((viewport.height * 0.5) / FILM_H, (viewport.width * 0.82) / 1.6);
 
   useEffect(() => position.on('change', () => invalidate()), [position, invalidate]);
   useEffect(() => invalidate(), [range, invalidate]);

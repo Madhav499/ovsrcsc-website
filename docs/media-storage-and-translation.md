@@ -25,6 +25,22 @@ Production status at the time of writing: no Blob store is connected, and produc
 4. The database rows (MediaAsset, albums and so on) must also exist in the production database. Moving them is a separate, deliberate content migration and is not done by this script.
 5. Redeploy.
 
+### Production gallery go-live checklist
+
+The production gallery is empty because production has no published albums. The code path is ready; what remains is configuration and content:
+
+1. **Persistent storage.** Connect a Vercel Blob store to the production project (Storage → Create → Blob → connect, Production environment). Check that `BLOB_READ_WRITE_TOKEN` appears under Settings → Environment Variables. It is server-only and must never be copied into the repository or a `NEXT_PUBLIC_` variable. Then redeploy. Until this is done, the production admin refuses uploads with a clear message instead of storing files that would disappear.
+2. **Sign in** to the production admin as a Super Admin, Section Editor or Content Contributor with access to the section.
+3. **Photo gallery → New album.** Choose the programme section, give it an English title and an event date (if known), then use **Upload photographs** for the centre's own photographs (up to 20 per batch).
+4. For each photograph, add a caption if useful and **alt text** describing what the photograph shows. Order the photographs with ↑ / ↓.
+5. Tick **Published on the public gallery** and save. The roll, index and viewer update immediately. Gujarati and Hindi captions follow once translation credentials are configured.
+
+Only publish photographs the centre has approved for public use.
+
+### Editing translations
+
+Only English is editable. In every editor, the Gujarati and Hindi tabs show a read-only preview of the current machine translation. The server ignores any gu/hi text submitted with a save, so a hand edit can never overwrite a machine translation. When the English page's publication state changes, its translated versions follow it.
+
 ### Managing photographs (admin → Photo gallery)
 
 | Task | How |

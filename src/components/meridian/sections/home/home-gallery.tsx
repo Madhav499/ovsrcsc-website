@@ -68,7 +68,9 @@ export function HomeGallery({
               >
                 <CmsImage
                   storageKey={item.storageKey}
-                  alt={item.alt}
+                  // When the caption (inside this link) says the same thing, it names the
+                  // link and the image stays silent instead of being announced twice.
+                  alt={item.caption && item.caption.trim() === item.alt.trim() ? '' : item.alt}
                   sizes={index === 0 ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 50vw, 25vw'}
                 />
                 {item.caption ? (

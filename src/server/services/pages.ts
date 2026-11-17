@@ -13,6 +13,7 @@ import {
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
 import { scheduleTranslation } from '@/server/translation/service';
+import { englishSource } from '@/server/translation/source';
 import { getPublishedTranslation } from '@/server/public/content';
 import type { LocaleCode } from '@/lib/constants';
 import { localeToPrismaLocale } from '@/i18n';
@@ -97,9 +98,9 @@ export async function createPage(actor: Actor, input: PageInput): Promise<Page> 
       path: 'Use lowercase letters, numbers and hyphens, separated by slashes.',
     });
   }
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the page title and content in at least one language.');
+    throw new ValidationError('Add the English page title and content.');
   }
   if (input.intent === 'publish') assertCanPublish(actor, input.sectionId);
   const existing = await db.page.findUnique({ where: { path }, select: { id: true } });
@@ -203,9 +204,9 @@ export async function updatePage(
   }
   const targetSectionId = existing.isSystem ? existing.sectionId : input.sectionId;
 
-  const translations = normalizeTranslations(input.translations);
+  const translations = englishSource(normalizeTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Add the page title and content in at least one language.');
+    throw new ValidationError('Add the English page title and content.');
   }
 
   const targetStatus = desiredStatus(actor, targetSectionId, input.intent, existing.status);
@@ -223,7 +224,8 @@ export async function updatePage(
   const translationLocales = translations.map((translation) => localeToPrismaLocale(translation.locale));
   const removedLocales = existing.translations
     .map((translation) => translation.locale)
-    .filter((locale) => !translationLocales.includes(locale));
+    // Only the English row is editable; gu/hi rows belong to the translation service.
+    .filter((locale) => locale === 'EN' && !translationLocales.includes(locale));
 
   await db.$transaction(async (transaction) => {
     await transaction.page.update({
@@ -272,6 +274,11 @@ export async function updatePage(
         },
       });
     }
+
+    // Translated versions follow the English page's publication state, so
+    // unpublishing English also takes the gu/hi versions offline.
+    const englishStatus: ContentStatus = canPublishTranslations ? 'PUBLISHED' : 'DRAFT';
+    await transaction.pageTranslation.updateMany({ where: { pageId, locale: { not: 'EN' } }, data: { status: englishStatus } });
 
     for (const translation of translations) {
       await transaction.pageRevision.create({

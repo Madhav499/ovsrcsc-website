@@ -25,7 +25,7 @@
   /* — Backward-compatible aliases (existing components keep working) — */
   --color-ink: #202321;
   --color-ink-soft: #343a35;
-  --color-ink-muted: #6b6e6a;
+  --color-ink-muted: #5f625e; /* 5:1 on warm ivory (WCAG AA) */
   --color-teal: #788477;
   --color-teal-dark: #5e6a5e;
   --color-teal-light: #e2e6df;
@@ -517,6 +517,8 @@
   }
 
   .admin-btn {
+    /* WCAG 2.2 target size; touch screens get 44px below */
+    min-height: 1.5rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -577,6 +579,100 @@
   .admin-btn:disabled {
     opacity: 0.55;
     cursor: not-allowed;
+  }
+
+  /* Touch and small screens: comfortable targets; 16px inputs stop iOS from
+     zooming the page when a field is focused. */
+  @media (pointer: coarse) {
+    .admin-btn {
+      min-height: 2.75rem;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .admin-input {
+      min-height: 2.75rem;
+      font-size: 1rem;
+    }
+
+    .admin-btn {
+      min-height: 2.75rem;
+    }
+  }
+
+  /* Admin navigation drawer (below the desktop breakpoint) */
+  .admin-drawer {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(20rem, 86vw);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .admin-drawer::backdrop {
+    background: rgb(20 24 28 / 0.45);
+  }
+
+  .admin-drawer[open] {
+    animation: admin-drawer-in 220ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  @keyframes admin-drawer-in {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .admin-drawer[open] {
+      animation: none;
+    }
+  }
+
+  /* Tables become labelled cards on narrow screens: each cell shows its
+     column name (data-label), so rows stay readable without sideways scroll. */
+  @media (max-width: 767px) {
+    .admin-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    .admin-table,
+    .admin-table tbody,
+    .admin-table tr,
+    .admin-table td {
+      display: block;
+      width: 100%;
+    }
+
+    .admin-table tr {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .admin-table td {
+      padding: 0.2rem 0 !important;
+      white-space: normal !important;
+    }
+
+    .admin-table td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-ink-muted);
+    }
   }
 
   .admin-richtext-shell {

@@ -9,6 +9,7 @@ import type { LocaleCode } from '@/lib/constants';
 import { assertPermission, assertSectionAccess, type Actor } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
 import { scheduleTranslation } from '@/server/translation/service';
+import { englishSource } from '@/server/translation/source';
 
 export interface GalleryTranslationInput {
   locale: string;
@@ -71,9 +72,9 @@ export async function listAlbumsForAdmin(actor: Actor) {
 export async function createAlbum(actor: Actor, input: GalleryAlbumInput) {
   assertPermission(actor, 'gallery.manage');
   assertSectionAccess(actor, input.sectionId);
-  const translations = normalizeAlbumTranslations(input.translations);
+  const translations = englishSource(normalizeAlbumTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Give the album a title in at least one language.');
+    throw new ValidationError('Give the album an English title.');
   }
   const status = input.intent === 'publish' ? 'PUBLISHED' : 'DRAFT';
   const slug = await resolveAlbumSlug(input.slug, translations);
@@ -130,9 +131,9 @@ export async function updateAlbum(actor: Actor, albumId: string, input: GalleryA
     }
   }
 
-  const translations = normalizeAlbumTranslations(input.translations);
+  const translations = englishSource(normalizeAlbumTranslations(input.translations));
   if (translations.length === 0) {
-    throw new ValidationError('Give the album a title in at least one language.');
+    throw new ValidationError('Give the album an English title.');
   }
   const status = nextStatus(actor, input.sectionId, input.intent, existing.status);
   input = { ...input, itemIds: await validateAlbumMedia(input.itemIds ?? []) };
@@ -149,7 +150,7 @@ export async function updateAlbum(actor: Actor, albumId: string, input: GalleryA
         coverKey: input.coverKey?.trim() ? input.coverKey.trim() : null,
         sortOrder: input.sortOrder ?? existing.sortOrder,
         translations: {
-          deleteMany: { albumId },
+          deleteMany: { albumId, locale: 'EN' },
           create: translations.map((translation) => ({
             locale: localeToPrismaLocale(translation.locale as LocaleCode),
             title: translation.title,

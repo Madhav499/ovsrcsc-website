@@ -65,7 +65,7 @@ export interface AdminNavItem {
   icon: AdminNavIcon;
 }
 
-export function AdminNav({ items }: { items: AdminNavItem[] }) {
+export function AdminNav({ items, touch = false }: { items: AdminNavItem[]; /** Larger targets for the touch drawer. */ touch?: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -78,7 +78,7 @@ export function AdminNav({ items }: { items: AdminNavItem[] }) {
             key={item.href}
             href={item.href}
             aria-current={active ? 'page' : undefined}
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-semibold transition-colors ${
+            className={`flex items-center gap-2.5 rounded-lg px-3 font-semibold transition-colors ${touch ? 'min-h-11 text-sm' : 'py-2 text-[13px]'} ${
               active
                 ? 'bg-paper/10 text-paper'
                 : 'text-paper/60 hover:bg-paper/5 hover:text-paper'

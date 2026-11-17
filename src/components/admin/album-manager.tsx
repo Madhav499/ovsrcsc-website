@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { mediaUrl, isImageKey } from '@/lib/media';
 import type { AdminActionState } from '@/lib/admin-payload';
 import { RichTextEditor } from './rich-text-editor';
+import { MachineTranslationPreview } from './collection-editor';
 import { saveAlbumAction, archiveAlbumAction, uploadAlbumPhotosAction } from '@/server/actions/admin-gallery';
 
 const initialState: AdminActionState = { status: 'idle' };
@@ -227,7 +228,8 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                   ...values,
                   itemIds: selected.map((entry) => entry.mediaId),
                   captions: selected.map((entry) => ({ mediaId: entry.mediaId, caption: entry.caption, altText: entry.alt })),
-                  translations: (['en', 'gu', 'hi'] as const).map((key) => ({
+                  // English only — Gujarati and Hindi are generated from it.
+                  translations: (['en'] as const).map((key) => ({
                     locale: key,
                     title: translations[key].title,
                     description: translations[key].description,
@@ -336,7 +338,7 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                 </div>
               ) : null}
               <label className="flex items-center gap-2.5 text-sm text-ink-soft">
-                <input type="checkbox" checked={values.publish} onChange={(event) => set('publish', event.target.checked)} className="size-4 rounded" />
+                <input type="checkbox" checked={values.publish} onChange={(event) => set('publish', event.target.checked)} className="size-5 rounded" />
                 Published on the public gallery
               </label>
             </div>
@@ -358,6 +360,16 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                   </button>
                 ))}
               </div>
+              {activeLocale !== 'en' ? (
+                <MachineTranslationPreview
+                  fields={[
+                    { name: 'title', label: 'Title' },
+                    { name: 'description', label: 'Intro text' },
+                  ]}
+                  value={translations[activeLocale]}
+                  language={activeLocale === 'gu' ? 'ગુજરાતી' : 'हिन्दी'}
+                />
+              ) : (
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="admin-label">Title</label>
@@ -377,6 +389,7 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                   />
                 </div>
               </div>
+              )}
             </div>
 
             <div className="border-t border-line px-6 py-5">
@@ -465,7 +478,7 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                             <img src={mediaUrl(key)} alt="" className="size-full object-cover" loading="lazy" />
                           ) : null}
                         </div>
-                        <div className="grid min-w-0 flex-1 gap-1.5">
+                        <div className="grid min-w-0 flex-1 gap-1.5 max-sm:order-last max-sm:basis-full">
                           <label className="sr-only" htmlFor={`caption-${entry.mediaId}`}>
                             Caption for photograph {position + 1}
                           </label>
@@ -491,7 +504,7 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                             className="admin-input !py-1.5 !text-xs"
                           />
                         </div>
-                        <div className="flex shrink-0 flex-wrap items-center gap-1">
+                        <div className="flex shrink-0 flex-wrap items-center gap-1 max-sm:min-w-0 max-sm:flex-1">
                           <button type="button" onClick={() => move(entry.mediaId, -1)} disabled={position === 0} aria-label={`Move photograph ${position + 1} up`} className="admin-btn admin-btn-ghost !p-1.5 disabled:opacity-30">
                             <ArrowUp className="size-3.5" aria-hidden="true" />
                           </button>
