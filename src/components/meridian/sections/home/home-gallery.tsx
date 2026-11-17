@@ -30,10 +30,12 @@ export function HomeGallery({
   locale,
   dict,
   items,
+  index,
 }: {
   locale: LocaleCode;
   dict: Dictionary;
   items: GalleryHighlight[];
+  index: string;
 }) {
   if (!items.length) return null;
   const shown = items.slice(0, SPANS.length);
@@ -42,7 +44,7 @@ export function HomeGallery({
       <div className="mx-container">
         <SectionHeading
           id="home-gallery-title"
-          index="07"
+          index={index}
           eyebrow={dict['home.gallery.eyebrow']}
           title={dict['home.gallery.title']}
           align="split"

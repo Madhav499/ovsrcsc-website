@@ -17,45 +17,66 @@
    ------------------------------------------------------------------------- */
 @layer base {
   [data-site='meridian'] {
-    /* Palette */
-    --mx-midnight: #101c2c;
-    --mx-navy: #172b43;
-    --mx-navy-raised: #1d3553;
-    --mx-ivory: #f6f3ec;
-    --mx-ivory-deep: #ece6d8;
-    --mx-white: #ffffff;
-    --mx-cyan: #52d5e8;
-    --mx-teal: #24a6a0;
-    --mx-teal-ink: #14706b;
-    --mx-amber: #e9a94b;
-    --mx-amber-bright: #f2bb68;
-    --mx-amber-ink: #8a5a12;
-    --mx-slate: #718096;
+    /* ---- Approved heritage palette ------------------------------------
+       Ivory reads, Stone warms, Green carries the institution, Charcoal
+       gives contrast, Brass annotates (sparingly), Sage adds depth.
+       Brass and Sage fail 4.5:1 as text on light surfaces — use their
+       -ink variants for text there; the base tones are for lines/marks. */
+    --mx-charcoal: #202b29;
+    --mx-charcoal-deep: #18211f;
+    --mx-green: #344c43;
+    --mx-green-raised: #3d574d;
+    --mx-stone: #f0e9dc;
+    --mx-stone-deep: #e5dccb;
+    --mx-ivory: #faf8f2;
+    --mx-paper: #fffdf8;
+    --mx-brass: #b18a58;
+    --mx-brass-ink: #7a5b32; /* 5.9:1 on ivory */
+    --mx-brass-light: #d3b387; /* 7.3:1 on charcoal */
+    --mx-sage: #82958a;
+    --mx-sage-ink: #4e6157; /* 6.2:1 on ivory */
+    --mx-sage-light: #a8baae; /* 7.2:1 on charcoal */
 
-    /* Text on light surfaces (all ≥ 4.5:1 on ivory and white) */
-    --mx-ink: #101c2c;
-    --mx-ink-2: #36414f;
-    --mx-ink-3: #56616f;
+    /* Legacy names (first MERIDIAN pass) mapped onto the heritage palette,
+       so older markup inherits the new identity. New code uses the names above. */
+    --mx-midnight: var(--mx-charcoal);
+    --mx-navy: var(--mx-green);
+    --mx-navy-raised: var(--mx-green-raised);
+    --mx-ivory-deep: var(--mx-stone);
+    --mx-white: var(--mx-paper);
+    --mx-cyan: var(--mx-brass-light);
+    --mx-teal: var(--mx-sage);
+    --mx-teal-ink: var(--mx-green);
+    --mx-amber: var(--mx-brass);
+    --mx-amber-bright: #c29c6a;
+    --mx-amber-ink: var(--mx-brass-ink);
+    --mx-slate: var(--mx-sage);
+
+    /* Text on light surfaces (all ≥ 5:1 on ivory and stone) */
+    --mx-ink: #202b29;
+    --mx-ink-2: #3d4945;
+    --mx-ink-3: #59645f;
 
     /* Status */
-    --mx-danger: #b4372b;
-    --mx-danger-soft: #fbe9e6;
-    --mx-success: #1e7a55;
-    --mx-success-soft: #e3f3ec;
+    --mx-danger: #a63a2c;
+    --mx-danger-soft: #f8e8e2;
+    --mx-success: #2f6a4c;
+    --mx-success-soft: #e4efe6;
 
-    /* Typography */
+    /* Typography — three voices */
     --mx-font-sans: var(--mx-font-body-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
       ui-sans-serif, system-ui, sans-serif;
-    --mx-font-display: var(--mx-font-display-latin), var(--mx-font-gujarati),
-      var(--mx-font-devanagari), ui-sans-serif, system-ui, sans-serif;
-    --mx-font-serif: var(--mx-font-serif-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
-      ui-serif, Georgia, serif;
+    --mx-font-display: var(--mx-font-display-latin), var(--mx-font-gujarati-serif),
+      var(--mx-font-devanagari-serif), Georgia, serif;
+    --mx-font-serif: var(--mx-font-display);
+    --mx-font-mono: var(--mx-font-mono-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
+      ui-monospace, Consolas, monospace;
 
-    /* Radii — editorial, restrained */
-    --mx-radius-xs: 4px;
-    --mx-radius-sm: 8px;
-    --mx-radius-md: 14px;
-    --mx-radius-lg: 22px;
+    /* Radii — archival, nearly square; pills only for chips and toggles */
+    --mx-radius-xs: 2px;
+    --mx-radius-sm: 3px;
+    --mx-radius-md: 4px;
+    --mx-radius-lg: 6px;
     --mx-radius-pill: 999px;
 
     /* Spacing */
@@ -71,31 +92,40 @@
     --mx-gutter: clamp(1rem, 0.4rem + 2.6vw, 2.75rem);
     --mx-header-h: 4.5rem;
 
-    /* Shadows — tinted toward midnight, never pure black */
-    --mx-shadow-sm: 0 1px 2px rgb(16 28 44 / 0.06), 0 4px 12px -6px rgb(16 28 44 / 0.12);
-    --mx-shadow-md: 0 2px 6px rgb(16 28 44 / 0.05), 0 18px 40px -22px rgb(16 28 44 / 0.35);
-    --mx-shadow-lg: 0 30px 80px -30px rgb(16 28 44 / 0.45);
+    /* Shadows — tinted toward charcoal, never pure black */
+    --mx-shadow-sm: 0 1px 2px rgb(32 43 41 / 0.06), 0 4px 12px -6px rgb(32 43 41 / 0.12);
+    --mx-shadow-md: 0 2px 6px rgb(32 43 41 / 0.05), 0 18px 40px -22px rgb(32 43 41 / 0.32);
+    --mx-shadow-lg: 0 30px 80px -30px rgb(24 33 31 / 0.45);
 
-    /* Motion */
+    /* Motion — one vocabulary, three tempos */
     --mx-ease-out: cubic-bezier(0.19, 1, 0.22, 1);
     --mx-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --mx-ease-draw: cubic-bezier(0.45, 0, 0.15, 1);
     --mx-duration-fast: 160ms;
     --mx-duration: 320ms;
     --mx-duration-slow: 700ms;
+    --mx-duration-draw: 1600ms;
+
+    /* Paper grain — a few-hundred-byte fractal noise tile, never an image request */
+    --mx-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .13 0 0 0 0 .17 0 0 0 0 .16 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
     /* Default (light) surface semantics */
     --mx-bg: var(--mx-ivory);
     --mx-fg: var(--mx-ink);
     --mx-fg-2: var(--mx-ink-2);
     --mx-fg-3: var(--mx-ink-3);
-    --mx-line: rgb(16 28 44 / 0.12);
-    --mx-line-strong: rgb(16 28 44 / 0.24);
-    --mx-accent: var(--mx-teal-ink);
-    --mx-accent-2: var(--mx-amber-ink);
-    --mx-focus: var(--mx-teal-ink);
-    --mx-raised: var(--mx-white);
-    --mx-sunken: var(--mx-ivory-deep);
-    --mx-input-bg: var(--mx-white);
+    --mx-line: rgb(32 43 41 / 0.13);
+    --mx-line-strong: rgb(32 43 41 / 0.26);
+    --mx-accent: var(--mx-green);
+    --mx-accent-2: var(--mx-brass-ink);
+    --mx-mark: var(--mx-brass);
+    --mx-focus: var(--mx-green);
+    --mx-raised: var(--mx-paper);
+    --mx-sunken: var(--mx-stone);
+    --mx-input-bg: var(--mx-paper);
+    --mx-cta-bg: var(--mx-green);
+    --mx-cta-fg: var(--mx-ivory);
+    --mx-cta-hover: var(--mx-charcoal);
   }
 
   @media (min-width: 1024px) {
@@ -107,51 +137,98 @@
   /* -----------------------------------------------------------------------
      2. Surfaces — each section declares its surface; children adapt.
      ----------------------------------------------------------------------- */
+  /* Ivory: primary reading surface. Stone: warm editorial variation.
+     White (legacy name) = paper: raised panels on ivory. */
   [data-site='meridian'] .mx-surface-ivory,
-  [data-site='meridian'] .mx-surface-white {
+  [data-site='meridian'] .mx-surface-white,
+  [data-site='meridian'] .mx-surface-stone {
     --mx-bg: var(--mx-ivory);
     --mx-fg: var(--mx-ink);
     --mx-fg-2: var(--mx-ink-2);
     --mx-fg-3: var(--mx-ink-3);
-    --mx-line: rgb(16 28 44 / 0.12);
-    --mx-line-strong: rgb(16 28 44 / 0.24);
-    --mx-accent: var(--mx-teal-ink);
-    --mx-accent-2: var(--mx-amber-ink);
-    --mx-focus: var(--mx-teal-ink);
-    --mx-raised: var(--mx-white);
-    --mx-sunken: var(--mx-ivory-deep);
-    --mx-input-bg: var(--mx-white);
+    --mx-line: rgb(32 43 41 / 0.13);
+    --mx-line-strong: rgb(32 43 41 / 0.26);
+    --mx-accent: var(--mx-green);
+    --mx-accent-2: var(--mx-brass-ink);
+    --mx-mark: var(--mx-brass);
+    --mx-focus: var(--mx-green);
+    --mx-raised: var(--mx-paper);
+    --mx-sunken: var(--mx-stone);
+    --mx-input-bg: var(--mx-paper);
+    --mx-cta-bg: var(--mx-green);
+    --mx-cta-fg: var(--mx-ivory);
+    --mx-cta-hover: var(--mx-charcoal);
     background-color: var(--mx-bg);
     color: var(--mx-fg);
   }
 
   [data-site='meridian'] .mx-surface-white {
-    --mx-bg: var(--mx-white);
+    --mx-bg: var(--mx-paper);
     --mx-raised: var(--mx-ivory);
     --mx-input-bg: var(--mx-ivory);
   }
 
+  [data-site='meridian'] .mx-surface-stone {
+    --mx-bg: var(--mx-stone);
+    --mx-line: rgb(32 43 41 / 0.15);
+    --mx-raised: var(--mx-ivory);
+    --mx-sunken: var(--mx-stone-deep);
+    --mx-input-bg: var(--mx-ivory);
+  }
+
+  /* Charcoal: immersive chapters. Green: institutional surfaces. */
   [data-site='meridian'] .mx-surface-dark,
-  [data-site='meridian'] .mx-surface-navy {
-    --mx-bg: var(--mx-midnight);
+  [data-site='meridian'] .mx-surface-navy,
+  [data-site='meridian'] .mx-surface-green {
+    --mx-bg: var(--mx-charcoal);
     --mx-fg: var(--mx-ivory);
-    --mx-fg-2: rgb(246 243 236 / 0.78);
-    --mx-fg-3: rgb(246 243 236 / 0.6);
-    --mx-line: rgb(246 243 236 / 0.12);
-    --mx-line-strong: rgb(246 243 236 / 0.26);
-    --mx-accent: var(--mx-cyan);
-    --mx-accent-2: var(--mx-amber);
-    --mx-focus: var(--mx-cyan);
-    --mx-raised: var(--mx-navy);
-    --mx-sunken: #0b1521;
-    --mx-input-bg: rgb(246 243 236 / 0.06);
+    --mx-fg-2: rgb(250 248 242 / 0.8);
+    --mx-fg-3: rgb(250 248 242 / 0.64);
+    --mx-line: rgb(250 248 242 / 0.13);
+    --mx-line-strong: rgb(250 248 242 / 0.28);
+    --mx-accent: var(--mx-brass-light);
+    --mx-accent-2: var(--mx-brass-light);
+    --mx-mark: var(--mx-brass);
+    --mx-focus: var(--mx-brass-light);
+    --mx-raised: var(--mx-green);
+    --mx-sunken: var(--mx-charcoal-deep);
+    --mx-input-bg: rgb(250 248 242 / 0.06);
+    --mx-cta-bg: var(--mx-brass);
+    --mx-cta-fg: var(--mx-charcoal);
+    --mx-cta-hover: var(--mx-brass-light);
     background-color: var(--mx-bg);
     color: var(--mx-fg);
   }
 
-  [data-site='meridian'] .mx-surface-navy {
-    --mx-bg: var(--mx-navy);
-    --mx-raised: var(--mx-navy-raised);
+  [data-site='meridian'] .mx-surface-navy,
+  [data-site='meridian'] .mx-surface-green {
+    --mx-bg: var(--mx-green);
+    --mx-fg-3: rgb(250 248 242 / 0.74);
+    --mx-raised: var(--mx-green-raised);
+    --mx-sunken: #2a3f37;
+  }
+
+  /* Paper grain overlay for editorial surfaces (opt-in) */
+  [data-site='meridian'] .mx-grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  [data-site='meridian'] .mx-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--mx-grain);
+    opacity: 0.09;
+    mix-blend-mode: multiply;
+  }
+
+  [data-site='meridian'] :is(.mx-surface-dark, .mx-surface-green, .mx-surface-navy).mx-grain::before {
+    opacity: 0.16;
+    mix-blend-mode: screen;
+    filter: invert(1);
   }
 
   /* -----------------------------------------------------------------------
@@ -177,9 +254,10 @@
 
   [data-site='meridian'] :where(h1, h2, h3, h4, h5, h6) {
     font-family: var(--mx-font-display);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.12;
+    font-weight: 400;
+    font-synthesis: none;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
     text-wrap: balance;
     color: inherit;
   }
@@ -189,8 +267,8 @@
   }
 
   [data-site='meridian'] ::selection {
-    background: var(--mx-amber);
-    color: var(--mx-midnight);
+    background: var(--mx-brass-light);
+    color: var(--mx-charcoal);
   }
 
   [data-site='meridian'] :focus-visible {
@@ -217,8 +295,8 @@
   [data-site='meridian']:lang(gu) :where(h1, h2, h3, h4, h5, h6),
   [data-site='meridian']:lang(hi) :where(h1, h2, h3, h4, h5, h6) {
     letter-spacing: 0;
-    line-height: 1.32;
-    font-weight: 600;
+    line-height: 1.36;
+    font-weight: 500;
   }
 }
 
@@ -249,51 +327,54 @@
     padding-top: calc(var(--mx-header-h) + clamp(2.5rem, 1rem + 5vw, 6rem));
   }
 
-  /* Typography ------------------------------------------------------------ */
+  /* Typography ------------------------------------------------------------
+     Three voices: Instrument Serif (display, one weight — hierarchy comes
+     from size and italic, never faux bold), Manrope (reading), IBM Plex
+     Mono (the instrument voice: labels, figures, measurements). */
   [data-site='meridian'] .mx-display {
     font-family: var(--mx-font-display);
-    font-size: clamp(2.6rem, 1.1rem + 5.2vw, 6.25rem);
+    font-size: clamp(3rem, 1.4rem + 6.4vw, 7.75rem);
     font-weight: 400;
-    line-height: 0.98;
-    letter-spacing: -0.04em;
+    line-height: 0.94;
+    letter-spacing: -0.025em;
   }
 
   [data-site='meridian'] .mx-h1 {
     font-family: var(--mx-font-display);
-    font-size: clamp(2.3rem, 1.2rem + 4vw, 4.75rem);
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 5.75rem);
     font-weight: 400;
-    line-height: 1.02;
-    letter-spacing: -0.035em;
+    line-height: 0.98;
+    letter-spacing: -0.022em;
   }
 
   [data-site='meridian'] .mx-h2 {
     font-family: var(--mx-font-display);
-    font-size: clamp(1.9rem, 1.15rem + 2.7vw, 3.5rem);
+    font-size: clamp(2.15rem, 1.3rem + 3.1vw, 4.25rem);
     font-weight: 400;
-    line-height: 1.06;
-    letter-spacing: -0.03em;
+    line-height: 1.02;
+    letter-spacing: -0.018em;
   }
 
   [data-site='meridian'] .mx-h3 {
     font-family: var(--mx-font-display);
-    font-size: clamp(1.3rem, 1.05rem + 0.85vw, 1.75rem);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.018em;
+    font-size: clamp(1.55rem, 1.2rem + 1.1vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
   }
 
   [data-site='meridian'] .mx-h4 {
     font-family: var(--mx-font-display);
-    font-size: 1.125rem;
-    font-weight: 500;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.3rem, 1.15rem + 0.4vw, 1.5rem);
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -0.005em;
   }
 
   [data-site='meridian'] .mx-lede {
-    font-family: var(--mx-font-serif);
-    font-size: clamp(1.2rem, 1rem + 0.75vw, 1.6rem);
-    line-height: 1.45;
+    font-family: var(--mx-font-display);
+    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem);
+    line-height: 1.3;
     font-weight: 400;
     letter-spacing: -0.005em;
     color: var(--mx-fg-2);
@@ -306,20 +387,21 @@
   }
 
   [data-site='meridian'] .mx-serif-accent {
-    font-family: var(--mx-font-serif);
+    font-family: var(--mx-font-display);
     font-style: italic;
     font-weight: 400;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
   }
 
+  /* Eyebrow: numbered, mono, with a short brass rule — a journal folio. */
   [data-site='meridian'] .mx-eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    font-family: var(--mx-font-sans);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    gap: 0.7rem;
+    font-family: var(--mx-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
     line-height: 1.4;
     text-transform: uppercase;
     color: var(--mx-accent);
@@ -328,7 +410,17 @@
   [data-site='meridian'] .mx-eyebrow-index {
     font-variant-numeric: tabular-nums;
     color: var(--mx-fg-3);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
+  }
+
+  [data-site='meridian'] .mx-eyebrow-index::after {
+    content: '';
+    display: inline-block;
+    width: 1.75rem;
+    height: 1px;
+    margin-left: 0.7rem;
+    vertical-align: middle;
+    background: var(--mx-mark);
   }
 
   [data-site='meridian'] .mx-meta {
@@ -340,53 +432,72 @@
   [data-site='meridian'] .mx-numeric {
     font-family: var(--mx-font-display);
     font-variant-numeric: tabular-nums lining-nums;
-    letter-spacing: -0.04em;
-    font-weight: 300;
+    letter-spacing: -0.03em;
+    font-weight: 400;
   }
 
   [data-site='meridian'] .mx-mono-label {
+    font-family: var(--mx-font-mono);
     font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
     color: var(--mx-fg-3);
   }
 
-  /* Gujarati / Hindi typographic adjustments */
+  /* Instrument readout — values in simulations and data figures */
+  [data-site='meridian'] .mx-readout {
+    font-family: var(--mx-font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* Gujarati / Hindi: serif display voice from Noto Serif; never italic,
+     never tracked, taller lines; mono labels fall back to Noto Sans. */
+  [data-site='meridian']:lang(gu) :is(.mx-display, .mx-h1, .mx-h2, .mx-h3, .mx-h4, .mx-lede, .mx-numeric),
+  [data-site='meridian']:lang(hi) :is(.mx-display, .mx-h1, .mx-h2, .mx-h3, .mx-h4, .mx-lede, .mx-numeric) {
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+
   [data-site='meridian']:lang(gu) :is(.mx-display, .mx-h1, .mx-h2),
   [data-site='meridian']:lang(hi) :is(.mx-display, .mx-h1, .mx-h2) {
-    letter-spacing: 0;
-    line-height: 1.28;
-    font-weight: 600;
+    line-height: 1.3;
   }
 
   [data-site='meridian']:lang(gu) .mx-display,
   [data-site='meridian']:lang(hi) .mx-display {
-    font-size: clamp(2.2rem, 1rem + 4.8vw, 5.4rem);
+    font-size: clamp(2.2rem, 1rem + 4.6vw, 5.4rem);
   }
 
   [data-site='meridian']:lang(gu) .mx-h1,
   [data-site='meridian']:lang(hi) .mx-h1 {
-    font-size: clamp(2rem, 1.1rem + 3.2vw, 4rem);
+    font-size: clamp(2rem, 1.1rem + 3.2vw, 4.1rem);
   }
 
-  [data-site='meridian']:lang(gu) .mx-h3,
-  [data-site='meridian']:lang(hi) .mx-h3 {
-    letter-spacing: 0;
-    line-height: 1.4;
-    font-weight: 600;
+  [data-site='meridian']:lang(gu) .mx-h2,
+  [data-site='meridian']:lang(hi) .mx-h2 {
+    font-size: clamp(1.75rem, 1.1rem + 2.3vw, 3.25rem);
+  }
+
+  [data-site='meridian']:lang(gu) :is(.mx-h3, .mx-h4),
+  [data-site='meridian']:lang(hi) :is(.mx-h3, .mx-h4) {
+    line-height: 1.42;
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.6rem);
   }
 
   [data-site='meridian']:lang(gu) :is(.mx-eyebrow, .mx-mono-label),
   [data-site='meridian']:lang(hi) :is(.mx-eyebrow, .mx-mono-label) {
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     font-size: 0.8125rem;
+    text-transform: none;
   }
 
   [data-site='meridian']:lang(gu) .mx-serif-accent,
   [data-site='meridian']:lang(hi) .mx-serif-accent {
-    font-family: var(--mx-font-display);
     font-style: normal;
     letter-spacing: 0;
     color: var(--mx-accent-2);
@@ -395,6 +506,7 @@
   [data-site='meridian']:lang(gu) .mx-lede,
   [data-site='meridian']:lang(hi) .mx-lede {
     font-family: var(--mx-font-sans);
+    font-weight: 400;
     font-size: clamp(1.1rem, 1rem + 0.45vw, 1.35rem);
     line-height: 1.75;
   }
@@ -410,16 +522,16 @@
     justify-content: center;
     gap: 0.6rem;
     min-height: 3rem;
-    padding: 0.7rem 1.4rem;
-    border-radius: var(--mx-radius-pill);
+    padding: 0.7rem 1.35rem;
+    border-radius: var(--mx-radius-sm);
     border: 1px solid var(--mx-btn-border);
     background: var(--mx-btn-bg);
     color: var(--mx-btn-fg);
     font-family: var(--mx-font-sans);
     font-size: 0.9375rem;
-    font-weight: 650;
+    font-weight: 600;
     line-height: 1.2;
-    letter-spacing: 0.005em;
+    letter-spacing: 0.01em;
     text-align: center;
     text-wrap: balance;
     cursor: pointer;
@@ -452,37 +564,39 @@
     transform: translateX(3px);
   }
 
+  /* Primary: Heritage Green on light surfaces, Brass on dark ones —
+     the nearest surface sets --mx-cta-*, so nesting always resolves. */
   [data-site='meridian'] .mx-btn-primary {
-    --mx-btn-bg: var(--mx-amber);
-    --mx-btn-fg: var(--mx-midnight);
-    --mx-btn-border: var(--mx-amber);
+    --mx-btn-bg: var(--mx-cta-bg);
+    --mx-btn-fg: var(--mx-cta-fg);
+    --mx-btn-border: var(--mx-cta-bg);
   }
 
   [data-site='meridian'] .mx-btn-primary:hover {
-    --mx-btn-bg: var(--mx-amber-bright);
-    --mx-btn-border: var(--mx-amber-bright);
-    box-shadow: 0 10px 30px -12px rgb(233 169 75 / 0.6);
+    --mx-btn-bg: var(--mx-cta-hover);
+    --mx-btn-border: var(--mx-cta-hover);
+    box-shadow: 0 12px 28px -16px rgb(24 33 31 / 0.65);
   }
 
   [data-site='meridian'] .mx-btn-ink {
-    --mx-btn-bg: var(--mx-midnight);
+    --mx-btn-bg: var(--mx-charcoal);
     --mx-btn-fg: var(--mx-ivory);
-    --mx-btn-border: var(--mx-midnight);
+    --mx-btn-border: var(--mx-charcoal);
   }
 
   [data-site='meridian'] .mx-btn-ink:hover {
-    --mx-btn-bg: var(--mx-navy);
-    --mx-btn-border: var(--mx-navy);
+    --mx-btn-bg: var(--mx-green);
+    --mx-btn-border: var(--mx-green);
   }
 
   [data-site='meridian'] .mx-btn-light {
     --mx-btn-bg: var(--mx-ivory);
-    --mx-btn-fg: var(--mx-midnight);
+    --mx-btn-fg: var(--mx-charcoal);
     --mx-btn-border: var(--mx-ivory);
   }
 
   [data-site='meridian'] .mx-btn-light:hover {
-    --mx-btn-bg: var(--mx-white);
+    --mx-btn-bg: var(--mx-stone);
   }
 
   [data-site='meridian'] .mx-btn-ghost:hover {
@@ -624,24 +738,26 @@
     mask-image: radial-gradient(ellipse at 50% 40%, black 30%, transparent 75%);
   }
 
+  /* Night sky: fixed, sparse stars in ivory with a few brass — no colour noise. */
   [data-site='meridian'] .mx-starfield {
     background-image:
-      radial-gradient(1px 1px at 12% 18%, rgb(246 243 236 / 0.55), transparent 60%),
-      radial-gradient(1px 1px at 72% 12%, rgb(246 243 236 / 0.4), transparent 60%),
-      radial-gradient(1.5px 1.5px at 38% 66%, rgb(82 213 232 / 0.55), transparent 60%),
-      radial-gradient(1px 1px at 86% 54%, rgb(246 243 236 / 0.45), transparent 60%),
-      radial-gradient(1px 1px at 22% 84%, rgb(246 243 236 / 0.3), transparent 60%),
-      radial-gradient(1.5px 1.5px at 58% 34%, rgb(233 169 75 / 0.5), transparent 60%),
-      radial-gradient(1px 1px at 94% 88%, rgb(246 243 236 / 0.35), transparent 60%),
-      radial-gradient(1px 1px at 6% 52%, rgb(246 243 236 / 0.4), transparent 60%);
+      radial-gradient(1px 1px at 12% 18%, rgb(250 248 242 / 0.55), transparent 60%),
+      radial-gradient(1px 1px at 72% 12%, rgb(250 248 242 / 0.4), transparent 60%),
+      radial-gradient(1.5px 1.5px at 38% 66%, rgb(250 248 242 / 0.5), transparent 60%),
+      radial-gradient(1px 1px at 86% 54%, rgb(250 248 242 / 0.45), transparent 60%),
+      radial-gradient(1px 1px at 22% 84%, rgb(250 248 242 / 0.3), transparent 60%),
+      radial-gradient(1.5px 1.5px at 58% 34%, rgb(211 179 135 / 0.55), transparent 60%),
+      radial-gradient(1px 1px at 94% 88%, rgb(250 248 242 / 0.35), transparent 60%),
+      radial-gradient(1px 1px at 6% 52%, rgb(250 248 242 / 0.4), transparent 60%);
     background-size: 420px 420px;
   }
 
+  /* Atmosphere: a quiet vignette and a low green horizon — light falling
+     in a museum gallery, not a glow effect. */
   [data-site='meridian'] .mx-atmosphere {
     background:
-      radial-gradient(60% 55% at 78% 30%, rgb(36 166 160 / 0.16), transparent 70%),
-      radial-gradient(40% 40% at 88% 78%, rgb(233 169 75 / 0.1), transparent 70%),
-      radial-gradient(70% 60% at 0% 100%, rgb(82 213 232 / 0.08), transparent 70%);
+      radial-gradient(120% 80% at 70% 20%, transparent 40%, rgb(24 33 31 / 0.55) 100%),
+      linear-gradient(180deg, transparent 55%, rgb(52 76 67 / 0.35) 100%);
   }
 
   /* Specimen plate — image frame with instrument corner ticks */
@@ -655,7 +771,7 @@
 
   [data-site='meridian'] .mx-ticks {
     --mx-tick: 14px;
-    --mx-tick-color: rgb(246 243 236 / 0.85);
+    --mx-tick-color: rgb(250 248 242 / 0.85);
     position: absolute;
     inset: 12px;
     z-index: 2;
@@ -689,7 +805,7 @@
   }
 
   [data-site='meridian'] .mx-scrim {
-    background: linear-gradient(180deg, rgb(16 28 44 / 0) 35%, rgb(16 28 44 / 0.88) 100%);
+    background: linear-gradient(180deg, rgb(32 43 41 / 0) 35%, rgb(32 43 41 / 0.88) 100%);
   }
 
   /* Surfaces that lift on hover */
@@ -764,7 +880,7 @@
   [data-site='meridian'] select.mx-input {
     appearance: none;
     padding-right: 2.5rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2356616f' stroke-width='1.6' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2359645f' stroke-width='1.6' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.9rem center;
   }
@@ -871,8 +987,9 @@
     max-width: 72ch;
   }
 
+  /* Top margin comes from the sibling rule above; only reset the bottom. */
   [data-site='meridian'] .mx-prose p {
-    margin-block: 0;
+    margin-bottom: 0;
   }
 
   [data-site='meridian'] .mx-prose a {
@@ -1040,24 +1157,27 @@
 
   [data-site='meridian'] .mx-header[data-mode='overlay-dark'] {
     --mx-fg: var(--mx-ivory);
-    --mx-fg-2: rgb(246 243 236 / 0.8);
-    --mx-fg-3: rgb(246 243 236 / 0.62);
-    --mx-line: rgb(246 243 236 / 0.14);
-    --mx-line-strong: rgb(246 243 236 / 0.3);
-    --mx-accent: var(--mx-cyan);
-    --mx-focus: var(--mx-cyan);
-    background: linear-gradient(180deg, rgb(16 28 44 / 0.55), rgb(16 28 44 / 0));
+    --mx-fg-2: rgb(250 248 242 / 0.8);
+    --mx-fg-3: rgb(250 248 242 / 0.62);
+    --mx-line: rgb(250 248 242 / 0.14);
+    --mx-line-strong: rgb(250 248 242 / 0.3);
+    --mx-accent: var(--mx-brass-light);
+    --mx-focus: var(--mx-brass-light);
+    --mx-cta-bg: var(--mx-brass);
+    --mx-cta-fg: var(--mx-charcoal);
+    --mx-cta-hover: var(--mx-brass-light);
+    background: linear-gradient(180deg, rgb(24 33 31 / 0.6), rgb(24 33 31 / 0));
   }
 
   [data-site='meridian'] .mx-header[data-mode='overlay-light'] {
-    background: linear-gradient(180deg, rgb(246 243 236 / 0.85), rgb(246 243 236 / 0));
+    background: linear-gradient(180deg, rgb(250 248 242 / 0.85), rgb(250 248 242 / 0));
   }
 
   [data-site='meridian'] .mx-header[data-mode='solid'] {
-    background: rgb(246 243 236 / 0.88);
-    backdrop-filter: saturate(160%) blur(14px);
-    -webkit-backdrop-filter: saturate(160%) blur(14px);
-    box-shadow: 0 1px 0 rgb(16 28 44 / 0.1);
+    background: rgb(250 248 242 / 0.92);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    box-shadow: 0 1px 0 rgb(32 43 41 / 0.1);
   }
 
   @supports not (backdrop-filter: blur(1px)) {
@@ -1135,7 +1255,7 @@
     border-radius: var(--mx-radius-md);
     background: var(--mx-white);
     color: var(--mx-ink);
-    border: 1px solid rgb(16 28 44 / 0.08);
+    border: 1px solid rgb(32 43 41 / 0.08);
     box-shadow: var(--mx-shadow-lg);
     transform: translateX(-50%);
     --mx-fg: var(--mx-ink);
@@ -1271,7 +1391,7 @@
 
   /* Dialogs */
   [data-site='meridian'] dialog.mx-dialog::backdrop {
-    background: rgb(16 28 44 / 0.78);
+    background: rgb(32 43 41 / 0.78);
     backdrop-filter: blur(6px);
   }
 
@@ -1419,5 +1539,430 @@
   [data-site='meridian'] .group:hover .mx-zoom img,
   [data-site='meridian'] .mx-zoom:hover img {
     transform: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Scroll story — SVG atom highlight (the WebGL atom does the same in 3D)
+   ------------------------------------------------------------------------- */
+@layer components {
+  [data-site='meridian'] .mx-atom .mx-atom-orbit,
+  [data-site='meridian'] .mx-atom .mx-atom-electron,
+  [data-site='meridian'] .mx-atom .mx-atom-nucleus {
+    transition: opacity var(--mx-duration-slow) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-atom[data-focus='nucleus'] .mx-atom-orbit,
+  [data-site='meridian'] .mx-atom[data-focus='nucleus'] .mx-atom-electron,
+  [data-site='meridian'] .mx-atom[data-focus='electrons'] .mx-atom-orbit,
+  [data-site='meridian'] .mx-atom[data-focus='electrons'] .mx-atom-nucleus,
+  [data-site='meridian'] .mx-atom[data-focus='orbits'] .mx-atom-electron,
+  [data-site='meridian'] .mx-atom[data-focus='orbits'] .mx-atom-nucleus {
+    opacity: 0.15;
+  }
+
+  [data-site='meridian'] .mx-atom[data-focus='orbits'] .mx-atom-orbit {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-site='meridian'] .mx-atom .mx-atom-orbit,
+    [data-site='meridian'] .mx-atom .mx-atom-electron,
+    [data-site='meridian'] .mx-atom .mx-atom-nucleus {
+      transition: none;
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------
+   6. Illustrated science journal — annotations, figures, measurement marks
+   ------------------------------------------------------------------------- */
+@layer components {
+  /* Annotation: mono label with a brass leader line, as pencilled in a notebook */
+  [data-site='meridian'] .mx-annot {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--mx-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    color: var(--mx-fg-2);
+  }
+
+  [data-site='meridian'] .mx-annot::before {
+    content: '';
+    flex: none;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--mx-mark);
+  }
+
+  [data-site='meridian'] .mx-annot-end::before {
+    order: 2;
+  }
+
+  [data-site='meridian']:lang(gu) .mx-annot,
+  [data-site='meridian']:lang(hi) .mx-annot {
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-size: 0.8125rem;
+  }
+
+  /* Measurement scale: a ruler used as a section divider */
+  [data-site='meridian'] .mx-scale {
+    --mx-scale-color: var(--mx-line-strong);
+    height: 12px;
+    background:
+      linear-gradient(var(--mx-scale-color), var(--mx-scale-color)) bottom / 100% 1px no-repeat,
+      repeating-linear-gradient(90deg, var(--mx-scale-color) 0 1px, transparent 1px 80px) bottom / 100% 12px no-repeat,
+      repeating-linear-gradient(90deg, var(--mx-scale-color) 0 1px, transparent 1px 16px) bottom / 100% 5px no-repeat;
+  }
+
+  /* Folio: the running header of a journal page */
+  [data-site='meridian'] .mx-folio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--mx-line-strong);
+    font-family: var(--mx-font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mx-fg-3);
+  }
+
+  [data-site='meridian']:lang(gu) .mx-folio,
+  [data-site='meridian']:lang(hi) .mx-folio {
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-size: 0.8125rem;
+  }
+
+  /* Figure caption: "Fig. 03 — caption" */
+  [data-site='meridian'] .mx-figcap {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.8rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--mx-fg-3);
+  }
+
+  [data-site='meridian'] .mx-figcap-num {
+    flex: none;
+    font-family: var(--mx-font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    line-height: 1.85;
+    text-transform: uppercase;
+    color: var(--mx-accent-2);
+  }
+
+  /* Specimen plate corner ticks in brass */
+  [data-site='meridian'] .mx-plate {
+    border-radius: var(--mx-radius-xs);
+  }
+
+  [data-site='meridian'] .mx-ticks {
+    --mx-tick-color: rgb(250 248 242 / 0.9);
+  }
+
+  /* Diagram strokes: hairline ink, brass emphasis, sage secondary */
+  [data-site='meridian'] .mx-diagram {
+    color: var(--mx-fg);
+    overflow: visible;
+  }
+
+  [data-site='meridian'] .mx-diagram :where(text) {
+    font-family: var(--mx-font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    fill: var(--mx-fg-2);
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-ink {
+    stroke: currentColor;
+    stroke-width: 1.1;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-faint {
+    stroke: var(--mx-line-strong);
+    stroke-width: 1;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-mark {
+    stroke: var(--mx-mark);
+    stroke-width: 1.4;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-sage {
+    stroke: var(--mx-sage);
+    stroke-width: 1.2;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-dash {
+    stroke-dasharray: 3 4;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-fill-mark {
+    fill: var(--mx-mark);
+    stroke: none;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-fill-ink {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  [data-site='meridian'] .mx-diagram .mx-d-label-mark {
+    fill: var(--mx-accent-2);
+  }
+
+  /* Draw-on-view. Paths are complete by default (no JS, reduced motion);
+     the client arms them only while they are still off-screen. */
+  [data-site='meridian'] [data-draw='armed'] .mx-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  [data-site='meridian'] [data-draw='armed'] :is(.mx-draw-fade, .mx-diagram text) {
+    opacity: 0;
+  }
+
+  [data-site='meridian'] [data-draw='drawn'] .mx-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset var(--mx-duration-draw) var(--mx-ease-draw);
+    transition-delay: calc(var(--i, 0) * 140ms);
+  }
+
+  [data-site='meridian'] [data-draw='drawn'] :is(.mx-draw-fade, .mx-diagram text) {
+    opacity: 1;
+    transition: opacity 700ms var(--mx-ease-out);
+    transition-delay: calc(500ms + var(--i, 0) * 140ms);
+  }
+
+  /* Ledger list: ruled rows with mono index */
+  [data-site='meridian'] .mx-ledger > * {
+    border-top: 1px solid var(--mx-line);
+  }
+
+  [data-site='meridian'] .mx-ledger > :last-child {
+    border-bottom: 1px solid var(--mx-line);
+  }
+
+  /* Image mask reveal (clip-path) for editorial photographs */
+  [data-site='meridian'] .mx-hover-lift {
+    transition: transform var(--mx-duration-slow) var(--mx-ease-out);
+  }
+
+  @media (hover: hover) {
+    [data-site='meridian'] .group:hover .mx-hover-lift {
+      transform: translateY(-4px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-site='meridian'] [data-draw] .mx-draw,
+    [data-site='meridian'] [data-draw] :is(.mx-draw-fade, .mx-diagram text) {
+      stroke-dashoffset: 0 !important;
+      opacity: 1 !important;
+      transition: none !important;
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------
+   7. Mega-menu
+   ------------------------------------------------------------------------- */
+@layer components {
+  [data-site='meridian'] .mx-mega {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    max-height: calc(100dvh - var(--mx-header-h));
+    overflow-y: auto;
+    border-top: 1px solid var(--mx-line);
+    border-bottom: 1px solid var(--mx-line-strong);
+    box-shadow: 0 40px 80px -40px rgb(24 33 31 / 0.45);
+  }
+
+  [data-site='meridian'] .mx-mega-link {
+    display: block;
+    min-height: 2.75rem;
+    padding: 0.85rem 0 0.95rem;
+    font-size: 0.9375rem;
+    line-height: 1.35;
+    transition: color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-mega-link > span:first-child {
+    background-image: linear-gradient(var(--mx-mark), var(--mx-mark));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--mx-duration-slow) var(--mx-ease-out);
+    width: fit-content;
+  }
+
+  [data-site='meridian'] .mx-mega-link:hover > span:first-child,
+  [data-site='meridian'] .mx-mega-link:focus-visible > span:first-child,
+  [data-site='meridian'] .mx-mega-link[aria-current='page'] > span:first-child {
+    background-size: 100% 1px;
+  }
+
+  [data-site='meridian'] .mx-nav-link[aria-current='page']::before {
+    background: var(--mx-mark);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   8. Hotspots on photographs
+   ------------------------------------------------------------------------- */
+@layer components {
+  [data-site='meridian'] .mx-hotspot {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: -1.375rem 0 0 -1.375rem;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  [data-site='meridian'] .mx-hotspot > span {
+    display: grid;
+    place-items: center;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    border: 1px solid var(--mx-brass-light);
+    background: rgb(24 33 31 / 0.72);
+    color: var(--mx-ivory);
+    font-family: var(--mx-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    box-shadow: 0 0 0 4px rgb(211 179 135 / 0.22);
+    transition:
+      transform var(--mx-duration) var(--mx-ease-out),
+      background-color var(--mx-duration) var(--mx-ease-out),
+      color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-hotspot:hover > span {
+    transform: scale(1.12);
+  }
+
+  [data-site='meridian'] .mx-hotspot[aria-pressed='true'] > span {
+    background: var(--mx-brass-light);
+    color: var(--mx-charcoal);
+    transform: scale(1.12);
+  }
+
+  [data-site='meridian'] .mx-hotspot:focus-visible {
+    outline: none;
+  }
+
+  [data-site='meridian'] .mx-hotspot:focus-visible > span {
+    outline: 2px solid var(--mx-ivory);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-site='meridian'] .mx-hotspot[aria-pressed='false'] > span {
+      animation: mx-hotspot-breathe 3.6s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes mx-hotspot-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgb(211 179 135 / 0.22);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgb(211 179 135 / 0.08);
+  }
+}
+
+@layer components {
+  /* Native range input with a 44px hit area, tinted by the surface accent */
+  [data-site='meridian'] .mx-range {
+    height: 2.75rem;
+    cursor: pointer;
+    accent-color: var(--mx-accent);
+  }
+}
+
+@layer components {
+  /* Journal prose: each H2 opens a ruled section with a short brass mark */
+  [data-site='meridian'] .mx-prose-journal :where(h2) {
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--mx-line);
+    background: linear-gradient(var(--mx-mark), var(--mx-mark)) 0 -0.5px / 2.75rem 2px no-repeat;
+  }
+
+  [data-site='meridian'] .mx-prose-journal > :first-child:is(h2) {
+    margin-top: 0;
+  }
+
+  [data-site='meridian'] .mx-prose-journal blockquote {
+    border-left-color: var(--mx-mark);
+    font-size: 1.45em;
+    line-height: 1.35;
+  }
+
+  [data-site='meridian'] .mx-prose {
+    font-variant-numeric: lining-nums;
+  }
+}
+
+@keyframes mx-lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(1.025);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer components {
+  /* Drop cap for Latin-script journal articles only */
+  [data-site='meridian']:lang(en) .mx-dropcap > p:first-of-type::first-letter {
+    float: left;
+    margin: 0.06em 0.12em 0 0;
+    font-family: var(--mx-font-display);
+    font-size: 4.1em;
+    line-height: 0.8;
+    color: var(--mx-accent);
+  }
+}
+
+/* Reduced motion: scroll-entrance wrappers never hold content back, even
+   before hydration (Framer Motion server-renders the hidden state). */
+@media (prefers-reduced-motion: reduce) {
+  [data-site='meridian'] [data-mx-reveal],
+  [data-site='meridian'] [data-mx-reveal] > * {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
   }
 }

@@ -21,6 +21,7 @@ interface HomeExperiencesProps {
   locale: LocaleCode;
   dict: Dictionary;
   programmes: FeaturedProgramme[];
+  index: string;
 }
 
 interface Facility {
@@ -32,7 +33,7 @@ interface Facility {
   imageClass: string;
 }
 
-export function HomeExperiences({ locale, dict, programmes }: HomeExperiencesProps) {
+export function HomeExperiences({ locale, dict, programmes, index: sectionIndex }: HomeExperiencesProps) {
   const p = `/${locale}`;
   const facilities: Facility[] = [
     {
@@ -42,14 +43,6 @@ export function HomeExperiences({ locale, dict, programmes }: HomeExperiencesPro
       photos: [BRAND_PHOTOS.scienceMuseum],
       className: 'md:col-span-6 lg:col-span-7 lg:row-span-2',
       imageClass: 'aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[34rem]',
-    },
-    {
-      title: dict['mx.home.facility.labs.title'],
-      text: dict['mx.home.facility.labs.text'],
-      href: `${p}/infrastructure`,
-      photos: [BRAND_PHOTOS.chemistryLab, BRAND_PHOTOS.physicsLab, BRAND_PHOTOS.biologyLab],
-      className: 'md:col-span-6 lg:col-span-5',
-      imageClass: 'aspect-[16/9]',
     },
     {
       title: dict['mx.home.facility.astronomy.title'],
@@ -72,8 +65,8 @@ export function HomeExperiences({ locale, dict, programmes }: HomeExperiencesPro
       text: dict['mx.home.facility.auditorium.text'],
       href: `${p}/infrastructure`,
       photos: [BRAND_PHOTOS.lectureHall],
-      className: 'md:col-span-12 lg:col-span-7',
-      imageClass: 'aspect-[16/10] md:aspect-[21/9] lg:aspect-[16/8]',
+      className: 'md:col-span-12',
+      imageClass: 'aspect-[16/10] md:aspect-[21/9] lg:aspect-[24/9]',
     },
   ];
 
@@ -89,7 +82,7 @@ export function HomeExperiences({ locale, dict, programmes }: HomeExperiencesPro
       <div className="mx-container">
         <SectionHeading
           id="home-experiences-title"
-          index="03"
+          index={sectionIndex}
           eyebrow={dict['mx.home.experiencesEyebrow']}
           title={dict['mx.home.experiencesTitle']}
           accent={dict['mx.home.experiencesTitleAccent']}

@@ -11,6 +11,7 @@ import { getSiteSettings } from '@/server/services/settings';
 import { getPastEvents, getUpcomingEvents, type PublicEvent } from '@/server/public/queries';
 import { PageHero } from '@/components/meridian/layout/page-hero';
 import { EventCard } from '@/components/meridian/cards/event-card';
+import { MonthRuler } from '@/components/meridian/cards/month-ruler';
 import { Reveal } from '@/components/meridian/motion/reveal';
 import { EmptyState } from '@/components/meridian/states/states';
 
@@ -63,7 +64,8 @@ export default async function EventsPage({ params }: EventsPageProps) {
         breadcrumbLabel={dict['nav.breadcrumb']}
         crumbs={[{ label: dict['events.title'] }]}
         eyebrow={dict['home.events.eyebrow']}
-        title={dict['events.title']}
+        title={dict['mx.events.title']}
+        accent={dict['mx.events.titleAccent']}
         intro={dict['events.intro']}
         motif="meridian"
         meta={
@@ -87,19 +89,28 @@ export default async function EventsPage({ params }: EventsPageProps) {
 
       <section id="upcoming" aria-labelledby="upcoming-title" className="mx-surface-ivory mx-section !pt-16 scroll-mt-24">
         <div className="mx-container">
-          <h2 id="upcoming-title" className="mx-h2">
-            {dict['events.upcoming']}
-          </h2>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] lg:items-end">
+            <h2 id="upcoming-title" className="mx-h2">
+              {dict['events.upcoming']}
+            </h2>
+            <div>
+              <p className="mx-mono-label mb-4">{dict['mx.events.ruler']}</p>
+              <MonthRuler events={upcoming} locale={locale} label={dict['mx.events.ruler']} />
+            </div>
+          </div>
           <div className="mt-10">
             {featured ? (
               <>
                 <Reveal>
+                  <div id={`event-${featured.id}`} className="scroll-mt-28" />
                   <EventCard event={featured} locale={locale} dict={dict} variant="feature" headingLevel="h3" />
                 </Reveal>
                 {rest.length ? (
                   <div className="mt-12 border-b border-(--mx-line)">
                     {rest.map((event) => (
-                      <EventCard key={event.id} event={event} locale={locale} dict={dict} />
+                      <div key={event.id} id={`event-${event.id}`} className="scroll-mt-28">
+                        <EventCard event={event} locale={locale} dict={dict} />
+                      </div>
                     ))}
                   </div>
                 ) : null}
@@ -107,7 +118,7 @@ export default async function EventsPage({ params }: EventsPageProps) {
             ) : (
               <EmptyState
                 title={dict['events.empty']}
-                body={<p>{dict['home.events.empty']}</p>}
+                body={<p>{dict['mx.events.rulerEmpty']}</p>}
                 action={
                   <>
                     {calendar ? (

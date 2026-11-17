@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, MotionConfig, type Variants } from 'framer-motion';
+import { motion, MotionConfig, useReducedMotion, type Variants } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
@@ -47,11 +47,14 @@ interface RevealProps {
 /** Scroll-triggered entrance for below-the-fold content. Plays once. */
 export function Reveal({ children, className, delay = 0, variant = 'up', as = 'div' }: RevealProps) {
   const Component = motion[as];
+  // Reduced motion: content is never hidden waiting for an entrance.
+  const reduce = useReducedMotion();
   return (
     <Component
+      data-mx-reveal=""
       className={className}
       variants={VARIANTS[variant]}
-      initial="hidden"
+      initial={reduce ? false : 'hidden'}
       whileInView="visible"
       viewport={{ once: true, margin: '0px 0px -12% 0px' }}
       custom={delay}
@@ -74,10 +77,12 @@ export function Stagger({
   as?: 'div' | 'ul' | 'ol';
 }) {
   const Component = motion[as];
+  const reduce = useReducedMotion();
   return (
     <Component
+      data-mx-reveal=""
       className={className}
-      initial="hidden"
+      initial={reduce ? false : 'hidden'}
       whileInView="visible"
       viewport={{ once: true, margin: '0px 0px -10% 0px' }}
       variants={{ hidden: {}, visible: { transition: { staggerChildren: gap } } }}
@@ -99,6 +104,7 @@ export function StaggerItem({
   const Component = motion[as];
   return (
     <Component
+      data-mx-reveal=""
       className={className}
       variants={{
         hidden: { opacity: 0, y: 24 },

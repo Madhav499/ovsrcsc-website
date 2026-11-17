@@ -45,7 +45,6 @@ export function SectionHeading({
         {eyebrow ? (
           <p className="mx-eyebrow">
             {index ? <span className="mx-eyebrow-index">{index}</span> : null}
-            {index ? <span aria-hidden="true" className="h-px w-6 bg-current opacity-50" /> : null}
             {eyebrow}
           </p>
         ) : null}

@@ -1,31 +1,42 @@
-import { Manrope, Noto_Sans_Devanagari, Noto_Sans_Gujarati, Sora } from 'next/font/google';
+import localFont from 'next/font/local';
 
-export const fontDisplay = Sora({
-  subsets: ['latin'],
+/*
+ * Admin typography (used by src/app/(admin)/layout.tsx). Same families and
+ * CSS variables as before, now self-hosted from src/assets/fonts (SIL OFL 1.1)
+ * so a production build never depends on a Google Fonts request — those
+ * requests intermittently failed the whole build.
+ */
+
+export const fontDisplay = localFont({
+  src: '../assets/fonts/sora-latin-wght-normal.woff2',
+  weight: '100 800',
   variable: '--font-display',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  fallback: ['system-ui', 'Segoe UI', 'sans-serif'],
 });
 
-export const fontBody = Manrope({
-  subsets: ['latin'],
+export const fontBody = localFont({
+  src: '../assets/fonts/manrope-latin-wght-normal.woff2',
+  weight: '200 800',
   variable: '--font-body',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  fallback: ['system-ui', 'Segoe UI', 'sans-serif'],
 });
 
-export const fontGujarati = Noto_Sans_Gujarati({
-  subsets: ['gujarati'],
+export const fontGujarati = localFont({
+  src: '../assets/fonts/noto-sans-gujarati-gujarati-wght-normal.woff2',
+  weight: '100 900',
   variable: '--font-gujarati',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  preload: false,
 });
 
-export const fontDevanagari = Noto_Sans_Devanagari({
-  subsets: ['devanagari'],
+export const fontDevanagari = localFont({
+  src: '../assets/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2',
+  weight: '100 900',
   variable: '--font-devanagari',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  preload: false,
 });
 
 export const fontVariables = [

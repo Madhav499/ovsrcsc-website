@@ -5,7 +5,8 @@ import type { Dictionary } from '@/i18n';
 import type { LocaleCode } from '@/lib/constants';
 import { formatDate } from '@/lib/dates';
 import type { PublicEvent, PublicNotice } from '@/server/public/queries';
-import { AtomStage } from '@/components/meridian/visualizations/atom-stage';
+import { AtomExplorer } from '@/components/meridian/story/atom-explorer';
+import { ScrollLinked } from '@/components/meridian/story/scroll-linked';
 import { BRAND_PHOTOS } from '@/components/meridian/media/brand-photos';
 
 interface HomeHeroProps {
@@ -44,12 +45,20 @@ export function HomeHero({ locale, dict, nextEvent, latestNotice }: HomeHeroProp
       className="mx-surface-dark relative isolate flex min-h-[100svh] flex-col overflow-hidden"
     >
       <div aria-hidden="true" className="mx-atmosphere pointer-events-none absolute inset-0 -z-20" />
-      <div aria-hidden="true" className="mx-starfield pointer-events-none absolute inset-0 -z-20 opacity-80" />
+      <ScrollLinked
+        className="pointer-events-none absolute inset-0 -z-20"
+        offset={['start start', 'end start']}
+        y={[0, 140]}
+        opacity={[1, 0.4]}
+        rest="start"
+      >
+        <div aria-hidden="true" className="mx-starfield absolute inset-0 opacity-80" />
+      </ScrollLinked>
       <div aria-hidden="true" className="mx-gridlines pointer-events-none absolute inset-0 -z-20 opacity-40" />
 
       <div className="mx-container relative flex flex-1 flex-col pb-10 pt-[calc(var(--mx-header-h)+2.5rem)] lg:pt-[calc(var(--mx-header-h)+3rem)]">
         <div className="grid flex-1 items-center gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-4">
-          <div className="relative z-10 min-w-0">
+          <ScrollLinked className="relative z-10 min-w-0" offset={['start start', 'end start']} y={[0, -90]} opacity={[1, 0.15]} rest="start">
             <p className="mx-eyebrow mx-enter" style={delay(80)}>
               <span className="size-1.5 rounded-full bg-(--mx-amber)" aria-hidden="true" />
               {dict['mx.home.heroEyebrow']}
@@ -70,7 +79,7 @@ export function HomeHero({ locale, dict, nextEvent, latestNotice }: HomeHeroProp
                 {dict['home.ctaPrimary']}
                 <ArrowRight className="mx-btn-icon" aria-hidden="true" />
               </Link>
-              <Link href={`${p}/contact`} className="mx-btn mx-btn-ghost">
+              <Link href={`${p}/visit`} className="mx-btn mx-btn-ghost">
                 {dict['home.ctaSecondary']}
               </Link>
             </div>
@@ -78,10 +87,30 @@ export function HomeHero({ locale, dict, nextEvent, latestNotice }: HomeHeroProp
               <Award className="mt-0.5 size-4 shrink-0 text-(--mx-amber)" aria-hidden="true" />
               {dict['mx.home.heroAward']}
             </p>
-          </div>
+          </ScrollLinked>
 
           <div className="mx-enter-fade pointer-events-none absolute -right-36 -top-6 -z-10 aspect-square w-[22rem] opacity-[0.22] sm:-right-28 sm:top-24 sm:w-[30rem] sm:opacity-40 lg:pointer-events-auto lg:relative lg:right-auto lg:top-auto lg:z-0 lg:w-full lg:max-w-[40rem] lg:justify-self-end lg:opacity-100" style={delay(200)}>
-            <AtomStage className="size-full" />
+            {/* Specimen-plate labels (desktop, where the atom is the hero's figure) */}
+            <div className="absolute left-0 top-0 z-10 hidden max-w-[19rem] lg:block">
+              <p className="mx-annot">
+                {dict['mx.figure']} 00 · {dict['mx.home.atomFig']}
+              </p>
+              <p className="mt-2 pl-[2.05rem] text-[0.75rem] leading-snug text-(--mx-fg-3)">{dict['mx.home.atomScale']}</p>
+            </div>
+            <AtomExplorer
+              className="size-full"
+              labels={{
+                label: dict['mx.story.atom.label'],
+                hint: dict['mx.story.atom.hint'],
+                rotateLeft: dict['mx.story.atom.rotateLeft'],
+                rotateRight: dict['mx.story.atom.rotateRight'],
+                parts: {
+                  nucleus: { title: dict['mx.story.atom.nucleus'], text: dict['mx.story.atom.nucleusText'] },
+                  electrons: { title: dict['mx.story.atom.electrons'], text: dict['mx.story.atom.electronsText'] },
+                  orbits: { title: dict['mx.story.atom.orbits'], text: dict['mx.story.atom.orbitsText'] },
+                },
+              }}
+            />
           </div>
         </div>
 

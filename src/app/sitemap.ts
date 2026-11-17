@@ -11,7 +11,7 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-const STATIC_PATHS = ['', '/events', '/notices', '/blog', '/gallery', '/downloads', '/contact', '/enquiries'];
+const STATIC_PATHS = ['', '/events', '/notices', '/blog', '/gallery', '/downloads', '/visit', '/contact', '/enquiries'];
 
 function entry(
   origin: string,

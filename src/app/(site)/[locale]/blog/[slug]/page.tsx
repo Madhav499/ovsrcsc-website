@@ -11,6 +11,8 @@ import { getBlogPostBySlug, getPublishedBlogPosts } from '@/server/public/querie
 import { Breadcrumbs } from '@/components/meridian/layout/breadcrumbs';
 import { ArticleCard } from '@/components/meridian/cards/article-card';
 import { CmsImage } from '@/components/meridian/media/cms-image';
+import { repairText } from '@/lib/meridian/text';
+import { ScrollProgress } from '@/components/meridian/story/scroll-progress';
 import { JsonLd } from '@/components/meridian/primitives/json-ld';
 import { Stagger, StaggerItem } from '@/components/meridian/motion/reveal';
 import { FallbackNotice } from '@/components/meridian/states/states';
@@ -45,10 +47,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!isLocale(rawLocale)) notFound();
   const locale: LocaleCode = rawLocale;
   const dict = getDictionary(locale);
-  const post = await getBlogPostBySlug(slug, locale);
-  if (!post) notFound();
+  const found = await getBlogPostBySlug(slug, locale);
+  if (!found) notFound();
+  const post = {
+    ...found,
+    title: repairText(found.title),
+    excerpt: repairText(found.excerpt),
+    translation: { ...found.translation, bodyHtml: repairText(found.translation.bodyHtml) },
+  };
 
-  const recent = await getPublishedBlogPosts(locale, 4);
+  const recent = (await getPublishedBlogPosts(locale, 4)).map((item) => ({ ...item, title: repairText(item.title), summary: repairText(item.summary) }));
   const related = recent.filter((item) => item.slug !== post.slug).slice(0, 3);
   const published = post.publishedAt ?? post.createdAt;
   const minutes = Math.max(1, Math.round(countWords(post.translation.bodyHtml) / 200));
@@ -72,7 +80,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
-      <header data-mx-hero="light" className="mx-surface-ivory relative isolate overflow-hidden">
+      <ScrollProgress />
+      <header data-mx-hero="light" className="mx-surface-stone mx-grain relative isolate overflow-hidden">
         <div aria-hidden="true" className="mx-gridlines pointer-events-none absolute inset-0 -z-10 opacity-50" />
         <div className="mx-container mx-hero-offset pb-12 sm:pb-16">
           <Breadcrumbs
@@ -109,7 +118,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="mx-surface-ivory">
         <article className="mx-container-narrow pb-[var(--mx-space-section)] pt-14 sm:pt-20">
           {post.isFallback ? <FallbackNotice className="mb-10">{dict['page.notTranslated']}</FallbackNotice> : null}
-          <div className="mx-prose" dangerouslySetInnerHTML={{ __html: post.translation.bodyHtml }} />
+          <div className="mx-prose mx-prose-journal mx-dropcap" dangerouslySetInnerHTML={{ __html: post.translation.bodyHtml }} />
           <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-(--mx-line-strong) pt-8">
             <Link href={`${p}/blog`} className="mx-btn mx-btn-ghost">
               <ArrowLeft className="size-4" aria-hidden="true" />

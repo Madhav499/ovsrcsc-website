@@ -1,19 +1,33 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import type { MotionValue } from 'framer-motion';
 import * as THREE from 'three';
 
 /*
  * The official OVSRCSC logo is an atom: three tilted elliptical orbits with
  * coloured electrons around a silver nucleus. This scene reinterprets that
- * mark in the MERIDIAN palette. Geometry is deliberately low-poly.
+ * mark as a brass-and-silver instrument in the heritage palette: polished
+ * metal electrons and nucleons, hairline orbits — no glow effects.
+ *
+ * Everything that changes per frame (scroll progress, the visitor's drag,
+ * the highlighted part) is read from refs and motion values inside
+ * `useFrame`, so React never re-renders while the atom moves.
  */
 
-const CYAN = new THREE.Color('#52D5E8');
-const TEAL = new THREE.Color('#24A6A0');
-const AMBER = new THREE.Color('#E9A94B');
-const IVORY = new THREE.Color('#F6F3EC');
+export type AtomFocus = 'nucleus' | 'electrons' | 'orbits' | null;
+
+export interface AtomControls {
+  /** Visitor-controlled rotation targets, in radians. */
+  yaw: MotionValue<number>;
+  pitch: MotionValue<number>;
+}
+
+const CYAN = new THREE.Color('#D3B387'); // brass light
+const TEAL = new THREE.Color('#A8BAAE'); // sage light
+const AMBER = new THREE.Color('#B18A58'); // brass
+const IVORY = new THREE.Color('#FAF8F2');
 
 const ORBITS: Array<{ tilt: number; color: THREE.Color; speed: number; phase: number }> = [
   { tilt: -Math.PI / 6, color: CYAN, speed: 0.55, phase: 0 },
@@ -24,20 +38,46 @@ const ORBITS: Array<{ tilt: number; color: THREE.Color; speed: number; phase: nu
 const RX = 1.55;
 const RY = 0.52;
 
+interface SceneState {
+  focus: AtomFocus;
+  progress?: MotionValue<number>;
+  controls?: AtomControls;
+}
+
+type SceneRef = React.RefObject<SceneState>;
+
+/** Opacity a part should ease toward for the current highlight. */
+function targetOpacity(part: Exclude<AtomFocus, null>, focus: AtomFocus, base: number) {
+  if (!focus) return base;
+  return focus === part ? 1 : base * 0.18;
+}
+
+function ease(current: number, target: number, delta: number, rate = 6) {
+  return current + (target - current) * Math.min(1, delta * rate);
+}
+
 function Orbit({
   tilt,
   color,
   speed,
   phase,
+  index,
   animate,
+  scene,
 }: {
   tilt: number;
   color: THREE.Color;
   speed: number;
   phase: number;
+  index: number;
   animate: boolean;
+  scene: SceneRef;
 }) {
+  const plane = useRef<THREE.Group>(null);
   const electron = useRef<THREE.Group>(null);
+  const line = useRef<THREE.LineBasicMaterial>(null);
+  const core = useRef<THREE.MeshStandardMaterial>(null);
+  const halo = useRef<THREE.MeshBasicMaterial>(null);
   const t = useRef(phase);
   const geometry = useMemo(() => {
     const curve = new THREE.EllipseCurve(0, 0, RX, RY, 0, Math.PI * 2, false, 0);
@@ -46,26 +86,51 @@ function Orbit({
   }, []);
 
   useFrame((_, delta) => {
-    if (animate) t.current += delta * speed;
+    const { focus, progress } = scene.current;
+    const p = progress?.get() ?? 0;
+    // Scrolling out of the hero "opens" the atom: the orbital planes fan
+    // apart and the electrons quicken, revealing its three-dimensional form.
+    if (animate) t.current += delta * speed * (1 + p * 1.6);
+    if (plane.current) plane.current.rotation.x = 0.35 + p * (index - 1) * 0.55;
     if (electron.current) {
       electron.current.position.set(Math.cos(t.current) * RX, Math.sin(t.current) * RY, 0);
+      const s = focus === 'electrons' ? 1.45 : 1;
+      electron.current.scale.setScalar(ease(electron.current.scale.x, s, delta));
     }
+    if (line.current) line.current.opacity = ease(line.current.opacity, targetOpacity('orbits', focus, 0.7), delta);
+    if (core.current) core.current.opacity = ease(core.current.opacity, targetOpacity('electrons', focus, 1), delta);
+    if (halo.current) halo.current.opacity = ease(halo.current.opacity, targetOpacity('electrons', focus, 0.07), delta);
   });
 
   return (
     <group rotation={[0, 0, tilt]}>
-      <group rotation={[0.35, 0, 0]}>
+      <group ref={plane} rotation={[0.35, 0, 0]}>
         <lineLoop geometry={geometry}>
-          <lineBasicMaterial color={color} transparent opacity={0.7} />
+          <lineBasicMaterial ref={line} color={color} transparent opacity={0.7} />
         </lineLoop>
         <group ref={electron}>
           <mesh>
             <sphereGeometry args={[0.07, 24, 24]} />
-            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.9} roughness={0.35} />
+            <meshStandardMaterial
+              ref={core}
+              color={color}
+              emissive={color}
+              emissiveIntensity={0.25}
+              metalness={0.7}
+              roughness={0.3}
+              transparent
+            />
           </mesh>
           <mesh>
             <sphereGeometry args={[0.16, 16, 16]} />
-            <meshBasicMaterial color={color} transparent opacity={0.16} depthWrite={false} blending={THREE.AdditiveBlending} />
+            <meshBasicMaterial
+              ref={halo}
+              color={color}
+              transparent
+              opacity={0.07}
+              depthWrite={false}
+              blending={THREE.AdditiveBlending}
+            />
           </mesh>
         </group>
       </group>
@@ -73,8 +138,23 @@ function Orbit({
   );
 }
 
-function Nucleus({ animate }: { animate: boolean }) {
+function Nucleus({ animate, scene }: { animate: boolean; scene: SceneRef }) {
   const group = useRef<THREE.Group>(null);
+  const glow = useRef<THREE.MeshBasicMaterial>(null);
+  const materials = useMemo(
+    () => ({
+      ivory: new THREE.MeshStandardMaterial({ color: IVORY, metalness: 0.65, roughness: 0.28, transparent: true }),
+      amber: new THREE.MeshStandardMaterial({ color: AMBER, metalness: 0.2, roughness: 0.28, transparent: true }),
+    }),
+    [],
+  );
+  useEffect(
+    () => () => {
+      materials.ivory.dispose();
+      materials.amber.dispose();
+    },
+    [materials],
+  );
   const particles = useMemo(() => {
     // A small, stable cluster of nucleons on a Fibonacci sphere.
     const count = 14;
@@ -92,33 +172,36 @@ function Nucleus({ animate }: { animate: boolean }) {
   }, []);
 
   useFrame((_, delta) => {
-    if (animate && group.current) {
-      group.current.rotation.y += delta * 0.35;
-      group.current.rotation.x += delta * 0.12;
+    const { focus } = scene.current;
+    const current = group.current;
+    if (!current) return;
+    if (animate) {
+      current.rotation.y += delta * 0.35;
+      current.rotation.x += delta * 0.12;
     }
+    current.scale.setScalar(ease(current.scale.x, focus === 'nucleus' ? 1.6 : 1, delta));
+    const opacity = targetOpacity('nucleus', focus, 1);
+    materials.ivory.opacity = ease(materials.ivory.opacity, opacity, delta);
+    materials.amber.opacity = materials.ivory.opacity;
+    if (glow.current) glow.current.opacity = ease(glow.current.opacity, focus === 'nucleus' ? 0.14 : 0.05, delta);
   });
 
   return (
     <group ref={group}>
       {particles.map((particle, index) => (
-        <mesh key={index} position={particle.position}>
+        <mesh key={index} position={particle.position} material={particle.amber ? materials.amber : materials.ivory}>
           <sphereGeometry args={[0.095, 20, 20]} />
-          <meshStandardMaterial
-            color={particle.amber ? AMBER : IVORY}
-            metalness={particle.amber ? 0.2 : 0.65}
-            roughness={0.28}
-          />
         </mesh>
       ))}
       <mesh>
         <sphereGeometry args={[0.42, 24, 24]} />
-        <meshBasicMaterial color={CYAN} transparent opacity={0.05} depthWrite={false} blending={THREE.AdditiveBlending} />
+        <meshBasicMaterial ref={glow} color={CYAN} transparent opacity={0.05} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
     </group>
   );
 }
 
-function Dust({ animate }: { animate: boolean }) {
+function Dust({ animate, scene }: { animate: boolean; scene: SceneRef }) {
   const points = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
     const count = 320;
@@ -140,7 +223,8 @@ function Dust({ animate }: { animate: boolean }) {
   }, []);
 
   useFrame((_, delta) => {
-    if (animate && points.current) points.current.rotation.y += delta * 0.02;
+    const p = scene.current.progress?.get() ?? 0;
+    if (animate && points.current) points.current.rotation.y += delta * (0.02 + p * 0.12);
   });
 
   return (
@@ -153,22 +237,27 @@ function Dust({ animate }: { animate: boolean }) {
   );
 }
 
-function Rig({ animate, children }: { animate: boolean; children: React.ReactNode }) {
+function Rig({ animate, scene, children }: { animate: boolean; scene: SceneRef; children: React.ReactNode }) {
   const group = useRef<THREE.Group>(null);
   const { pointer } = useThree();
   const clock = useRef(0);
   useFrame((_, delta) => {
     const current = group.current;
     if (!current) return;
+    const { progress, controls } = scene.current;
+    const p = progress?.get() ?? 0;
+    const yaw = controls?.yaw.get() ?? 0;
+    const pitch = controls?.pitch.get() ?? 0;
     if (animate) clock.current += delta;
-    // Keep the atom face-on like the logo: a slow sway plus a gentle ease
-    // toward the pointer for depth, never a full turn that hides the orbits.
+    // Face-on like the logo at rest: a slow sway, a gentle ease toward the
+    // pointer, the visitor's own drag, and a tilt that grows with scroll.
     const sway = Math.sin(clock.current * 0.22) * 0.32;
-    const targetY = sway + (animate ? pointer.x * 0.22 : 0);
-    const targetX = animate ? -pointer.y * 0.16 : 0;
-    const ease = Math.min(1, delta * 2.2);
-    current.rotation.y += (targetY - current.rotation.y) * ease;
-    current.rotation.x += (targetX - current.rotation.x) * ease;
+    const targetY = sway + (animate ? pointer.x * 0.18 : 0) + yaw;
+    const targetX = (animate ? -pointer.y * 0.12 : 0) + pitch + p * 0.85;
+    const rate = Math.min(1, delta * 3);
+    current.rotation.y += (targetY - current.rotation.y) * rate;
+    current.rotation.x += (targetX - current.rotation.x) * rate;
+    current.scale.setScalar(1 + p * 0.3);
   });
   return <group ref={group}>{children}</group>;
 }
@@ -177,13 +266,23 @@ export default function AtomScene({
   animate,
   active,
   onReady,
+  focus = null,
+  progress,
+  controls,
 }: {
   /** False under reduced motion: renders a still frame. */
   animate: boolean;
   /** False when off-screen: stops the render loop entirely. */
   active: boolean;
   onReady?: () => void;
+  focus?: AtomFocus;
+  /** 0 → 1 as the hero scrolls away. */
+  progress?: MotionValue<number>;
+  controls?: AtomControls;
 }) {
+  const scene = useRef<SceneState>({ focus, progress, controls });
+  scene.current = { focus, progress, controls };
+
   return (
     <Canvas
       dpr={[1, 1.75]}
@@ -196,15 +295,15 @@ export default function AtomScene({
     >
       <ambientLight intensity={0.55} />
       <directionalLight position={[3, 4, 5]} intensity={1.6} color="#ffffff" />
-      <pointLight position={[-3, -2, 2]} intensity={6} color="#52D5E8" distance={8} />
-      <pointLight position={[2.5, -1.5, 1]} intensity={4} color="#E9A94B" distance={7} />
-      <Rig animate={animate}>
-        <Nucleus animate={animate} />
-        {ORBITS.map((orbit) => (
-          <Orbit key={orbit.phase} {...orbit} animate={animate} />
+      <pointLight position={[-3, -2, 2]} intensity={6} color="#D3B387" distance={8} />
+      <pointLight position={[2.5, -1.5, 1]} intensity={4} color="#A8BAAE" distance={7} />
+      <Rig animate={animate} scene={scene}>
+        <Nucleus animate={animate} scene={scene} />
+        {ORBITS.map((orbit, index) => (
+          <Orbit key={orbit.phase} {...orbit} index={index} animate={animate} scene={scene} />
         ))}
       </Rig>
-      <Dust animate={animate} />
+      <Dust animate={animate} scene={scene} />
     </Canvas>
   );
 }

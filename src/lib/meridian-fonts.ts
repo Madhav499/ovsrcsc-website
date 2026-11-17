@@ -1,61 +1,87 @@
-import {
-  Manrope,
-  Newsreader,
-  Noto_Sans_Devanagari,
-  Noto_Sans_Gujarati,
-  Sora,
-} from 'next/font/google';
+import localFont from 'next/font/local';
 
 /*
- * Public-site typography for the MERIDIAN design system.
+ * Public-site typography — three voices, self-hosted (no network request at
+ * build time). Files live in src/assets/fonts (SIL Open Font License 1.1,
+ * from the Fontsource distributions; see src/assets/fonts/LICENSE.md).
  * Applied only by the public layout — the admin keeps using `src/lib/fonts.ts`.
  *
- * Sora      — expressive display headings
- * Manrope   — readable body and interface text
- * Newsreader — editorial serif accents (Latin only; Gujarati/Hindi fall back to Noto)
- * Noto Sans Gujarati / Devanagari — script coverage for gu and hi
+ * Instrument Serif — display headlines (editorial voice)
+ * Manrope          — body and interface text (reading voice)
+ * IBM Plex Mono    — measurements, diagram labels, captions (instrument voice)
+ * Noto Serif Gujarati / Devanagari — display voice for gu and hi
+ * Noto Sans Gujarati / Devanagari  — reading voice for gu and hi
+ *
+ * Script files are the script-only subsets, so Latin pages never load them
+ * (they are only requested when a glyph in that range is rendered).
  */
 
-const display = Sora({
-  subsets: ['latin'],
+const display = localFont({
+  src: [
+    { path: '../assets/fonts/instrument-serif-latin-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../assets/fonts/instrument-serif-latin-400-italic.woff2', weight: '400', style: 'italic' },
+  ],
   variable: '--mx-font-display-latin',
   display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
 });
 
-const body = Manrope({
-  subsets: ['latin'],
+const body = localFont({
+  src: '../assets/fonts/manrope-latin-wght-normal.woff2',
+  weight: '200 800',
   variable: '--mx-font-body-latin',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  fallback: ['system-ui', 'Segoe UI', 'sans-serif'],
 });
 
-const serif = Newsreader({
-  subsets: ['latin'],
-  variable: '--mx-font-serif-latin',
+const mono = localFont({
+  src: [
+    { path: '../assets/fonts/ibm-plex-mono-latin-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../assets/fonts/ibm-plex-mono-latin-500-normal.woff2', weight: '500', style: 'normal' },
+  ],
+  variable: '--mx-font-mono-latin',
   display: 'swap',
-  style: ['normal', 'italic'],
-  weight: ['400', '500'],
+  fallback: ['ui-monospace', 'Cascadia Mono', 'Consolas', 'monospace'],
 });
 
-const gujarati = Noto_Sans_Gujarati({
-  subsets: ['gujarati'],
+const gujarati = localFont({
+  src: '../assets/fonts/noto-sans-gujarati-gujarati-wght-normal.woff2',
+  weight: '100 900',
   variable: '--mx-font-gujarati',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  preload: false,
 });
 
-const devanagari = Noto_Sans_Devanagari({
-  subsets: ['devanagari'],
+const devanagari = localFont({
+  src: '../assets/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2',
+  weight: '100 900',
   variable: '--mx-font-devanagari',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  preload: false,
+});
+
+const gujaratiSerif = localFont({
+  src: '../assets/fonts/noto-serif-gujarati-gujarati-wght-normal.woff2',
+  weight: '100 900',
+  variable: '--mx-font-gujarati-serif',
+  display: 'swap',
+  preload: false,
+});
+
+const devanagariSerif = localFont({
+  src: '../assets/fonts/noto-serif-devanagari-devanagari-wght-normal.woff2',
+  weight: '100 900',
+  variable: '--mx-font-devanagari-serif',
+  display: 'swap',
+  preload: false,
 });
 
 export const meridianFontVariables = [
   display.variable,
   body.variable,
-  serif.variable,
+  mono.variable,
   gujarati.variable,
   devanagari.variable,
+  gujaratiSerif.variable,
+  devanagariSerif.variable,
 ].join(' ');
