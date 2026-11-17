@@ -115,7 +115,7 @@ export function TelescopeExhibit({ labels }: { labels: TelescopeExhibitLabels })
   const active = part ? labels.parts[part] : null;
 
   return (
-    <div ref={ref} className="mx-surface-stone mx-grain grid overflow-hidden rounded-(--mx-radius-md) border border-(--mx-line) lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+    <div ref={ref} className="mx-surface-powder grid overflow-hidden rounded-(--mx-radius-md) border border-(--mx-line) lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
       <div
         className={cn('relative aspect-[4/5] min-h-[22rem] select-none sm:aspect-[5/4] lg:aspect-auto lg:min-h-[34rem]', show3d && 'cursor-grab touch-pan-y active:cursor-grabbing')}
         onPointerDown={onPointerDown}

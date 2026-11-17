@@ -33,7 +33,7 @@ export function AboutPage({ data }: { data: ContentPageData }) {
     <>
       <EditorialHero
         locale={locale}
-        surface="green"
+        surface="mineral"
         homeLabel={dict['page.breadcrumbHome']}
         breadcrumbLabel={dict['nav.breadcrumb']}
         crumbs={data.crumbs}

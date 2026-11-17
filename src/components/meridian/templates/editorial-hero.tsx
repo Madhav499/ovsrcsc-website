@@ -17,7 +17,7 @@ interface EditorialHeroProps {
   figure?: ReactNode;
   /** Visual placed beside the title on large screens (diagram, motif). */
   aside?: ReactNode;
-  surface?: 'stone' | 'ivory' | 'green';
+  surface?: 'stone' | 'ivory' | 'mineral';
   className?: string;
 }
 
@@ -41,13 +41,13 @@ export function EditorialHero({
   surface = 'stone',
   className,
 }: EditorialHeroProps) {
-  const dark = surface === 'green';
+  const dark = surface === 'mineral';
   return (
     <header
       data-mx-hero={dark ? 'dark' : 'light'}
       className={cn(
         'mx-grain relative isolate overflow-hidden',
-        surface === 'stone' ? 'mx-surface-stone' : surface === 'green' ? 'mx-surface-green' : 'mx-surface-ivory',
+        surface === 'stone' ? 'mx-surface-stone' : surface === 'mineral' ? 'mx-surface-mineral' : 'mx-surface-ivory',
         className,
       )}
     >

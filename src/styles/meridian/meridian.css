@@ -17,25 +17,34 @@
    ------------------------------------------------------------------------- */
 @layer base {
   [data-site='meridian'] {
-    /* ---- Approved heritage palette ------------------------------------
-       Ivory reads, Stone warms, Green carries the institution, Charcoal
-       gives contrast, Brass annotates (sparingly), Sage adds depth.
-       Brass and Sage fail 4.5:1 as text on light surfaces — use their
-       -ink variants for text there; the base tones are for lines/marks. */
-    --mx-charcoal: #202b29;
-    --mx-charcoal-deep: #18211f;
-    --mx-green: #344c43;
-    --mx-green-raised: #3d574d;
+    /* ---- Approved palette: mineral blue (Nov 2026) --------------------
+       Ivory reads, Stone warms, Mineral blue carries the institution, Slate
+       supports it, Powder lightens panels and lines, Ink gives contrast, Brass
+       annotates (sparingly). Powder and Brass fail 4.5:1 as text on light
+       surfaces — never use them for text there. */
+    --mx-ink-charcoal: #222b33;
+    --mx-charcoal: #222b33;
+    --mx-charcoal-deep: #1a2128;
+    --mx-mineral: #263746;
+    --mx-mineral-raised: #31475a;
+    --mx-slate: #526b7a; /* 5.3:1 on ivory, 4.65:1 on stone */
+    --mx-powder: #a8c5d2; /* 7.9:1 on ink — dark surfaces and panels only */
+    --mx-powder-panel: #e3ecf0;
     --mx-stone: #f0e9dc;
     --mx-stone-deep: #e5dccb;
     --mx-ivory: #faf8f2;
     --mx-paper: #fffdf8;
     --mx-brass: #b18a58;
     --mx-brass-ink: #7a5b32; /* 5.9:1 on ivory */
-    --mx-brass-light: #d3b387; /* 7.3:1 on charcoal */
-    --mx-sage: #82958a;
-    --mx-sage-ink: #4e6157; /* 6.2:1 on ivory */
-    --mx-sage-light: #a8baae; /* 7.2:1 on charcoal */
+    --mx-brass-light: #d3b387; /* 7.2:1 on ink */
+
+    /* Retired heritage-green names now resolve to the blue family, so any
+       older markup can never render green. */
+    --mx-green: var(--mx-mineral);
+    --mx-green-raised: var(--mx-mineral-raised);
+    --mx-sage: var(--mx-slate);
+    --mx-sage-ink: var(--mx-slate);
+    --mx-sage-light: var(--mx-powder);
 
     /* Legacy names (first MERIDIAN pass) mapped onto the heritage palette,
        so older markup inherits the new identity. New code uses the names above. */
@@ -44,24 +53,23 @@
     --mx-navy-raised: var(--mx-green-raised);
     --mx-ivory-deep: var(--mx-stone);
     --mx-white: var(--mx-paper);
-    --mx-cyan: var(--mx-brass-light);
-    --mx-teal: var(--mx-sage);
-    --mx-teal-ink: var(--mx-green);
+    --mx-cyan: var(--mx-powder);
+    --mx-teal: var(--mx-slate);
+    --mx-teal-ink: var(--mx-mineral);
     --mx-amber: var(--mx-brass);
     --mx-amber-bright: #c29c6a;
     --mx-amber-ink: var(--mx-brass-ink);
-    --mx-slate: var(--mx-sage);
 
     /* Text on light surfaces (all ≥ 5:1 on ivory and stone) */
-    --mx-ink: #202b29;
-    --mx-ink-2: #3d4945;
-    --mx-ink-3: #59645f;
+    --mx-ink: #222b33;
+    --mx-ink-2: #3e4a55;
+    --mx-ink-3: #5a6671;
 
     /* Status */
     --mx-danger: #a63a2c;
     --mx-danger-soft: #f8e8e2;
-    --mx-success: #2f6a4c;
-    --mx-success-soft: #e4efe6;
+    --mx-success: #2b5f7a; /* status only — confirmed in the mineral family, AA on its soft fill */
+    --mx-success-soft: #e3eef3;
 
     /* Typography — three voices */
     --mx-font-sans: var(--mx-font-body-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
@@ -93,9 +101,9 @@
     --mx-header-h: 4.5rem;
 
     /* Shadows — tinted toward charcoal, never pure black */
-    --mx-shadow-sm: 0 1px 2px rgb(32 43 41 / 0.06), 0 4px 12px -6px rgb(32 43 41 / 0.12);
-    --mx-shadow-md: 0 2px 6px rgb(32 43 41 / 0.05), 0 18px 40px -22px rgb(32 43 41 / 0.32);
-    --mx-shadow-lg: 0 30px 80px -30px rgb(24 33 31 / 0.45);
+    --mx-shadow-sm: 0 1px 2px rgb(34 43 51 / 0.06), 0 4px 12px -6px rgb(34 43 51 / 0.12);
+    --mx-shadow-md: 0 2px 6px rgb(34 43 51 / 0.05), 0 18px 40px -22px rgb(34 43 51 / 0.32);
+    --mx-shadow-lg: 0 30px 80px -30px rgb(26 33 40 / 0.45);
 
     /* Motion — one vocabulary, three tempos */
     --mx-ease-out: cubic-bezier(0.19, 1, 0.22, 1);
@@ -107,23 +115,23 @@
     --mx-duration-draw: 1600ms;
 
     /* Paper grain — a few-hundred-byte fractal noise tile, never an image request */
-    --mx-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .13 0 0 0 0 .17 0 0 0 0 .16 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --mx-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .13 0 0 0 0 .17 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
     /* Default (light) surface semantics */
     --mx-bg: var(--mx-ivory);
     --mx-fg: var(--mx-ink);
     --mx-fg-2: var(--mx-ink-2);
     --mx-fg-3: var(--mx-ink-3);
-    --mx-line: rgb(32 43 41 / 0.13);
-    --mx-line-strong: rgb(32 43 41 / 0.26);
-    --mx-accent: var(--mx-green);
+    --mx-line: rgb(34 43 51 / 0.13);
+    --mx-line-strong: rgb(34 43 51 / 0.26);
+    --mx-accent: var(--mx-mineral);
     --mx-accent-2: var(--mx-brass-ink);
     --mx-mark: var(--mx-brass);
-    --mx-focus: var(--mx-green);
+    --mx-focus: var(--mx-mineral);
     --mx-raised: var(--mx-paper);
     --mx-sunken: var(--mx-stone);
     --mx-input-bg: var(--mx-paper);
-    --mx-cta-bg: var(--mx-green);
+    --mx-cta-bg: var(--mx-mineral);
     --mx-cta-fg: var(--mx-ivory);
     --mx-cta-hover: var(--mx-charcoal);
   }
@@ -146,16 +154,16 @@
     --mx-fg: var(--mx-ink);
     --mx-fg-2: var(--mx-ink-2);
     --mx-fg-3: var(--mx-ink-3);
-    --mx-line: rgb(32 43 41 / 0.13);
-    --mx-line-strong: rgb(32 43 41 / 0.26);
-    --mx-accent: var(--mx-green);
+    --mx-line: rgb(34 43 51 / 0.13);
+    --mx-line-strong: rgb(34 43 51 / 0.26);
+    --mx-accent: var(--mx-mineral);
     --mx-accent-2: var(--mx-brass-ink);
     --mx-mark: var(--mx-brass);
-    --mx-focus: var(--mx-green);
+    --mx-focus: var(--mx-mineral);
     --mx-raised: var(--mx-paper);
     --mx-sunken: var(--mx-stone);
     --mx-input-bg: var(--mx-paper);
-    --mx-cta-bg: var(--mx-green);
+    --mx-cta-bg: var(--mx-mineral);
     --mx-cta-fg: var(--mx-ivory);
     --mx-cta-hover: var(--mx-charcoal);
     background-color: var(--mx-bg);
@@ -170,42 +178,44 @@
 
   [data-site='meridian'] .mx-surface-stone {
     --mx-bg: var(--mx-stone);
-    --mx-line: rgb(32 43 41 / 0.15);
+    --mx-line: rgb(34 43 51 / 0.15);
     --mx-raised: var(--mx-ivory);
     --mx-sunken: var(--mx-stone-deep);
     --mx-input-bg: var(--mx-ivory);
   }
 
-  /* Charcoal: immersive chapters. Green: institutional surfaces. */
+  /* Ink: immersive chapters. Mineral: institutional surfaces. */
   [data-site='meridian'] .mx-surface-dark,
   [data-site='meridian'] .mx-surface-navy,
-  [data-site='meridian'] .mx-surface-green {
+  [data-site='meridian'] .mx-surface-green,
+  [data-site='meridian'] .mx-surface-mineral {
     --mx-bg: var(--mx-charcoal);
     --mx-fg: var(--mx-ivory);
     --mx-fg-2: rgb(250 248 242 / 0.8);
     --mx-fg-3: rgb(250 248 242 / 0.64);
     --mx-line: rgb(250 248 242 / 0.13);
     --mx-line-strong: rgb(250 248 242 / 0.28);
-    --mx-accent: var(--mx-brass-light);
+    --mx-accent: var(--mx-powder);
     --mx-accent-2: var(--mx-brass-light);
     --mx-mark: var(--mx-brass);
-    --mx-focus: var(--mx-brass-light);
-    --mx-raised: var(--mx-green);
+    --mx-focus: var(--mx-powder);
+    --mx-raised: var(--mx-mineral);
     --mx-sunken: var(--mx-charcoal-deep);
     --mx-input-bg: rgb(250 248 242 / 0.06);
-    --mx-cta-bg: var(--mx-brass);
+    --mx-cta-bg: var(--mx-powder);
     --mx-cta-fg: var(--mx-charcoal);
-    --mx-cta-hover: var(--mx-brass-light);
+    --mx-cta-hover: var(--mx-ivory);
     background-color: var(--mx-bg);
     color: var(--mx-fg);
   }
 
   [data-site='meridian'] .mx-surface-navy,
-  [data-site='meridian'] .mx-surface-green {
-    --mx-bg: var(--mx-green);
+  [data-site='meridian'] .mx-surface-green,
+  [data-site='meridian'] .mx-surface-mineral {
+    --mx-bg: var(--mx-mineral);
     --mx-fg-3: rgb(250 248 242 / 0.74);
-    --mx-raised: var(--mx-green-raised);
-    --mx-sunken: #2a3f37;
+    --mx-raised: var(--mx-mineral-raised);
+    --mx-sunken: #1f2e3b;
   }
 
   /* Paper grain overlay for editorial surfaces (opt-in) */
@@ -225,7 +235,7 @@
     mix-blend-mode: multiply;
   }
 
-  [data-site='meridian'] :is(.mx-surface-dark, .mx-surface-green, .mx-surface-navy).mx-grain::before {
+  [data-site='meridian'] :is(.mx-surface-dark, .mx-surface-green, .mx-surface-mineral, .mx-surface-navy).mx-grain::before {
     opacity: 0.16;
     mix-blend-mode: screen;
     filter: invert(1);
@@ -575,7 +585,7 @@
   [data-site='meridian'] .mx-btn-primary:hover {
     --mx-btn-bg: var(--mx-cta-hover);
     --mx-btn-border: var(--mx-cta-hover);
-    box-shadow: 0 12px 28px -16px rgb(24 33 31 / 0.65);
+    box-shadow: 0 12px 28px -16px rgb(26 33 40 / 0.65);
   }
 
   [data-site='meridian'] .mx-btn-ink {
@@ -756,8 +766,8 @@
      in a museum gallery, not a glow effect. */
   [data-site='meridian'] .mx-atmosphere {
     background:
-      radial-gradient(120% 80% at 70% 20%, transparent 40%, rgb(24 33 31 / 0.55) 100%),
-      linear-gradient(180deg, transparent 55%, rgb(52 76 67 / 0.35) 100%);
+      radial-gradient(120% 80% at 70% 20%, transparent 40%, rgb(26 33 40 / 0.55) 100%),
+      linear-gradient(180deg, transparent 55%, rgb(38 55 70 / 0.35) 100%);
   }
 
   /* Specimen plate — image frame with instrument corner ticks */
@@ -805,7 +815,7 @@
   }
 
   [data-site='meridian'] .mx-scrim {
-    background: linear-gradient(180deg, rgb(32 43 41 / 0) 35%, rgb(32 43 41 / 0.88) 100%);
+    background: linear-gradient(180deg, rgb(34 43 51 / 0) 35%, rgb(34 43 51 / 0.88) 100%);
   }
 
   /* Surfaces that lift on hover */
@@ -1161,12 +1171,12 @@
     --mx-fg-3: rgb(250 248 242 / 0.62);
     --mx-line: rgb(250 248 242 / 0.14);
     --mx-line-strong: rgb(250 248 242 / 0.3);
-    --mx-accent: var(--mx-brass-light);
-    --mx-focus: var(--mx-brass-light);
-    --mx-cta-bg: var(--mx-brass);
+    --mx-accent: var(--mx-powder);
+    --mx-focus: var(--mx-powder);
+    --mx-cta-bg: var(--mx-powder);
     --mx-cta-fg: var(--mx-charcoal);
-    --mx-cta-hover: var(--mx-brass-light);
-    background: linear-gradient(180deg, rgb(24 33 31 / 0.6), rgb(24 33 31 / 0));
+    --mx-cta-hover: var(--mx-ivory);
+    background: linear-gradient(180deg, rgb(26 33 40 / 0.6), rgb(26 33 40 / 0));
   }
 
   [data-site='meridian'] .mx-header[data-mode='overlay-light'] {
@@ -1177,7 +1187,7 @@
     background: rgb(250 248 242 / 0.92);
     backdrop-filter: saturate(140%) blur(12px);
     -webkit-backdrop-filter: saturate(140%) blur(12px);
-    box-shadow: 0 1px 0 rgb(32 43 41 / 0.1);
+    box-shadow: 0 1px 0 rgb(34 43 51 / 0.1);
   }
 
   @supports not (backdrop-filter: blur(1px)) {
@@ -1255,7 +1265,7 @@
     border-radius: var(--mx-radius-md);
     background: var(--mx-white);
     color: var(--mx-ink);
-    border: 1px solid rgb(32 43 41 / 0.08);
+    border: 1px solid rgb(34 43 51 / 0.08);
     box-shadow: var(--mx-shadow-lg);
     transform: translateX(-50%);
     --mx-fg: var(--mx-ink);
@@ -1391,7 +1401,7 @@
 
   /* Dialogs */
   [data-site='meridian'] dialog.mx-dialog::backdrop {
-    background: rgb(32 43 41 / 0.78);
+    background: rgb(34 43 51 / 0.78);
     backdrop-filter: blur(6px);
   }
 
@@ -1707,8 +1717,8 @@
     vector-effect: non-scaling-stroke;
   }
 
-  [data-site='meridian'] .mx-diagram .mx-d-sage {
-    stroke: var(--mx-sage);
+  [data-site='meridian'] .mx-diagram .mx-d-slate {
+    stroke: var(--mx-slate);
     stroke-width: 1.2;
     fill: none;
     vector-effect: non-scaling-stroke;
@@ -1797,7 +1807,7 @@
     overflow-y: auto;
     border-top: 1px solid var(--mx-line);
     border-bottom: 1px solid var(--mx-line-strong);
-    box-shadow: 0 40px 80px -40px rgb(24 33 31 / 0.45);
+    box-shadow: 0 40px 80px -40px rgb(26 33 40 / 0.45);
   }
 
   [data-site='meridian'] .mx-mega-link {
@@ -1853,7 +1863,7 @@
     height: 1.625rem;
     border-radius: 50%;
     border: 1px solid var(--mx-brass-light);
-    background: rgb(24 33 31 / 0.72);
+    background: rgb(26 33 40 / 0.72);
     color: var(--mx-ivory);
     font-family: var(--mx-font-mono);
     font-size: 0.6875rem;
@@ -1964,5 +1974,413 @@
     opacity: 1 !important;
     clip-path: none !important;
     transform: none !important;
+  }
+}
+
+@layer components {
+  /* Powder panel: a restrained light-blue ground for exhibits and maps.
+     Text keeps the ink scale (ink-3 is 5.0:1 here); powder itself is never text. */
+  [data-site='meridian'] .mx-surface-powder {
+    --mx-bg: var(--mx-powder-panel);
+    --mx-fg: var(--mx-ink);
+    --mx-fg-2: var(--mx-ink-2);
+    --mx-fg-3: var(--mx-ink-3);
+    --mx-line: rgb(34 43 51 / 0.14);
+    --mx-line-strong: rgb(34 43 51 / 0.28);
+    --mx-accent: var(--mx-mineral);
+    --mx-accent-2: var(--mx-brass-ink);
+    --mx-mark: var(--mx-slate);
+    --mx-focus: var(--mx-mineral);
+    --mx-raised: var(--mx-paper);
+    --mx-sunken: #d6e3e9;
+    --mx-input-bg: var(--mx-paper);
+    --mx-cta-bg: var(--mx-mineral);
+    --mx-cta-fg: var(--mx-ivory);
+    --mx-cta-hover: var(--mx-charcoal);
+    background-color: var(--mx-bg);
+    color: var(--mx-fg);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   9. Photography archive (gallery) — photographs first, minimal chrome
+   ------------------------------------------------------------------------- */
+@layer components {
+  [data-site='meridian'] .mx-archive {
+    --mx-archive-gap: 10px;
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  [data-site='meridian'] .mx-archive-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding: calc(var(--mx-header-h) + clamp(2.5rem, 1rem + 5vw, 5.5rem)) var(--mx-gutter) clamp(1rem, 0.6rem + 1vw, 1.5rem);
+  }
+
+  [data-site='meridian'] .mx-archive-intro {
+    max-width: 34rem;
+    margin-bottom: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--mx-fg-2);
+  }
+
+  [data-site='meridian'] :is(.mx-archive-title, .mx-archive-filter, .mx-archive-index-item) {
+    font-family: var(--mx-font-display);
+    font-weight: 400;
+    font-size: clamp(3.1rem, 1.6rem + 5.2vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+  }
+
+  [data-site='meridian'] .mx-archive-filter {
+    display: inline-flex;
+    align-items: flex-start;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--mx-fg);
+    cursor: pointer;
+    text-align: right;
+    transition: color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] button.mx-archive-filter:hover {
+    color: var(--mx-accent);
+  }
+
+  [data-site='meridian'] .mx-archive-filter.is-static {
+    cursor: default;
+  }
+
+  /* Superscript count in the reading voice */
+  [data-site='meridian'] .mx-archive-count {
+    display: inline-block;
+    margin: 0.35em 0.4em 0 0;
+    font-family: var(--mx-font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+    vertical-align: top;
+    color: var(--mx-fg-2);
+  }
+
+  [data-site='meridian'] .mx-archive-index-item .mx-archive-count {
+    margin: 0.3em 0 0 0.25em;
+  }
+
+  [data-site='meridian'] .mx-archive-more-btn .mx-archive-count {
+    margin: 0;
+    font-size: inherit;
+    vertical-align: baseline;
+  }
+
+  /* Album index: the grid gives way to a typographic list */
+  [data-site='meridian'] .mx-archive-index {
+    min-height: 60vh;
+    padding: 0.5rem var(--mx-gutter) 4rem;
+    animation: mx-fade-in 420ms var(--mx-ease-out) both;
+  }
+
+  [data-site='meridian'] .mx-archive-index ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15em 0;
+  }
+
+  [data-site='meridian'] .mx-archive-index li {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  [data-site='meridian'] .mx-archive-index-item {
+    display: inline-flex;
+    align-items: flex-start;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--mx-fg-3);
+    cursor: pointer;
+    transition: color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-archive-index-item:hover,
+  [data-site='meridian'] .mx-archive-index-item[aria-pressed='true'] {
+    color: var(--mx-fg);
+  }
+
+  [data-site='meridian'] .mx-archive-slash {
+    margin: 0 0.3em;
+    font-family: var(--mx-font-display);
+    font-size: clamp(2.4rem, 1.3rem + 4vw, 4.5rem);
+    color: var(--mx-line-strong);
+  }
+
+  /* Masonry: columns are distributed in JS from known ratios; CSS lays them out */
+  [data-site='meridian'] .mx-archive-body {
+    animation: mx-fade-in 480ms var(--mx-ease-out) both;
+  }
+
+  [data-site='meridian'] .mx-archive-masonry {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--mx-archive-gap);
+    padding-inline: var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-archive-column {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--mx-archive-gap);
+    min-width: 0;
+  }
+
+  [data-site='meridian'] .mx-archive-feature {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--mx-archive-gap);
+    align-items: start;
+    padding-inline: var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-archive-feature-cell {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 768px) {
+    [data-site='meridian'] .mx-archive-feature-cell.is-narrow {
+      grid-column: span 5;
+    }
+
+    [data-site='meridian'] .mx-archive-feature-cell.is-wide {
+      grid-column: span 7;
+    }
+  }
+
+  /* Tile: ratio reserved by padding-bottom; powder placeholder; fade-in */
+  [data-site='meridian'] .mx-archive-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: var(--mx-powder-panel);
+    cursor: zoom-in;
+  }
+
+  [data-site='meridian'] .mx-archive-tile:focus-visible {
+    outline: 2px solid var(--mx-focus);
+    outline-offset: 3px;
+  }
+
+  [data-site='meridian'] .mx-archive-img {
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.012);
+    transition:
+      opacity 700ms var(--mx-ease-out),
+      transform 1400ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-archive-tile[data-state='loaded'] .mx-archive-img {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-site='meridian'] .mx-archive-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 0.85rem 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    text-align: left;
+    color: var(--mx-ivory);
+    background: linear-gradient(180deg, transparent, rgb(34 43 51 / 0.72));
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--mx-duration) var(--mx-ease-out),
+      transform var(--mx-duration) var(--mx-ease-out);
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    [data-site='meridian'] .mx-archive-tile:hover .mx-archive-caption,
+    [data-site='meridian'] .mx-archive-tile:focus-visible .mx-archive-caption {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Load more */
+  [data-site='meridian'] .mx-archive-more {
+    display: flex;
+    justify-content: center;
+    padding: clamp(3rem, 2rem + 3vw, 5rem) var(--mx-gutter) 1rem;
+  }
+
+  [data-site='meridian'] .mx-archive-more-btn {
+    min-height: 2.75rem;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    font-family: var(--mx-font-display);
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.5rem);
+    color: var(--mx-fg);
+    cursor: pointer;
+    background: linear-gradient(currentColor, currentColor) 0 92% / 0% 1px no-repeat;
+    transition: background-size var(--mx-duration-slow) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-archive-more-btn:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Floating toolbar — sticky within the archive, never over the footer */
+  [data-site='meridian'] .mx-archive-toolbar-wrap {
+    position: sticky;
+    bottom: 1.25rem;
+    z-index: 30;
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    pointer-events: none;
+  }
+
+  [data-site='meridian'] .mx-archive-toolbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.3rem;
+    border-radius: var(--mx-radius-xs);
+    background: var(--mx-charcoal);
+    color: var(--mx-ivory);
+    box-shadow: 0 18px 40px -20px rgb(26 33 40 / 0.6);
+    pointer-events: auto;
+  }
+
+  [data-site='meridian'] .mx-archive-tool {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0 0.85rem;
+    border: 0;
+    background: none;
+    font-size: 0.875rem;
+    color: rgb(250 248 242 / 0.7);
+    cursor: pointer;
+    transition: color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-archive-tool:hover,
+  [data-site='meridian'] .mx-archive-tool[aria-pressed='true'] {
+    color: var(--mx-ivory);
+  }
+
+  [data-site='meridian'] .mx-archive-tool:focus-visible {
+    outline: 2px solid var(--mx-powder);
+    outline-offset: -2px;
+  }
+
+  [data-site='meridian'] .mx-archive-tool-sep {
+    width: 1px;
+    height: 1rem;
+    margin: 0 0.25rem;
+    background: rgb(250 248 242 / 0.28);
+  }
+
+  [data-site='meridian'] .mx-archive-empty {
+    min-height: 45vh;
+    padding: 2rem var(--mx-gutter) 3rem;
+  }
+
+  [data-site='meridian'] .mx-archive-empty-line {
+    max-width: 22ch;
+    font-family: var(--mx-font-display);
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+    line-height: 1.05;
+    color: var(--mx-fg-3);
+  }
+
+  /* Viewer: an ivory field, the photograph contained, almost no chrome */
+  [data-site='meridian'] dialog.mx-viewer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--mx-ivory);
+    color: var(--mx-ink);
+  }
+
+  [data-site='meridian'] dialog.mx-viewer::backdrop {
+    background: var(--mx-ivory);
+  }
+
+  [data-site='meridian'] dialog.mx-viewer[open] {
+    animation: mx-fade-in 320ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-viewer-close {
+    min-height: 2.75rem;
+    padding: 0 0.25rem;
+    border: 0;
+    background: none;
+    font-family: var(--mx-font-display);
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.5rem);
+    line-height: 1;
+    color: var(--mx-ink);
+    cursor: pointer;
+  }
+
+  [data-site='meridian'] .mx-viewer-close:hover {
+    color: var(--mx-mineral);
+  }
+
+  [data-site='meridian'] .mx-viewer-photo {
+    animation: mx-lightbox-in 520ms var(--mx-ease-out) both;
+  }
+
+  [data-site='meridian'] .mx-viewer-half {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 50%;
+    border: 0;
+    background: none;
+  }
+
+  [data-site='meridian'] .mx-viewer-half:focus-visible {
+    outline: 2px solid var(--mx-mineral);
+    outline-offset: -6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-site='meridian'] :is(.mx-archive-body, .mx-archive-index, .mx-viewer-photo, dialog.mx-viewer[open]) {
+      animation: none;
+    }
+
+    [data-site='meridian'] .mx-archive-img {
+      transform: none;
+      transition: opacity 200ms linear;
+    }
   }
 }

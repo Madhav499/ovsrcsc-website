@@ -12,7 +12,7 @@ export function MapConsent({ query, labels }: { query: string; labels: { load: s
   const src = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
   return (
-    <div className="mx-surface-stone mx-grain relative aspect-[4/3] overflow-hidden rounded-(--mx-radius-md) border border-(--mx-line) sm:aspect-[16/9]">
+    <div className="mx-surface-powder relative aspect-[4/3] overflow-hidden rounded-(--mx-radius-md) border border-(--mx-line) sm:aspect-[16/9]">
       {shown ? (
         <iframe
           title={labels.frame}

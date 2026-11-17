@@ -191,9 +191,9 @@ export default function TelescopeScene({
     >
       <Invalidator version={version} yaw={yaw} />
       <Environment />
-      <hemisphereLight args={['#fffdf8', '#344c43', 0.55]} />
+      <hemisphereLight args={['#fffdf8', '#263746', 0.55]} />
       <directionalLight position={[2.5, 3.5, 2]} intensity={1.6} color="#fff6e8" />
-      <directionalLight position={[-2.5, 1.5, -1.5]} intensity={0.55} color="#d3e0d8" />
+      <directionalLight position={[-2.5, 1.5, -1.5]} intensity={0.55} color="#d6e4ea" />
       <Model state={state} yaw={yaw} onReady={onReady} />
     </Canvas>
   );

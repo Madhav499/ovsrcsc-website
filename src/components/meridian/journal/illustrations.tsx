@@ -39,7 +39,7 @@ export function PendulumFigure({ labels, ...base }: FigureBase & { labels: { len
         <line key={i} x1={146 + i * 18} y1={py} x2={138 + i * 18} y2={py - 8} className="mx-d-faint" />
       ))}
       <line x1={px} y1={py} x2={px} y2={py + L + 12} className="mx-d-faint mx-d-dash mx-draw" {...d(1)} />
-      <path d={`M ${f(lx)} ${f(by)} A ${L} ${L} 0 0 0 ${f(bx)} ${f(by)}`} className="mx-d-sage mx-d-dash mx-draw" {...d(2)} />
+      <path d={`M ${f(lx)} ${f(by)} A ${L} ${L} 0 0 0 ${f(bx)} ${f(by)}`} className="mx-d-slate mx-d-dash mx-draw" {...d(2)} />
       <line x1={px} y1={py} x2={f(bx)} y2={f(by)} className="mx-d-ink mx-draw" {...d(3)} />
       <line x1={px} y1={py} x2={f(lx)} y2={f(by)} className="mx-d-faint mx-draw" {...d(3)} />
       <path
@@ -78,7 +78,7 @@ export function RefractionFigure({ labels, ...base }: FigureBase & { labels: { a
   const t2deg = Math.round((t2 * 180) / Math.PI);
   return (
     <Diagram viewBox="0 0 400 260" {...base}>
-      <rect x={20} y={oy} width={360} height={115} fill="var(--mx-sage)" opacity={0.12} className="mx-draw-fade" />
+      <rect x={20} y={oy} width={360} height={115} fill="var(--mx-slate)" opacity={0.12} className="mx-draw-fade" />
       <line x1={20} y1={oy} x2={380} y2={oy} className="mx-d-ink mx-draw" {...d(0)} />
       <line x1={ox} y1={10} x2={ox} y2={250} className="mx-d-faint mx-d-dash mx-draw" {...d(1)} />
       <line x1={f(ix)} y1={f(iy)} x2={ox} y2={oy} className="mx-d-mark mx-draw" {...d(2)} />
@@ -128,7 +128,7 @@ export function LensFigure({ labels, ...base }: FigureBase & { labels: { object:
       {/* 1 · parallel to the axis, then through F′ */}
       <polyline points={`${ox},${top} ${lens},${top} ${f(ix)},${f(imgTop)}`} className="mx-d-mark mx-draw" {...d(3)} />
       {/* 2 · straight through the optical centre */}
-      <line x1={ox} y1={top} x2={f(ix)} y2={f(imgTop)} className="mx-d-sage mx-draw" {...d(4)} />
+      <line x1={ox} y1={top} x2={f(ix)} y2={f(imgTop)} className="mx-d-slate mx-draw" {...d(4)} />
       {/* 3 · through F, then parallel to the axis */}
       <polyline points={`${ox},${top} ${lens},${f(yAtLens)} ${f(ix)},${f(imgTop)}`} className="mx-d-mark mx-d-dash mx-draw" {...d(5)} />
       <line x1={f(ix)} y1={axis} x2={f(ix)} y2={f(imgTop)} className="mx-d-ink mx-draw" {...d(6)} />
@@ -221,7 +221,7 @@ export function MagnetFigure(base: FigureBase) {
           />
         </g>
       ))}
-      <rect x={cx - 34} y={cy - 9} width={34} height={18} fill="var(--mx-sage)" className="mx-draw-fade" />
+      <rect x={cx - 34} y={cy - 9} width={34} height={18} fill="var(--mx-slate)" className="mx-draw-fade" />
       <rect x={cx} y={cy - 9} width={34} height={18} fill="var(--mx-brass)" className="mx-draw-fade" />
       <text x={cx - 17} y={cy + 3.5} textAnchor="middle" style={{ fill: 'var(--mx-ivory)' }}>S</text>
       <text x={cx + 17} y={cy + 3.5} textAnchor="middle" style={{ fill: 'var(--mx-charcoal)' }}>N</text>
@@ -270,7 +270,7 @@ export function PhFigure({ labels, ...base }: FigureBase & { labels: { acidic: s
   return (
     <Diagram viewBox="0 0 400 190" {...base}>
       <rect x={x0} y={y - 14} width={step * 7} height={14} fill="var(--mx-brass)" opacity={0.55} className="mx-draw-fade" />
-      <rect x={x0 + step * 7} y={y - 14} width={step * 7} height={14} fill="var(--mx-sage)" opacity={0.6} className="mx-draw-fade" />
+      <rect x={x0 + step * 7} y={y - 14} width={step * 7} height={14} fill="var(--mx-slate)" opacity={0.6} className="mx-draw-fade" />
       <line x1={x0} y1={y} x2={x0 + w} y2={y} className="mx-d-ink mx-draw" {...d(0)} />
       {Array.from({ length: 15 }, (_, i) => (
         <g key={i}>
@@ -294,8 +294,8 @@ export function CellFigure({ labels, ...base }: FigureBase & { labels: { wall: s
   return (
     <Diagram viewBox="0 0 400 250" {...base}>
       <rect x={70} y={30} width={200} height={190} rx={14} className="mx-d-ink mx-draw" {...d(0)} />
-      <rect x={78} y={38} width={184} height={174} rx={10} className="mx-d-sage mx-draw" {...d(1)} />
-      <path d="M 120 80 C 160 60 230 70 236 120 C 242 170 190 196 140 186 C 100 178 92 104 120 80 Z" fill="var(--mx-sage)" opacity={0.14} className="mx-d-faint mx-draw" {...d(2)} />
+      <rect x={78} y={38} width={184} height={174} rx={10} className="mx-d-slate mx-draw" {...d(1)} />
+      <path d="M 120 80 C 160 60 230 70 236 120 C 242 170 190 196 140 186 C 100 178 92 104 120 80 Z" fill="var(--mx-slate)" opacity={0.14} className="mx-d-faint mx-draw" {...d(2)} />
       <circle cx={112} cy={180} r={20} className="mx-d-ink mx-draw" {...d(3)} />
       <circle cx={108} cy={176} r={6} className="mx-d-fill-ink mx-draw-fade" />
       {[
@@ -304,7 +304,7 @@ export function CellFigure({ labels, ...base }: FigureBase & { labels: { wall: s
         [244, 182, -10],
         [176, 200, 10],
       ].map(([x, y, r], i) => (
-        <ellipse key={i} cx={x} cy={y} rx={13} ry={7} transform={`rotate(${r} ${x} ${y})`} fill="var(--mx-sage)" opacity={0.7} className="mx-draw-fade" />
+        <ellipse key={i} cx={x} cy={y} rx={13} ry={7} transform={`rotate(${r} ${x} ${y})`} fill="var(--mx-slate)" opacity={0.7} className="mx-draw-fade" />
       ))}
       {[
         [270, 40, labels.wall],
@@ -343,8 +343,8 @@ export function PythagorasFigure(base: FigureBase) {
     <Diagram viewBox="0 0 400 280" {...base}>
       <g className="mx-draw-fade">{grid(4, A[0], A[1])}</g>
       <g className="mx-draw-fade">{grid(3, A[0] - 3 * u, A[1] - 3 * u)}</g>
-      <polygon points={pts([A, B, [B[0], B[1] + 4 * u], [A[0], A[1] + 4 * u]])} className="mx-d-sage mx-draw" {...d(1)} />
-      <polygon points={pts([A, C, [C[0] - 3 * u, C[1]], [A[0] - 3 * u, A[1]]])} className="mx-d-sage mx-draw" {...d(2)} />
+      <polygon points={pts([A, B, [B[0], B[1] + 4 * u], [A[0], A[1] + 4 * u]])} className="mx-d-slate mx-draw" {...d(1)} />
+      <polygon points={pts([A, C, [C[0] - 3 * u, C[1]], [A[0] - 3 * u, A[1]]])} className="mx-d-slate mx-draw" {...d(2)} />
       <polygon points={pts([B, C, C2, B2])} fill="var(--mx-brass)" fillOpacity={0.14} className="mx-d-mark mx-draw" {...d(3)} />
       <polygon points={pts([A, B, C])} className="mx-d-ink mx-draw" {...d(0)} />
       <polyline points={`${A[0] + 10},${A[1]} ${A[0] + 10},${A[1] - 10} ${A[0]},${A[1] - 10}`} className="mx-d-ink" />

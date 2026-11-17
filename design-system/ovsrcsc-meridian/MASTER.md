@@ -32,24 +32,26 @@ serif headlines, instrument-style mono annotations, computed scientific figures,
 immersive moments (atom, laboratory walk, telescope, experiments). Never all-dark; no
 decoration without a reason.
 
-## Colour (approved palette — `src/styles/meridian/meridian.css`)
+## Colour (approved palette, mineral blue — `src/styles/meridian/meridian.css`)
 
 | Token | Hex | Role |
 |---|---|---|
 | `--mx-ivory` | #FAF8F2 | Primary reading surface |
 | `--mx-stone` | #F0E9DC | Warm editorial variation (heroes, registers) |
-| `--mx-green` | #344C43 | Institution: primary CTA on light, `mx-surface-green` |
-| `--mx-charcoal` | #202B29 | Ink, immersive chapters (`mx-surface-dark`) |
-| `--mx-brass` | #B18A58 | Marks only: rules, diagram emphasis, CTA on dark |
-| `--mx-sage` | #82958A | Secondary lines and depth |
+| `--mx-mineral` | #263746 | Institution: primary CTA on light, links/accents, `mx-surface-mineral` |
+| `--mx-slate` | #526B7A | Secondary accent text (5.3:1 ivory, 4.65:1 stone), diagram lines |
+| `--mx-powder` | #A8C5D2 | Accent and CTA on dark (7.9:1 on ink); `--mx-powder-panel` #E3ECF0 for restrained panels |
+| `--mx-charcoal` (ink) | #222B33 | Text, immersive chapters (`mx-surface-dark`) |
+| `--mx-brass` | #B18A58 | Small heritage marks only: rules, diagram emphasis, the drawn thread |
 
-Brass and Sage are below 4.5:1 on light surfaces, so text uses `--mx-brass-ink` (#7A5B32, 5.9:1)
-and `--mx-sage-ink` (#4E6157, 6.2:1); on dark, `--mx-brass-light` (7.3:1). Surfaces
-(`mx-surface-ivory|stone|white|dark|green`) set semantic variables (`--mx-fg*`, `--mx-line*`,
-`--mx-accent`, `--mx-mark`, `--mx-cta-*`). The primary button reads `--mx-cta-*` from the nearest
-surface (green on light, brass on dark). Legacy names (`--mx-cyan`, `--mx-amber`, `--mx-midnight`…)
-are aliases onto this palette — use the new names in new code. `.mx-grain` adds an inline SVG
-paper-noise layer (no image request).
+Never use powder or brass as text on light surfaces (1.7:1 and 3.0:1); brass text uses
+`--mx-brass-ink` (#7A5B32). Surfaces (`mx-surface-ivory|stone|white|powder|dark|mineral`) set
+the semantic variables (`--mx-fg*`, `--mx-line*`, `--mx-accent`, `--mx-mark`, `--mx-cta-*`); the
+primary button reads `--mx-cta-*` from the nearest surface (mineral on light, powder on dark).
+The retired heritage-green names (`--mx-green`, `--mx-sage`, `mx-surface-green`) and the first-pass
+names (`--mx-cyan`, `--mx-teal`, `--mx-amber`, `--mx-midnight`) are aliases onto this palette so
+nothing can render green; use the names above in new code. Status green was also retired:
+`--mx-success` is #2B5F7A. `.mx-grain` adds an inline SVG paper-noise layer.
 
 ## Typography (self-hosted — `src/lib/meridian-fonts.ts`, files in `src/assets/fonts`, SIL OFL)
 
@@ -81,9 +83,19 @@ The CMS catch-all dispatches by path: `about` → AboutPage · `infrastructure` 
 walk with photo hotspots on visibly identifiable items and a principle figure per lab, facilities
 register, pendulum) · `projects`, `activities` → DiscoveryPage (featured spread, asymmetric mosaic,
 index; no invented categories) · `projects/big-bang-astronomy-club` → EditorialPage + AstronomyExhibit ·
-everything else → EditorialPage. Standalone routes: Visit (new), Gallery (adaptive editorial archive,
-contact-sheet toggle, lightbox with full-resolution link), Events (twelve-month ruler in Asia/Kolkata),
+everything else → EditorialPage. Standalone routes: Visit (new), Gallery (photography archive, below), Events (twelve-month ruler in Asia/Kolkata),
 Journal (featured story + table of contents; reading progress on articles), Contact.
+
+## Gallery — photography archive (`components/meridian/gallery/`)
+
+After the ViV MGMT portfolio pattern, adapted: large serif title; the active album as a large
+label with a superscript count; a typographic album index ("Close" / slashed serif names /
+counts); a 10px-gutter masonry at each photo's true ratio (4 / 3 / 2 columns), distributed in JS
+from stored dimensions (no layout shift); 24 per page with "Load more (n)"; a floating ink toolbar
+(Albums · Grid · Large · Top); a minimal ivory full-screen viewer (click halves, ← →, swipe, Escape,
+"Open original", neighbours preloaded). Albums are the categories — there is no category field;
+editors create categories by creating albums. The album index appears only with 2+ albums.
+`/gallery` = All, `/gallery/[slug]` = album pre-selected; switching updates the URL in place.
 
 ## 3D
 
