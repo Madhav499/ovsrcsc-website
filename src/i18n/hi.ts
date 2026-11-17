@@ -481,4 +481,122 @@ export const hi: Dictionary = {
 
   // Auth
   'mx.auth.staffOnly': 'यह पृष्ठ केवल केंद्र के कर्मचारियों के लिए है।',
+
+  // Home — scroll story: atom explorer (hero)
+  'mx.story.atom.label': 'परमाणु को जानिए',
+  'mx.story.atom.hint': 'घुमाने के लिए खींचें, या कोई भाग चुनें',
+  'mx.story.atom.rotateLeft': 'परमाणु को बाईं ओर घुमाएँ',
+  'mx.story.atom.rotateRight': 'परमाणु को दाईं ओर घुमाएँ',
+  'mx.story.atom.nucleus': 'नाभिक',
+  'mx.story.atom.nucleusText':
+    'प्रोटॉन और न्यूट्रॉन एक ऐसे केंद्र में भरे हैं जो पूरे परमाणु से लगभग 1,00,000 गुना छोटा है।',
+  'mx.story.atom.electrons': 'इलेक्ट्रॉन',
+  'mx.story.atom.electronsText':
+    'प्रोटॉन से लगभग 1,836 गुना हल्के इलेक्ट्रॉन तय करते हैं कि परमाणु कैसे जुड़ते और अभिक्रिया करते हैं।',
+  'mx.story.atom.orbits': 'तीन कक्षाएँ',
+  'mx.story.atom.orbitsText':
+    'केंद्र का लोगो तीन झुकी कक्षाओं वाला परमाणु है। वास्तविक इलेक्ट्रॉन साफ़ रास्तों के बजाय धुंधले ऑर्बिटल में रहते हैं: यह चित्र एक मॉडल है, जैसा हर अच्छा वैज्ञानिक चित्र होता है।',
+
+  // Home — scroll story: milestones
+  'mx.story.timeline.title': 'मील के पत्थर',
+  'mx.story.timeline.1979': 'सौराष्ट्र एजुकेशन फ़ाउंडेशन ने अपना विज्ञान अभियान शुरू किया।',
+  'mx.story.timeline.1997':
+    'केंद्र रेस कोर्स स्थित अपने वर्तमान भवन में आया और GUJCOST द्वारा क्षेत्रीय केंद्र के रूप में मान्यता मिली।',
+  'mx.story.timeline.2003': 'वलयाकार सूर्यग्रहण के दिन, 31 मई को बिग बैंग एस्ट्रोनॉमी क्लब की स्थापना हुई।',
+  'mx.story.timeline.2008': 'NCSTC की ओर से विज्ञान एवं प्रौद्योगिकी संचार में सर्वश्रेष्ठ प्रयास हेतु राष्ट्रीय पुरस्कार।',
+  'mx.story.timeline.2017': 'कॉस्मिक किड्ज़ 8 से 12 वर्ष के बच्चों को प्रेक्षण खगोलविज्ञान और टेलिस्कोप संचालन का प्रशिक्षण देता है।',
+  'mx.story.timeline.2020':
+    '21 दिसंबर को बृहस्पति–शनि युति के लिए देशभर के लगभग 13,000 दर्शक क्लब से जुड़े।',
+
+  // Home — scroll story: laboratories
+  'mx.story.labs.eyebrow': 'पाँच प्रयोगशालाएँ',
+  'mx.story.labs.title': 'हर विषय की',
+  'mx.story.labs.titleAccent': 'अपनी प्रयोगशाला।',
+  'mx.story.labs.intro':
+    'संडे साइंस स्कूल में विद्यार्थी स्वयंसेवी विशेषज्ञों के मार्गदर्शन में प्रयोग करते हैं और अपने कार्य की पत्रिका रखते हैं।',
+  'mx.story.labs.question': 'खोजने लायक प्रश्न',
+  'mx.story.labs.try': 'लोलक का प्रयोग आज़माइए',
+  'mx.story.labs.all': 'सभी सुविधाएँ देखें',
+  'mx.story.labs.physics': 'भौतिकी प्रयोगशाला',
+  'mx.story.labs.physicsQ': 'लोलक समय कैसे बनाए रखता है?',
+  'mx.story.labs.physicsText':
+    'इसका दोलन इसकी लंबाई और गुरुत्व पर निर्भर करता है, गोलक के भार पर नहीं। यह विचार आप ठीक नीचे परख सकते हैं।',
+  'mx.story.labs.chemistry': 'रसायन विज्ञान प्रयोगशाला',
+  'mx.story.labs.chemistryQ': 'किसी विलयन को अम्लीय क्या बनाता है?',
+  'mx.story.labs.chemistryText':
+    'सूचक pH के अनुसार रंग बदलते हैं और द्रव के अदृश्य गुण को देखने योग्य बना देते हैं।',
+  'mx.story.labs.biology': 'जीव विज्ञान प्रयोगशाला',
+  'mx.story.labs.biologyQ': 'हर जीव किससे बना है?',
+  'mx.story.labs.biologyText':
+    'सूक्ष्मदर्शी में प्याज़ की पतली झिल्ली वे कोशिकाएँ दिखाती है जिनसे सभी पौधे और जंतु बने हैं।',
+  'mx.story.labs.mathematics': 'गणित प्रयोगशाला',
+  'mx.story.labs.mathematicsQ': 'क्या किसी प्रमेय को देखा जा सकता है?',
+  'mx.story.labs.mathematicsText':
+    'समकोण त्रिभुज की भुजाओं पर कटे वर्ग पाइथागोरस प्रमेय को हाथ से जमाए जा सकने वाले आकारों में बदल देते हैं।',
+  'mx.story.labs.electronics': 'इलेक्ट्रॉनिक्स प्रयोगशाला',
+  'mx.story.labs.electronicsQ': 'परिपथ निर्णय कैसे लेता है?',
+  'mx.story.labs.electronicsText':
+    'प्रतिरोधक, डायोड और ट्रांज़िस्टर विद्युत धारा को दिशा देते हैं: आपके हर उपकरण के मूल घटक।',
+
+  // Home — scroll story: pendulum experiment
+  'mx.story.pendulum.eyebrow': 'स्वयं करके देखिए',
+  'mx.story.pendulum.title': 'लोलक की लय',
+  'mx.story.pendulum.titleAccent': 'क्या तय करता है?',
+  'mx.story.pendulum.intro':
+    'लंबाई, गुरुत्व और गोलक का द्रव्यमान बदलिए, फिर दोलन देखिए। गैलीलियो ने देखा था कि लोलक का आवर्तकाल उसकी लंबाई पर निर्भर करता है; इसी सूत्र से आगे चलकर सटीक लोलक घड़ियाँ संभव हुईं।',
+  'mx.story.pendulum.figure': 'सजीव सिमुलेशन',
+  'mx.story.pendulum.length': 'लंबाई',
+  'mx.story.pendulum.angle': 'प्रारंभिक कोण',
+  'mx.story.pendulum.gravity': 'गुरुत्व',
+  'mx.story.pendulum.mass': 'गोलक का द्रव्यमान',
+  'mx.story.pendulum.earth': 'पृथ्वी',
+  'mx.story.pendulum.moon': 'चंद्रमा',
+  'mx.story.pendulum.mars': 'मंगल',
+  'mx.story.pendulum.jupiter': 'बृहस्पति',
+  'mx.story.pendulum.light': 'हल्का',
+  'mx.story.pendulum.heavy': 'भारी',
+  'mx.story.pendulum.play': 'गोलक छोड़ें',
+  'mx.story.pendulum.pause': 'रोकें',
+  'mx.story.pendulum.period': 'आवर्तकाल',
+  'mx.story.pendulum.periodHelp': 'एक पूरा दोलन, जाकर वापस',
+  'mx.story.pendulum.perMinute': 'प्रति मिनट दोलन',
+  'mx.story.pendulum.massNote': 'द्रव्यमान बदला, आवर्तकाल नहीं: केवल लंबाई और गुरुत्व मायने रखते हैं।',
+  'mx.story.pendulum.formula': 'छोटे कोणों के लिए, T = 2π √(L / g)',
+  'mx.story.pendulum.dragHint': 'प्रारंभिक कोण तय करने के लिए गोलक को खींचें।',
+  'mx.story.pendulum.largeAngle': 'बड़े कोणों पर वास्तविक दोलन सूत्र से थोड़ा अधिक समय लेता है।',
+  'mx.story.pendulum.seconds': 'से.',
+  'mx.story.pendulum.metres': 'मी.',
+
+  // Home — scroll story: zero shadow day
+  'mx.story.shadow.eyebrow': 'राजकोट पर दोपहर',
+  'mx.story.shadow.title': 'जिस दिन आपकी छाया',
+  'mx.story.shadow.titleAccent': 'गायब हो जाती है।',
+  'mx.story.shadow.intro':
+    'राजकोट 22.30° उत्तर में, कर्क रेखा के ठीक भीतर है। साल में दो बार दोपहर का सूर्य ठीक सिर के ऊपर होता है और खड़ी वस्तुओं की छाया नहीं बनती। केंद्र शून्य छाया दिवस पर बाहर प्रत्यक्ष प्रयोग करवाता है।',
+  'mx.story.shadow.date': 'तारीख',
+  'mx.story.shadow.elevation': 'दोपहर में सूर्य की ऊँचाई',
+  'mx.story.shadow.length': '1 मी. खंभे की छाया',
+  'mx.story.shadow.declination': 'सूर्य की क्रांति',
+  'mx.story.shadow.north': 'छाया उत्तर की ओर',
+  'mx.story.shadow.south': 'छाया दक्षिण की ओर',
+  'mx.story.shadow.none': 'दोपहर में छाया नहीं',
+  'mx.story.shadow.first': 'पहला शून्य छाया दिवस',
+  'mx.story.shadow.second': 'दूसरा शून्य छाया दिवस',
+  'mx.story.shadow.june': 'जून अयनांत',
+  'mx.story.shadow.december': 'दिसंबर अयनांत',
+  'mx.story.shadow.jumpTo': 'सीधे जाएँ',
+  'mx.story.shadow.note':
+    'तारीखें सूर्य की स्थिति के मानक अनुमान से निकाली गई हैं और पंचांग की तारीखों से एक दिन भिन्न हो सकती हैं। केंद्र ने 3 जून 2022 को शून्य छाया के क्षण का चित्र लिया था।',
+  'mx.story.shadow.figure': 'राजकोट में दोपहर, 22.30° उ.',
+  'mx.story.shadow.northShort': 'उ',
+  'mx.story.shadow.southShort': 'द',
+
+  // Home — scroll story: night sky journey
+  'mx.story.field.dusk': 'सूर्य ढलते ही खगोल क्लब का काम शुरू होता है।',
+  'mx.story.field.hint': 'रात की यात्रा के लिए स्क्रॉल करते रहिए',
+  'mx.story.field.founded': 'वलयाकार सूर्यग्रहण के दिन, 31 मई 2003 को स्थापना।',
+  'mx.story.field.telescopes': 'विभिन्न आकारों के लगभग 16 टेलिस्कोप और अनेक खगोलीय उपकरण।',
+  'mx.story.field.outreach': 'ग्रहण, युति, प्रच्छादन और उल्कावृष्टि के दौरान सार्वजनिक कार्यक्रम।',
+  'mx.story.field.starParty': 'अंधेरे स्थानों पर सार्वजनिक स्टार पार्टी और पूरी रात के प्रेक्षण।',
+  'mx.story.field.captionEclipse': 'सूर्यग्रहण प्रेक्षण',
 };

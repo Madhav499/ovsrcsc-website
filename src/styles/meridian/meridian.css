@@ -1421,3 +1421,35 @@
     transform: none;
   }
 }
+
+/* -------------------------------------------------------------------------
+   Scroll story — SVG atom highlight (the WebGL atom does the same in 3D)
+   ------------------------------------------------------------------------- */
+@layer components {
+  [data-site='meridian'] .mx-atom .mx-atom-orbit,
+  [data-site='meridian'] .mx-atom .mx-atom-electron,
+  [data-site='meridian'] .mx-atom .mx-atom-nucleus {
+    transition: opacity var(--mx-duration-slow) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-atom[data-focus='nucleus'] .mx-atom-orbit,
+  [data-site='meridian'] .mx-atom[data-focus='nucleus'] .mx-atom-electron,
+  [data-site='meridian'] .mx-atom[data-focus='electrons'] .mx-atom-orbit,
+  [data-site='meridian'] .mx-atom[data-focus='electrons'] .mx-atom-nucleus,
+  [data-site='meridian'] .mx-atom[data-focus='orbits'] .mx-atom-electron,
+  [data-site='meridian'] .mx-atom[data-focus='orbits'] .mx-atom-nucleus {
+    opacity: 0.15;
+  }
+
+  [data-site='meridian'] .mx-atom[data-focus='orbits'] .mx-atom-orbit {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-site='meridian'] .mx-atom .mx-atom-orbit,
+    [data-site='meridian'] .mx-atom .mx-atom-electron,
+    [data-site='meridian'] .mx-atom .mx-atom-nucleus {
+      transition: none;
+    }
+  }
+}

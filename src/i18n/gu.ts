@@ -481,4 +481,122 @@ export const gu: Dictionary = {
 
   // Auth
   'mx.auth.staffOnly': 'આ પાનું માત્ર કેન્દ્રના કર્મચારીઓ માટે છે.',
+
+  // Home — scroll story: atom explorer (hero)
+  'mx.story.atom.label': 'પરમાણુને જાણો',
+  'mx.story.atom.hint': 'ફેરવવા ખેંચો, અથવા કોઈ ભાગ પસંદ કરો',
+  'mx.story.atom.rotateLeft': 'પરમાણુને ડાબી તરફ ફેરવો',
+  'mx.story.atom.rotateRight': 'પરમાણુને જમણી તરફ ફેરવો',
+  'mx.story.atom.nucleus': 'કેન્દ્રક',
+  'mx.story.atom.nucleusText':
+    'પ્રોટોન અને ન્યૂટ્રોન એક એવા કેન્દ્રમાં ભરાયેલા છે જે આખા પરમાણુ કરતાં લગભગ ૧,૦૦,૦૦૦ ગણું નાનું છે.',
+  'mx.story.atom.electrons': 'ઇલેક્ટ્રોન',
+  'mx.story.atom.electronsText':
+    'પ્રોટોન કરતાં લગભગ ૧,૮૩૬ ગણા હળવા ઇલેક્ટ્રોન નક્કી કરે છે કે પરમાણુઓ કેવી રીતે જોડાય અને પ્રતિક્રિયા કરે.',
+  'mx.story.atom.orbits': 'ત્રણ કક્ષાઓ',
+  'mx.story.atom.orbitsText':
+    'કેન્દ્રનો લોગો ત્રણ ઢળતી કક્ષાઓવાળો પરમાણુ છે. વાસ્તવિક ઇલેક્ટ્રોન સ્પષ્ટ માર્ગને બદલે ધૂંધળા ઓર્બિટલમાં રહે છે: આ ચિત્ર એક મોડેલ છે, જેમ દરેક સારું વૈજ્ઞાનિક ચિત્ર હોય છે.',
+
+  // Home — scroll story: milestones
+  'mx.story.timeline.title': 'સીમાચિહ્નો',
+  'mx.story.timeline.1979': 'સૌરાષ્ટ્ર એજ્યુકેશન ફાઉન્ડેશને પોતાનું વિજ્ઞાન અભિયાન શરૂ કર્યું.',
+  'mx.story.timeline.1997':
+    'કેન્દ્ર રેસ કોર્સ ખાતેના હાલના મકાનમાં સ્થળાંતરિત થયું અને GUJCOST દ્વારા પ્રાદેશિક કેન્દ્ર તરીકે માન્યતા મળી.',
+  'mx.story.timeline.2003': 'કંકણાકૃતિ સૂર્યગ્રહણના દિવસે, ૩૧ મેના રોજ બિગ બેંગ એસ્ટ્રોનોમી ક્લબની સ્થાપના થઈ.',
+  'mx.story.timeline.2008': 'NCSTC તરફથી વિજ્ઞાન અને ટેકનોલોજી સંચારમાં શ્રેષ્ઠ પ્રયાસ માટે રાષ્ટ્રીય પુરસ્કાર.',
+  'mx.story.timeline.2017': 'કોસ્મિક કિડ્ઝ ૮થી ૧૨ વર્ષનાં બાળકોને નિરીક્ષણ ખગોળશાસ્ત્ર અને ટેલિસ્કોપ સંચાલનની તાલીમ આપે છે.',
+  'mx.story.timeline.2020':
+    '૨૧ ડિસેમ્બરે ગુરુ–શનિ યુતિ માટે દેશભરના લગભગ ૧૩,૦૦૦ દર્શકો ક્લબ સાથે જોડાયા.',
+
+  // Home — scroll story: laboratories
+  'mx.story.labs.eyebrow': 'પાંચ પ્રયોગશાળાઓ',
+  'mx.story.labs.title': 'દરેક વિષયની',
+  'mx.story.labs.titleAccent': 'પોતાની પ્રયોગશાળા.',
+  'mx.story.labs.intro':
+    'સંડે સાયન્સ સ્કૂલમાં વિદ્યાર્થીઓ સ્વયંસેવક નિષ્ણાતોના માર્ગદર્શન હેઠળ પ્રયોગો કરે છે અને પોતાના કાર્યની નોંધપોથી રાખે છે.',
+  'mx.story.labs.question': 'શોધવા જેવો પ્રશ્ન',
+  'mx.story.labs.try': 'લોલકનો પ્રયોગ કરી જુઓ',
+  'mx.story.labs.all': 'બધી સુવિધાઓ જુઓ',
+  'mx.story.labs.physics': 'ભૌતિકશાસ્ત્ર પ્રયોગશાળા',
+  'mx.story.labs.physicsQ': 'લોલક સમય કેમ જાળવે છે?',
+  'mx.story.labs.physicsText':
+    'તેનો ઝૂલો તેની લંબાઈ અને ગુરુત્વાકર્ષણ પર આધાર રાખે છે, ગોળાના વજન પર નહીં. આ વિચાર તમે નીચે જ ચકાસી શકો છો.',
+  'mx.story.labs.chemistry': 'રસાયણશાસ્ત્ર પ્રયોગશાળા',
+  'mx.story.labs.chemistryQ': 'દ્રાવણને એસિડિક શું બનાવે છે?',
+  'mx.story.labs.chemistryText':
+    'સૂચકો pH મુજબ રંગ બદલે છે અને પ્રવાહીના અદૃશ્ય ગુણધર્મને જોઈ શકાય તેવો બનાવે છે.',
+  'mx.story.labs.biology': 'જીવવિજ્ઞાન પ્રયોગશાળા',
+  'mx.story.labs.biologyQ': 'દરેક જીવ શેનો બનેલો છે?',
+  'mx.story.labs.biologyText':
+    'સૂક્ષ્મદર્શક નીચે ડુંગળીનું પાતળું પડ એ કોષો બતાવે છે જેનાથી બધાં વનસ્પતિ અને પ્રાણીઓ બનેલાં છે.',
+  'mx.story.labs.mathematics': 'ગણિત પ્રયોગશાળા',
+  'mx.story.labs.mathematicsQ': 'શું પ્રમેયને જોઈ શકાય?',
+  'mx.story.labs.mathematicsText':
+    'કાટકોણ ત્રિકોણની બાજુઓ પર કાપેલા ચોરસ પાયથાગોરસના પ્રમેયને હાથથી ગોઠવી શકાય તેવા આકારોમાં ફેરવે છે.',
+  'mx.story.labs.electronics': 'ઇલેક્ટ્રોનિક્સ પ્રયોગશાળા',
+  'mx.story.labs.electronicsQ': 'પરિપથ નિર્ણય કેવી રીતે લે છે?',
+  'mx.story.labs.electronicsText':
+    'રેઝિસ્ટર, ડાયોડ અને ટ્રાન્ઝિસ્ટર વિદ્યુતપ્રવાહને દિશા આપે છે: તમે વાપરો છો તે દરેક ઉપકરણના મૂળભૂત ઘટકો.',
+
+  // Home — scroll story: pendulum experiment
+  'mx.story.pendulum.eyebrow': 'જાતે કરી જુઓ',
+  'mx.story.pendulum.title': 'લોલકની લય',
+  'mx.story.pendulum.titleAccent': 'શું નક્કી કરે છે?',
+  'mx.story.pendulum.intro':
+    'લંબાઈ, ગુરુત્વાકર્ષણ અને ગોળાનું દળ બદલો, પછી ઝૂલો જુઓ. ગેલિલિયોએ નોંધ્યું હતું કે લોલકનો આવર્તકાળ તેની લંબાઈ પર આધાર રાખે છે; આ સંકેતથી પાછળથી ચોક્કસ લોલક ઘડિયાળો શક્ય બની.',
+  'mx.story.pendulum.figure': 'જીવંત સિમ્યુલેશન',
+  'mx.story.pendulum.length': 'લંબાઈ',
+  'mx.story.pendulum.angle': 'શરૂઆતનો કોણ',
+  'mx.story.pendulum.gravity': 'ગુરુત્વાકર્ષણ',
+  'mx.story.pendulum.mass': 'ગોળાનું દળ',
+  'mx.story.pendulum.earth': 'પૃથ્વી',
+  'mx.story.pendulum.moon': 'ચંદ્ર',
+  'mx.story.pendulum.mars': 'મંગળ',
+  'mx.story.pendulum.jupiter': 'ગુરુ',
+  'mx.story.pendulum.light': 'હળવો',
+  'mx.story.pendulum.heavy': 'ભારે',
+  'mx.story.pendulum.play': 'ગોળો છોડો',
+  'mx.story.pendulum.pause': 'થોભો',
+  'mx.story.pendulum.period': 'આવર્તકાળ',
+  'mx.story.pendulum.periodHelp': 'એક પૂર્ણ ઝૂલો, જઈને પાછો',
+  'mx.story.pendulum.perMinute': 'પ્રતિ મિનિટ ઝૂલા',
+  'mx.story.pendulum.massNote': 'દળ બદલાયું, આવર્તકાળ નહીં: માત્ર લંબાઈ અને ગુરુત્વાકર્ષણ મહત્ત્વનાં છે.',
+  'mx.story.pendulum.formula': 'નાના કોણ માટે, T = 2π √(L / g)',
+  'mx.story.pendulum.dragHint': 'શરૂઆતનો કોણ નક્કી કરવા ગોળાને ખેંચો.',
+  'mx.story.pendulum.largeAngle': 'મોટા કોણે વાસ્તવિક ઝૂલો સૂત્ર કરતાં થોડો વધુ સમય લે છે.',
+  'mx.story.pendulum.seconds': 'સે.',
+  'mx.story.pendulum.metres': 'મી.',
+
+  // Home — scroll story: zero shadow day
+  'mx.story.shadow.eyebrow': 'રાજકોટ પર બપોર',
+  'mx.story.shadow.title': 'જે દિવસે તમારો પડછાયો',
+  'mx.story.shadow.titleAccent': 'ગાયબ થાય છે.',
+  'mx.story.shadow.intro':
+    'રાજકોટ ૨૨.૩૦° ઉત્તરે, કર્કવૃત્તની બરાબર અંદર આવેલું છે. વર્ષમાં બે વાર બપોરનો સૂર્ય બરાબર માથા પર હોય છે અને ઊભી વસ્તુઓનો પડછાયો પડતો નથી. કેન્દ્ર શૂન્ય પડછાયા દિવસે બહાર પ્રત્યક્ષ પ્રયોગો કરાવે છે.',
+  'mx.story.shadow.date': 'તારીખ',
+  'mx.story.shadow.elevation': 'બપોરે સૂર્યની ઊંચાઈ',
+  'mx.story.shadow.length': '૧ મી. થાંભલાનો પડછાયો',
+  'mx.story.shadow.declination': 'સૂર્યની ક્રાંતિ',
+  'mx.story.shadow.north': 'પડછાયો ઉત્તર તરફ',
+  'mx.story.shadow.south': 'પડછાયો દક્ષિણ તરફ',
+  'mx.story.shadow.none': 'બપોરે પડછાયો નથી',
+  'mx.story.shadow.first': 'પ્રથમ શૂન્ય પડછાયા દિવસ',
+  'mx.story.shadow.second': 'બીજો શૂન્ય પડછાયા દિવસ',
+  'mx.story.shadow.june': 'જૂન અયનકાળ',
+  'mx.story.shadow.december': 'ડિસેમ્બર અયનકાળ',
+  'mx.story.shadow.jumpTo': 'સીધા જાઓ',
+  'mx.story.shadow.note':
+    'તારીખો સૂર્યની સ્થિતિના પ્રમાણભૂત અંદાજથી ગણાઈ છે અને પંચાંગની તારીખોથી એક દિવસ જુદી હોઈ શકે. કેન્દ્રે ૩ જૂન ૨૦૨૨ના રોજ શૂન્ય પડછાયાની ક્ષણની તસવીર લીધી હતી.',
+  'mx.story.shadow.figure': 'રાજકોટમાં બપોર, ૨૨.૩૦° ઉ.',
+  'mx.story.shadow.northShort': 'ઉ',
+  'mx.story.shadow.southShort': 'દ',
+
+  // Home — scroll story: night sky journey
+  'mx.story.field.dusk': 'સૂર્ય આથમતાં જ ખગોળ ક્લબનું કામ શરૂ થાય છે.',
+  'mx.story.field.hint': 'રાતની સફર માટે સ્ક્રોલ કરતા રહો',
+  'mx.story.field.founded': 'કંકણાકૃતિ સૂર્યગ્રહણના દિવસે, ૩૧ મે ૨૦૦૩ના રોજ સ્થાપના.',
+  'mx.story.field.telescopes': 'વિવિધ કદના લગભગ ૧૬ ટેલિસ્કોપ અને અનેક ખગોળીય સાધનો.',
+  'mx.story.field.outreach': 'ગ્રહણ, યુતિ, પિધાન અને ઉલ્કાવર્ષા દરમિયાન જાહેર કાર્યક્રમો.',
+  'mx.story.field.starParty': 'અંધારાં સ્થળોએ જાહેર સ્ટાર પાર્ટી અને આખી રાતનાં નિરીક્ષણો.',
+  'mx.story.field.captionEclipse': 'સૂર્યગ્રહણ નિરીક્ષણ',
 };

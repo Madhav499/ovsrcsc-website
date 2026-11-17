@@ -10,10 +10,12 @@ export function HomeNotices({
   locale,
   dict,
   notices,
+  index,
 }: {
   locale: LocaleCode;
   dict: Dictionary;
   notices: PublicNotice[];
+  index: string;
 }) {
   return (
     <section aria-labelledby="home-notices-title" className="mx-surface-white mx-section">
@@ -22,7 +24,7 @@ export function HomeNotices({
           <div className="lg:sticky lg:top-[calc(var(--mx-header-h)+2rem)]">
             <SectionHeading
               id="home-notices-title"
-              index="08"
+              index={index}
               eyebrow={dict['home.notices.eyebrow']}
               title={dict['home.notices.title']}
               intro={<p>{dict['notices.intro']}</p>}

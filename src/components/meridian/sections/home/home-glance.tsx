@@ -4,6 +4,7 @@ import { ESTABLISHED_YEAR, formatNumber } from '@/lib/meridian/site';
 import { CountUp } from '@/components/meridian/motion/count-up';
 import { Stagger, StaggerItem } from '@/components/meridian/motion/reveal';
 import { SectionHeading } from '@/components/meridian/primitives/section-heading';
+import { MilestoneTimeline } from '@/components/meridian/story/milestone-timeline';
 
 interface Stat {
   value: number | null;
@@ -11,6 +12,9 @@ interface Stat {
   suffix?: string;
   label: string;
 }
+
+/** Verified milestones from the center's own published history. */
+const MILESTONES = [1979, 1997, 2003, 2008, 2017, 2020] as const;
 
 const NUMBER_LOCALE: Record<LocaleCode, string> = {
   en: 'en-IN',
@@ -22,7 +26,7 @@ const NUMBER_LOCALE: Record<LocaleCode, string> = {
  * Verified figures only — each is published on the center's own pages
  * (home, about, infrastructure and Sunday Science School pages).
  */
-export function HomeGlance({ locale, dict }: { locale: LocaleCode; dict: Dictionary }) {
+export function HomeGlance({ locale, dict, index }: { locale: LocaleCode; dict: Dictionary; index: string }) {
   const years = new Date().getFullYear() - ESTABLISHED_YEAR;
   const stats: Stat[] = [
     { value: years, label: dict['mx.home.stats.years'] },
@@ -42,7 +46,7 @@ export function HomeGlance({ locale, dict }: { locale: LocaleCode; dict: Diction
       <div className="mx-container">
         <SectionHeading
           id="home-glance-title"
-          index="02"
+          index={index}
           eyebrow={`${dict['mx.home.glanceEyebrow']} · ${dict['home.stats.established']} ${formatNumber(ESTABLISHED_YEAR, locale).replace(/,/g, '')}`}
           title={dict['mx.home.glanceTitle']}
           accent={dict['mx.home.glanceTitleAccent']}
@@ -50,14 +54,16 @@ export function HomeGlance({ locale, dict }: { locale: LocaleCode; dict: Diction
           intro={<p>{dict['site.description']}</p>}
         />
 
-        <Stagger className="mt-16 grid grid-cols-2 gap-px border-y border-(--mx-line-strong) bg-(--mx-line) lg:grid-cols-3" as="div">
+        <div className="mt-16 grid gap-16 lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-7">
+        <Stagger className="grid grid-cols-2 gap-px border-y border-(--mx-line-strong) bg-(--mx-line)" as="div">
           {stats.map((stat, index) => (
             <StaggerItem
               key={stat.label}
-              className="relative bg-(--mx-bg) px-4 py-8 first:pl-0 sm:px-8 sm:py-12 [&:nth-child(odd)]:pl-0 lg:[&:nth-child(odd)]:pl-8 lg:[&:nth-child(3n+1)]:pl-0"
+              className="relative bg-(--mx-bg) px-4 py-8 sm:px-8 sm:py-10 [&:nth-child(odd)]:pl-0"
             >
               <span className="mx-mono-label">{String(index + 1).padStart(2, '0')}</span>
-              <p className="mx-numeric mt-6 text-[clamp(2.4rem,1.6rem+3.6vw,5.25rem)] leading-none text-(--mx-fg)">
+              <p className="mx-numeric mt-6 text-[clamp(2.4rem,1.6rem+2.6vw,4.25rem)] leading-none text-(--mx-fg)">
                 {stat.value !== null ? (
                   <CountUp value={stat.value} suffix={stat.suffix} numberLocale={NUMBER_LOCALE[locale]} />
                 ) : (
@@ -69,6 +75,17 @@ export function HomeGlance({ locale, dict }: { locale: LocaleCode; dict: Diction
           ))}
         </Stagger>
         <p className="mx-meta mt-6">{dict['mx.home.glanceNote']}</p>
+        </div>
+        <div className="lg:col-span-5 lg:pl-6">
+          <MilestoneTimeline
+            title={dict['mx.story.timeline.title']}
+            items={MILESTONES.map((year) => ({
+              year: formatNumber(year, locale).replace(/,/g, ''),
+              text: dict[`mx.story.timeline.${year}`],
+            }))}
+          />
+        </div>
+        </div>
       </div>
     </section>
   );

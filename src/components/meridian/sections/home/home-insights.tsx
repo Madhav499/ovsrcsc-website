@@ -10,10 +10,11 @@ interface HomeInsightsProps {
   locale: LocaleCode;
   dict: Dictionary;
   posts: ArticleSummary[];
+  index: string;
 }
 
 /** Latest activity-blog posts: one featured story plus supporting stories. */
-export function HomeInsights({ locale, dict, posts }: HomeInsightsProps) {
+export function HomeInsights({ locale, dict, posts, index }: HomeInsightsProps) {
   if (!posts.length) return null;
   const [featured, ...rest] = posts;
   return (
@@ -21,7 +22,7 @@ export function HomeInsights({ locale, dict, posts }: HomeInsightsProps) {
       <div className="mx-container">
         <SectionHeading
           id="home-insights-title"
-          index="06"
+          index={index}
           eyebrow={dict['mx.home.insightsEyebrow']}
           title={dict['mx.home.insightsTitle']}
           accent={dict['mx.home.insightsTitleAccent']}

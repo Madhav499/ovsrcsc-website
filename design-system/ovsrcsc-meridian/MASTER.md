@@ -66,6 +66,40 @@ Rhythm alternates dark and light sections; never all-dark.
   cross-fades in, pauses off-screen, DPR ≤ 1.75; SVG kept for mobile, save-data, low-power,
   no-WebGL and reduced motion. GSAP intentionally unused.
 
+## Scroll story (homepage)
+
+The homepage is one continuous narrative, not stacked sections. Components live in
+`src/components/meridian/story/`. Rhythm, in reading order:
+
+| Beat | Section | Interaction |
+|---|---|---|
+| Cinematic | Hero | Atom transforms with scroll (orbits fan open, tilt, quicken); drag to rotate; Nucleus / Electrons / Three orbits hotspots with explanations |
+| Reading | Intro | Masked photo reveals, parallax |
+| Information | At a glance | Count-up figures; milestone timeline whose rail is drawn by scroll |
+| Pinned photography | Five laboratories | Plate pinned (CSS sticky) while chapters scroll; wipe transition per lab |
+| Experiment | Pendulum | Length, angle, gravity (Earth/Moon/Mars/Jupiter), mass; drag-and-release bob; full θ'' = −(g/L)·sin θ simulation |
+| Photography | Spaces for discovery, events | Reveals |
+| Experiment | Zero Shadow Day | Noon-Sun simulator for Rajkot 22.30° N (Cooper declination; matches the center's 3 June 2022 photo) |
+| Lighting transition | Dusk band | Sun sinks and stars appear with scroll (noon → night) |
+| Horizontal story | Big Bang Astronomy Club | Desktop: row pinned and translated 1:1 by vertical scroll; phones: native swipe row |
+| Reading | Stories, gallery, notices, visit | Reveals; facade zooms into place |
+
+Rules:
+
+- **Never intercept scrolling.** Pinning is `position: sticky`; horizontal travel equals the
+  section's extra height. No wheel/touch handlers, no scroll snapping on the page.
+- **Motion values, not state.** Scroll-linked visuals use `useScroll`/`useTransform`
+  (`ScrollLinked`), the WebGL atom reads refs in `useFrame`, the pendulum writes its SVG
+  through a ref. React state changes only on discrete events (active lab, control input).
+- **Reduced motion:** `ScrollLinked` rests at its readable state (`rest="start"` for exits),
+  no WebGL, no auto-swinging pendulum, native row instead of pinned horizontal travel.
+- **Every drag has an alternative:** atom rotate buttons and arrow keys; pendulum angle slider.
+- **Mobile is designed, not shrunk:** SVG atom, stacked lab chapters with their own photos,
+  swipe row with snap and gutter, 44px controls, `touch-action: none` only on the pendulum bob.
+- **Facts only:** captions and figures come from the center's own pages and media library;
+  experiment copy states general science, never claims about specific equipment.
+- No interactive campus map: there is no verified floor plan to draw from.
+
 ## Accessibility checklist (applied)
 
 Skip link · visible focus (`--mx-focus`) · 44px targets · labelled icon buttons · native `<dialog>`

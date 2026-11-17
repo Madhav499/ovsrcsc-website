@@ -483,6 +483,124 @@ export const en = {
 
   // Auth
   'mx.auth.staffOnly': 'This page is for staff of the center only.',
+
+  // Home — scroll story: atom explorer (hero)
+  'mx.story.atom.label': 'Explore the atom',
+  'mx.story.atom.hint': 'Drag to rotate, or choose a part',
+  'mx.story.atom.rotateLeft': 'Rotate atom left',
+  'mx.story.atom.rotateRight': 'Rotate atom right',
+  'mx.story.atom.nucleus': 'Nucleus',
+  'mx.story.atom.nucleusText':
+    'Protons and neutrons packed into a core about 100,000 times smaller across than the atom itself.',
+  'mx.story.atom.electrons': 'Electrons',
+  'mx.story.atom.electronsText':
+    'About 1,836 times lighter than a proton, electrons decide how atoms bond and react.',
+  'mx.story.atom.orbits': 'Three orbits',
+  'mx.story.atom.orbitsText':
+    'The center’s logo is an atom with three tilted orbits. Real electrons occupy fuzzy orbitals rather than neat paths: the drawing is a model, as every good science diagram is.',
+
+  // Home — scroll story: milestones
+  'mx.story.timeline.title': 'Milestones',
+  'mx.story.timeline.1979': 'Saurashtra Education Foundation begins its science mission.',
+  'mx.story.timeline.1997':
+    'The center moves into its present building at Race Course and is recognised as a GUJCOST Regional Center.',
+  'mx.story.timeline.2003': 'The Big Bang Astronomy Club is founded on 31 May, the day of an annular solar eclipse.',
+  'mx.story.timeline.2008': 'National Award for Best Effort in Science & Technology Communication from NCSTC.',
+  'mx.story.timeline.2017': 'Cosmic Kidz trains children aged 8 to 12 in observational astronomy and telescope handling.',
+  'mx.story.timeline.2020':
+    'About 13,000 viewers across the country join the club for the Jupiter–Saturn conjunction on 21 December.',
+
+  // Home — scroll story: laboratories
+  'mx.story.labs.eyebrow': 'Five laboratories',
+  'mx.story.labs.title': 'Every discipline has',
+  'mx.story.labs.titleAccent': 'its own laboratory.',
+  'mx.story.labs.intro':
+    'At the Sunday Science School, students perform experiments under the guidance of volunteer experts and keep a journal of their work.',
+  'mx.story.labs.question': 'A question to explore',
+  'mx.story.labs.try': 'Try the pendulum experiment',
+  'mx.story.labs.all': 'See all facilities',
+  'mx.story.labs.physics': 'Physics Laboratory',
+  'mx.story.labs.physicsQ': 'Why does a pendulum keep time?',
+  'mx.story.labs.physicsText':
+    'Its swing depends on its length and on gravity, not on the weight of the bob. You can test that idea just below.',
+  'mx.story.labs.chemistry': 'Chemistry Laboratory',
+  'mx.story.labs.chemistryQ': 'What makes a solution acidic?',
+  'mx.story.labs.chemistryText':
+    'Indicators change colour with pH, turning an invisible property of a liquid into something you can see.',
+  'mx.story.labs.biology': 'Biology Laboratory',
+  'mx.story.labs.biologyQ': 'What is every living thing made of?',
+  'mx.story.labs.biologyText':
+    'Under a microscope, a thin onion peel reveals the cells that all plants and animals are built from.',
+  'mx.story.labs.mathematics': 'Mathematics Laboratory',
+  'mx.story.labs.mathematicsQ': 'Can you see a theorem?',
+  'mx.story.labs.mathematicsText':
+    'Cut-out squares on the sides of a right triangle turn Pythagoras’ theorem into shapes you can rearrange by hand.',
+  'mx.story.labs.electronics': 'Electronics Laboratory',
+  'mx.story.labs.electronicsQ': 'How does a circuit make decisions?',
+  'mx.story.labs.electronicsText':
+    'Resistors, diodes and transistors steer the flow of current: the building blocks of every device you use.',
+
+  // Home — scroll story: pendulum experiment
+  'mx.story.pendulum.eyebrow': 'Try it yourself',
+  'mx.story.pendulum.title': 'What sets the rhythm',
+  'mx.story.pendulum.titleAccent': 'of a pendulum?',
+  'mx.story.pendulum.intro':
+    'Change the length, the gravity and the mass of the bob, then watch the swing. Galileo noticed that a pendulum’s period depends on its length, the clue that later made accurate pendulum clocks possible.',
+  'mx.story.pendulum.figure': 'Live simulation',
+  'mx.story.pendulum.length': 'Length',
+  'mx.story.pendulum.angle': 'Starting angle',
+  'mx.story.pendulum.gravity': 'Gravity',
+  'mx.story.pendulum.mass': 'Mass of the bob',
+  'mx.story.pendulum.earth': 'Earth',
+  'mx.story.pendulum.moon': 'Moon',
+  'mx.story.pendulum.mars': 'Mars',
+  'mx.story.pendulum.jupiter': 'Jupiter',
+  'mx.story.pendulum.light': 'Light',
+  'mx.story.pendulum.heavy': 'Heavy',
+  'mx.story.pendulum.play': 'Release the bob',
+  'mx.story.pendulum.pause': 'Pause',
+  'mx.story.pendulum.period': 'Period',
+  'mx.story.pendulum.periodHelp': 'one full swing, there and back',
+  'mx.story.pendulum.perMinute': 'Swings per minute',
+  'mx.story.pendulum.massNote': 'Mass changed, period unchanged: only length and gravity matter.',
+  'mx.story.pendulum.formula': 'For small angles, T = 2π √(L / g)',
+  'mx.story.pendulum.dragHint': 'Drag the bob to set the starting angle.',
+  'mx.story.pendulum.largeAngle': 'At large angles the real swing takes slightly longer than the formula predicts.',
+  'mx.story.pendulum.seconds': 's',
+  'mx.story.pendulum.metres': 'm',
+
+  // Home — scroll story: zero shadow day
+  'mx.story.shadow.eyebrow': 'Noon over Rajkot',
+  'mx.story.shadow.title': 'The day your shadow',
+  'mx.story.shadow.titleAccent': 'disappears.',
+  'mx.story.shadow.intro':
+    'Rajkot lies at 22.30° N, just inside the Tropic of Cancer. Twice a year the noon Sun stands directly overhead and upright objects cast no shadow. The center takes Zero Shadow Day outdoors with hands-on experiments.',
+  'mx.story.shadow.date': 'Date',
+  'mx.story.shadow.elevation': 'Noon Sun elevation',
+  'mx.story.shadow.length': 'Shadow of a 1 m pole',
+  'mx.story.shadow.declination': 'Sun’s declination',
+  'mx.story.shadow.north': 'Shadow points north',
+  'mx.story.shadow.south': 'Shadow points south',
+  'mx.story.shadow.none': 'No shadow at noon',
+  'mx.story.shadow.first': 'First zero shadow day',
+  'mx.story.shadow.second': 'Second zero shadow day',
+  'mx.story.shadow.june': 'June solstice',
+  'mx.story.shadow.december': 'December solstice',
+  'mx.story.shadow.jumpTo': 'Jump to',
+  'mx.story.shadow.note':
+    'Dates use a standard approximation of the Sun’s position and may differ from almanac dates by a day. The center photographed the zero shadow moment on 3 June 2022.',
+  'mx.story.shadow.figure': 'Noon at Rajkot, 22.30° N',
+  'mx.story.shadow.northShort': 'N',
+  'mx.story.shadow.southShort': 'S',
+
+  // Home — scroll story: night sky journey
+  'mx.story.field.dusk': 'As the Sun sets, the astronomy club’s work begins.',
+  'mx.story.field.hint': 'Keep scrolling to travel through the night',
+  'mx.story.field.founded': 'Founded on 31 May 2003, the day of an annular solar eclipse.',
+  'mx.story.field.telescopes': 'About 16 telescopes of different sizes, with numerous astronomical accessories.',
+  'mx.story.field.outreach': 'Public programmes during eclipses, conjunctions, occultations and meteor showers.',
+  'mx.story.field.starParty': 'Public star parties and full-night observations at dark locations.',
+  'mx.story.field.captionEclipse': 'Solar eclipse observation',
 } as const;
 
 export type Dictionary = Record<keyof typeof en, string>;

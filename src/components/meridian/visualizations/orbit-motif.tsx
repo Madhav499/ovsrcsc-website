@@ -5,13 +5,15 @@ interface OrbitMotifProps {
   /** 'atom' echoes the three tilted orbits of the official logo. */
   variant?: 'atom' | 'rings' | 'meridian';
   animated?: boolean;
+  /** Atom only: highlights one part and dims the rest. */
+  focus?: 'nucleus' | 'electrons' | 'orbits' | null;
 }
 
 /**
  * Lightweight SVG scientific motif. Pure CSS animation (disabled under
  * prefers-reduced-motion). Also serves as the static fallback for the 3D hero.
  */
-export function OrbitMotif({ className, variant = 'atom', animated = true }: OrbitMotifProps) {
+export function OrbitMotif({ className, variant = 'atom', animated = true, focus = null }: OrbitMotifProps) {
   if (variant === 'rings') {
     return (
       <svg viewBox="0 0 400 400" fill="none" aria-hidden="true" className={className}>
@@ -52,7 +54,7 @@ export function OrbitMotif({ className, variant = 'atom', animated = true }: Orb
   }
 
   return (
-    <svg viewBox="0 0 400 400" fill="none" aria-hidden="true" className={className}>
+    <svg viewBox="0 0 400 400" fill="none" aria-hidden="true" className={cn('mx-atom', className)} data-focus={focus ?? undefined}>
       <defs>
         <radialGradient id="mx-nucleus" cx="40%" cy="35%" r="70%">
           <stop offset="0%" stopColor="#ffffff" />
@@ -63,19 +65,19 @@ export function OrbitMotif({ className, variant = 'atom', animated = true }: Orb
       <circle cx="200" cy="200" r="196" stroke="currentColor" strokeWidth="0.6" opacity="0.18" strokeDasharray="2 7" />
       <g className={cn(animated && 'mx-orbit-spin')}>
         <g transform="rotate(-30 200 200)">
-          <ellipse cx="200" cy="200" rx="170" ry="58" stroke="var(--mx-cyan)" strokeWidth="1.2" opacity="0.75" />
-          <circle cx="370" cy="200" r="7" fill="var(--mx-cyan)" />
+          <ellipse cx="200" cy="200" rx="170" ry="58" stroke="var(--mx-cyan)" strokeWidth="1.2" opacity="0.75" className="mx-atom-orbit" />
+          <circle cx="370" cy="200" r="7" fill="var(--mx-cyan)" className="mx-atom-electron" />
         </g>
         <g transform="rotate(30 200 200)">
-          <ellipse cx="200" cy="200" rx="170" ry="58" stroke="var(--mx-teal)" strokeWidth="1.2" opacity="0.75" />
-          <circle cx="58" cy="166" r="6" fill="var(--mx-teal)" />
+          <ellipse cx="200" cy="200" rx="170" ry="58" stroke="var(--mx-teal)" strokeWidth="1.2" opacity="0.75" className="mx-atom-orbit" />
+          <circle cx="58" cy="166" r="6" fill="var(--mx-teal)" className="mx-atom-electron" />
         </g>
         <g transform="rotate(90 200 200)">
-          <ellipse cx="200" cy="200" rx="170" ry="58" stroke="var(--mx-amber)" strokeWidth="1.2" opacity="0.8" />
-          <circle cx="330" cy="237" r="6.5" fill="var(--mx-amber)" />
+          <ellipse cx="200" cy="200" rx="170" ry="58" stroke="var(--mx-amber)" strokeWidth="1.2" opacity="0.8" className="mx-atom-orbit" />
+          <circle cx="330" cy="237" r="6.5" fill="var(--mx-amber)" className="mx-atom-electron" />
         </g>
       </g>
-      <circle cx="200" cy="200" r="26" fill="url(#mx-nucleus)" />
+      <circle cx="200" cy="200" r="26" fill="url(#mx-nucleus)" className="mx-atom-nucleus" />
       <circle cx="200" cy="200" r="40" stroke="currentColor" strokeWidth="0.6" opacity="0.25" />
     </svg>
   );

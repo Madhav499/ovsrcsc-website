@@ -7,13 +7,13 @@ import { BRAND_PHOTOS } from '@/components/meridian/media/brand-photos';
 import { Parallax } from '@/components/meridian/motion/parallax';
 import { Reveal } from '@/components/meridian/motion/reveal';
 
-export function HomeIntro({ locale, dict }: { locale: LocaleCode; dict: Dictionary }) {
+export function HomeIntro({ locale, dict, index }: { locale: LocaleCode; dict: Dictionary; index: string }) {
   return (
     <section id="home-intro" aria-labelledby="home-intro-title" className="mx-surface-ivory mx-section relative overflow-hidden">
       <div className="mx-container grid gap-16 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5 lg:pt-6">
           <p className="mx-eyebrow">
-            <span className="mx-eyebrow-index">01</span>
+            <span className="mx-eyebrow-index">{index}</span>
             <span aria-hidden="true" className="h-px w-6 bg-current opacity-50" />
             {dict['home.about.eyebrow']}
           </p>

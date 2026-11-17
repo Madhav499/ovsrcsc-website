@@ -14,9 +14,10 @@ interface HomeEventsProps {
   dict: Dictionary;
   events: PublicEvent[];
   externalCalendar: string;
+  index: string;
 }
 
-export function HomeEvents({ locale, dict, events, externalCalendar }: HomeEventsProps) {
+export function HomeEvents({ locale, dict, events, externalCalendar, index }: HomeEventsProps) {
   const p = `/${locale}`;
   const [featured, ...rest] = events;
   const calendar = externalCalendar && isSafeHttpUrl(externalCalendar) ? externalCalendar : null;
@@ -26,7 +27,7 @@ export function HomeEvents({ locale, dict, events, externalCalendar }: HomeEvent
       <div className="mx-container">
         <SectionHeading
           id="home-events-title"
-          index="04"
+          index={index}
           eyebrow={dict['home.events.eyebrow']}
           title={dict['home.events.title']}
           align="split"
