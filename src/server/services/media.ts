@@ -185,13 +185,14 @@ export async function replaceMediaFile(
   if (isImage !== (asset.kind === 'IMAGE')) {
     throw new ValidationError('The replacement file must be the same kind as the original.');
   }
-  const stored = isImage ? await storeImage(file) : await storeDocument(file);
+  // Check before storing anything, so a refused replacement leaves no orphan file.
   const references = await countMediaReferences(asset.storageKey);
   if (references > 0) {
     throw new ConflictError(
       'This media item is in use. Upload a new file instead so existing content is not changed unexpectedly.',
     );
   }
+  const stored = isImage ? await storeImage(file) : await storeDocument(file);
   try {
     await db.mediaAsset.update({
       where: { id: mediaId },
@@ -204,7 +205,6 @@ export async function replaceMediaFile(
         height: stored.height,
       },
     });
-    await removeStoredFile(asset.storageKey);
     await writeAuditLog({
       actorId: actor.id,
       action: 'media.replace',
@@ -212,9 +212,12 @@ export async function replaceMediaFile(
       entityId: mediaId,
       summary: `Replaced media file for ${asset.title}`,
     });
-    return { id: mediaId, storageKey: stored.key };
   } catch (error) {
     await removeStoredFile(stored.key);
     throw error;
   }
+  // The record now points at the new file; the old one is cleaned up best-effort
+  // (a failure here must never take the new file with it).
+  await removeStoredFile(asset.storageKey).catch(() => undefined);
+  return { id: mediaId, storageKey: stored.key };
 }

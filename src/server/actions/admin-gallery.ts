@@ -3,7 +3,9 @@
 import { revalidatePath } from 'next/cache';
 import { isAppError } from '@/lib/errors';
 import { assertSameOrigin } from '@/server/auth/csrf';
-import { requireActor } from '@/server/auth/actor';
+import { assertPermission, requireActor } from '@/server/auth/actor';
+import { uploadMedia } from '@/server/services/media';
+import { ALLOWED_IMAGE_TYPES } from '@/lib/constants';
 import { writeAuditLog } from '@/server/services/audit';
 import { createAlbum, updateAlbum, archiveAlbum, deleteGalleryItem, type GalleryAlbumInput } from '@/server/services/gallery';
 import { parseInstitutionLocal } from '@/lib/dates';
@@ -148,5 +150,62 @@ export async function removeGalleryItemAction(
       return { status: 'error', message: error.message };
     }
     return toActionFailure(error, 'Failed to remove the image.');
+  }
+}
+
+export interface AlbumUploadResult {
+  status: 'success' | 'error';
+  message: string;
+  media: Array<{ id: string; storageKey: string; title: string }>;
+}
+
+const MAX_FILES_PER_UPLOAD = 20;
+
+/**
+ * Upload one or more photographs from the album editor. Files go through the
+ * same validated pipeline as the Media library (type/size/signature checks,
+ * WebP conversion, audit log). They are added to the album only when the
+ * editor saves it, so an abandoned upload never changes the public site.
+ * Also used to replace a photo: the new file becomes a new media record and
+ * the editor swaps it in, leaving the old file untouched for any other use.
+ */
+export async function uploadAlbumPhotosAction(formData: FormData): Promise<AlbumUploadResult> {
+  try {
+    await assertSameOrigin();
+    const actor = await requireActor();
+    assertPermission(actor, 'gallery.manage');
+    assertPermission(actor, 'media.upload');
+    const files = formData.getAll('files').filter((value): value is File => value instanceof File && value.size > 0);
+    if (files.length === 0) return { status: 'error', message: 'Choose at least one photograph.', media: [] };
+    if (files.length > MAX_FILES_PER_UPLOAD) {
+      return { status: 'error', message: `Upload at most ${MAX_FILES_PER_UPLOAD} photographs at a time.`, media: [] };
+    }
+    const notImages = files.filter((file) => !(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type));
+    if (notImages.length) {
+      return { status: 'error', message: `Only JPG, PNG, WebP or GIF photographs can be added to an album (${notImages.map((file) => file.name).join(', ')}).`, media: [] };
+    }
+    const media: AlbumUploadResult['media'] = [];
+    const failures: string[] = [];
+    for (const file of files) {
+      try {
+        const asset = await uploadMedia(actor, { file, isPublic: true });
+        media.push({ id: asset.id, storageKey: asset.storageKey, title: asset.title });
+      } catch (error) {
+        failures.push(`${file.name}: ${isAppError(error) ? error.message : 'upload failed'}`);
+      }
+    }
+    revalidatePath('/admin/gallery');
+    revalidatePath('/admin/media');
+    if (failures.length && !media.length) return { status: 'error', message: failures.join(' · '), media };
+    return {
+      status: 'success',
+      message: failures.length
+        ? `Uploaded ${media.length}; ${failures.length} failed — ${failures.join(' · ')}. Save the album to publish the changes.`
+        : `Uploaded ${media.length} photograph${media.length === 1 ? '' : 's'}. Save the album to publish the changes.`,
+      media,
+    };
+  } catch (error) {
+    if (isAppError(error)) return { status: 'error', message: error.message, media: [] };
+    return { status: 'error', message: 'Upload failed. Please try again.', media: [] };
   }
 }

@@ -12,6 +12,7 @@ import {
   type Actor,
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
+import { scheduleTranslation } from '@/server/translation/service';
 import { getPublishedTranslation } from '@/server/public/content';
 import type { LocaleCode } from '@/lib/constants';
 import { localeToPrismaLocale } from '@/i18n';
@@ -150,6 +151,7 @@ export async function createPage(actor: Actor, input: PageInput): Promise<Page> 
     metadata: { path: page.path, sectionId: input.sectionId, status: pageStatus },
   });
 
+  await scheduleTranslation('Page', page.id);
   return page;
 }
 
@@ -296,6 +298,7 @@ export async function updatePage(
     metadata: { status: targetStatus, intent: input.intent },
   });
 
+  await scheduleTranslation('Page', pageId);
   return db.page.findUniqueOrThrow({ where: { id: pageId } });
 }
 

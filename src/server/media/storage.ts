@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+import { del as blobDel, get as blobGet, put as blobPut } from '@vercel/blob';
 import { ValidationError } from '@/lib/errors';
 import {
   ALLOWED_DOCUMENT_TYPES,
@@ -25,6 +26,47 @@ const MIME_TO_EXTENSION: Record<string, string> = {
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
   'text/plain': '.txt',
 };
+
+/*
+ * Storage backends. Keys (e.g. "2026/11/<uuid>.webp", "legacy/…") are the
+ * same in both, and files are always served through /media/[...key], which
+ * keeps the public/archived permission check in one place.
+ *
+ *   local — files under MEDIA_ROOT (default ./storage/media). Development and
+ *           self-hosted servers only: a serverless filesystem is not persistent.
+ *   blob  — Vercel Blob, private access (reads go through the media route).
+ *           Selected by MEDIA_STORAGE=blob, or automatically when
+ *           BLOB_READ_WRITE_TOKEN is present.
+ */
+export type StorageDriver = 'local' | 'blob';
+
+export function storageDriver(): StorageDriver {
+  const explicit = process.env.MEDIA_STORAGE?.trim().toLowerCase();
+  if (explicit === 'blob' || explicit === 'local') return explicit;
+  return process.env.BLOB_READ_WRITE_TOKEN ? 'blob' : 'local';
+}
+
+/** Refuse writes that would silently vanish (local disk on Vercel). */
+function assertPersistentWrites(): void {
+  if (storageDriver() === 'local' && process.env.VERCEL && process.env.MEDIA_ALLOW_EPHEMERAL !== '1') {
+    throw new ValidationError(
+      'Uploads are disabled: this deployment has no persistent media storage. Connect Vercel Blob (BLOB_READ_WRITE_TOKEN) and redeploy.',
+    );
+  }
+}
+
+async function writeStored(key: string, data: Buffer, contentType: string): Promise<void> {
+  if (storageDriver() === 'blob') {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      throw new ValidationError('MEDIA_STORAGE=blob is set but BLOB_READ_WRITE_TOKEN is missing.');
+    }
+    await blobPut(key, data, { access: 'private', addRandomSuffix: false, allowOverwrite: false, contentType });
+    return;
+  }
+  const target = resolveStoragePath(key);
+  await fs.mkdir(path.dirname(target), { recursive: true });
+  await fs.writeFile(target, data, { flag: 'wx' });
+}
 
 export function mediaRoot(): string {
   return path.resolve(process.env.MEDIA_ROOT ?? './storage/media');
@@ -125,13 +167,13 @@ export async function storeImage(file: File): Promise<StoredImage> {
   const now = new Date();
   const folder = `${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, '0')}`;
   const key = `${folder}/${randomUUID()}.webp`;
-  const target = resolveStoragePath(key);
-  await fs.mkdir(path.dirname(target), { recursive: true });
+  resolveStoragePath(key);
+  assertPersistentWrites();
 
   if (extension === '.gif') {
     const metadata = await sharp(buffer, { animated: true }).metadata();
     const gifKey = `${folder}/${randomUUID()}.gif`;
-    await fs.writeFile(resolveStoragePath(gifKey), buffer);
+    await writeStored(gifKey, buffer, 'image/gif');
     return {
       key: gifKey,
       width: metadata.width ?? 0,
@@ -148,7 +190,7 @@ export async function storeImage(file: File): Promise<StoredImage> {
     pipeline = pipeline.resize({ width: 2400, withoutEnlargement: true });
   }
   const output = await pipeline.webp({ quality: 84, effort: 4 }).toBuffer();
-  await fs.writeFile(target, output);
+  await writeStored(key, output, 'image/webp');
   const finalMetadata = await sharp(output).metadata();
 
   return {
@@ -181,9 +223,9 @@ export async function storeDocument(file: File): Promise<StoredDocument> {
   const now = new Date();
   const folder = `${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, '0')}`;
   const key = `${folder}/${randomUUID()}${MIME_TO_EXTENSION[file.type] ?? extension}`;
-  const target = resolveStoragePath(key);
-  await fs.mkdir(path.dirname(target), { recursive: true });
-  await fs.writeFile(target, buffer, { flag: 'wx' });
+  resolveStoragePath(key);
+  assertPersistentWrites();
+  await writeStored(key, buffer, file.type);
 
   return {
     key,
@@ -196,6 +238,11 @@ export async function storeDocument(file: File): Promise<StoredDocument> {
 }
 
 export async function removeStoredFile(key: string): Promise<void> {
+  if (storageDriver() === 'blob') {
+    if (!isValidStorageKey(key)) throw new ValidationError('Invalid media reference.');
+    await blobDel(key);
+    return;
+  }
   try {
     await fs.unlink(resolveStoragePath(key));
   } catch (error) {
@@ -205,10 +252,23 @@ export async function removeStoredFile(key: string): Promise<void> {
 }
 
 export async function readStoredFile(key: string): Promise<Buffer> {
+  if (storageDriver() === 'blob') {
+    if (!isValidStorageKey(key)) throw new ValidationError('Invalid media reference.');
+    const result = await blobGet(key, { access: 'private' });
+    if (!result || result.statusCode !== 200 || !result.stream) throw new Error('Media file not found in storage.');
+    return Buffer.from(await new Response(result.stream).arrayBuffer());
+  }
   return fs.readFile(resolveStoragePath(key));
 }
 
 export async function fileExists(key: string): Promise<boolean> {
+  if (storageDriver() === 'blob') {
+    try {
+      return Boolean(await blobGet(key, { access: 'private' }));
+    } catch {
+      return false;
+    }
+  }
   try {
     await fs.access(resolveStoragePath(key));
     return true;

@@ -17,25 +17,34 @@
    ------------------------------------------------------------------------- */
 @layer base {
   [data-site='meridian'] {
-    /* ---- Approved heritage palette ------------------------------------
-       Ivory reads, Stone warms, Green carries the institution, Charcoal
-       gives contrast, Brass annotates (sparingly), Sage adds depth.
-       Brass and Sage fail 4.5:1 as text on light surfaces — use their
-       -ink variants for text there; the base tones are for lines/marks. */
-    --mx-charcoal: #202b29;
-    --mx-charcoal-deep: #18211f;
-    --mx-green: #344c43;
-    --mx-green-raised: #3d574d;
+    /* ---- Approved palette: mineral blue (Nov 2026) --------------------
+       Ivory reads, Stone warms, Mineral blue carries the institution, Slate
+       supports it, Powder lightens panels and lines, Ink gives contrast, Brass
+       annotates (sparingly). Powder and Brass fail 4.5:1 as text on light
+       surfaces — never use them for text there. */
+    --mx-ink-charcoal: #222b33;
+    --mx-charcoal: #222b33;
+    --mx-charcoal-deep: #1a2128;
+    --mx-mineral: #263746;
+    --mx-mineral-raised: #31475a;
+    --mx-slate: #526b7a; /* 5.3:1 on ivory, 4.65:1 on stone */
+    --mx-powder: #a8c5d2; /* 7.9:1 on ink — dark surfaces and panels only */
+    --mx-powder-panel: #e3ecf0;
     --mx-stone: #f0e9dc;
     --mx-stone-deep: #e5dccb;
     --mx-ivory: #faf8f2;
     --mx-paper: #fffdf8;
     --mx-brass: #b18a58;
     --mx-brass-ink: #7a5b32; /* 5.9:1 on ivory */
-    --mx-brass-light: #d3b387; /* 7.3:1 on charcoal */
-    --mx-sage: #82958a;
-    --mx-sage-ink: #4e6157; /* 6.2:1 on ivory */
-    --mx-sage-light: #a8baae; /* 7.2:1 on charcoal */
+    --mx-brass-light: #d3b387; /* 7.2:1 on ink */
+
+    /* Retired heritage-green names now resolve to the blue family, so any
+       older markup can never render green. */
+    --mx-green: var(--mx-mineral);
+    --mx-green-raised: var(--mx-mineral-raised);
+    --mx-sage: var(--mx-slate);
+    --mx-sage-ink: var(--mx-slate);
+    --mx-sage-light: var(--mx-powder);
 
     /* Legacy names (first MERIDIAN pass) mapped onto the heritage palette,
        so older markup inherits the new identity. New code uses the names above. */
@@ -44,24 +53,23 @@
     --mx-navy-raised: var(--mx-green-raised);
     --mx-ivory-deep: var(--mx-stone);
     --mx-white: var(--mx-paper);
-    --mx-cyan: var(--mx-brass-light);
-    --mx-teal: var(--mx-sage);
-    --mx-teal-ink: var(--mx-green);
+    --mx-cyan: var(--mx-powder);
+    --mx-teal: var(--mx-slate);
+    --mx-teal-ink: var(--mx-mineral);
     --mx-amber: var(--mx-brass);
     --mx-amber-bright: #c29c6a;
     --mx-amber-ink: var(--mx-brass-ink);
-    --mx-slate: var(--mx-sage);
 
     /* Text on light surfaces (all ≥ 5:1 on ivory and stone) */
-    --mx-ink: #202b29;
-    --mx-ink-2: #3d4945;
-    --mx-ink-3: #59645f;
+    --mx-ink: #222b33;
+    --mx-ink-2: #3e4a55;
+    --mx-ink-3: #5a6671;
 
     /* Status */
     --mx-danger: #a63a2c;
     --mx-danger-soft: #f8e8e2;
-    --mx-success: #2f6a4c;
-    --mx-success-soft: #e4efe6;
+    --mx-success: #2b5f7a; /* status only — confirmed in the mineral family, AA on its soft fill */
+    --mx-success-soft: #e3eef3;
 
     /* Typography — three voices */
     --mx-font-sans: var(--mx-font-body-latin), var(--mx-font-gujarati), var(--mx-font-devanagari),
@@ -93,9 +101,9 @@
     --mx-header-h: 4.5rem;
 
     /* Shadows — tinted toward charcoal, never pure black */
-    --mx-shadow-sm: 0 1px 2px rgb(32 43 41 / 0.06), 0 4px 12px -6px rgb(32 43 41 / 0.12);
-    --mx-shadow-md: 0 2px 6px rgb(32 43 41 / 0.05), 0 18px 40px -22px rgb(32 43 41 / 0.32);
-    --mx-shadow-lg: 0 30px 80px -30px rgb(24 33 31 / 0.45);
+    --mx-shadow-sm: 0 1px 2px rgb(34 43 51 / 0.06), 0 4px 12px -6px rgb(34 43 51 / 0.12);
+    --mx-shadow-md: 0 2px 6px rgb(34 43 51 / 0.05), 0 18px 40px -22px rgb(34 43 51 / 0.32);
+    --mx-shadow-lg: 0 30px 80px -30px rgb(26 33 40 / 0.45);
 
     /* Motion — one vocabulary, three tempos */
     --mx-ease-out: cubic-bezier(0.19, 1, 0.22, 1);
@@ -107,23 +115,23 @@
     --mx-duration-draw: 1600ms;
 
     /* Paper grain — a few-hundred-byte fractal noise tile, never an image request */
-    --mx-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .13 0 0 0 0 .17 0 0 0 0 .16 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --mx-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .13 0 0 0 0 .17 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
     /* Default (light) surface semantics */
     --mx-bg: var(--mx-ivory);
     --mx-fg: var(--mx-ink);
     --mx-fg-2: var(--mx-ink-2);
     --mx-fg-3: var(--mx-ink-3);
-    --mx-line: rgb(32 43 41 / 0.13);
-    --mx-line-strong: rgb(32 43 41 / 0.26);
-    --mx-accent: var(--mx-green);
+    --mx-line: rgb(34 43 51 / 0.13);
+    --mx-line-strong: rgb(34 43 51 / 0.26);
+    --mx-accent: var(--mx-mineral);
     --mx-accent-2: var(--mx-brass-ink);
     --mx-mark: var(--mx-brass);
-    --mx-focus: var(--mx-green);
+    --mx-focus: var(--mx-mineral);
     --mx-raised: var(--mx-paper);
     --mx-sunken: var(--mx-stone);
     --mx-input-bg: var(--mx-paper);
-    --mx-cta-bg: var(--mx-green);
+    --mx-cta-bg: var(--mx-mineral);
     --mx-cta-fg: var(--mx-ivory);
     --mx-cta-hover: var(--mx-charcoal);
   }
@@ -146,16 +154,16 @@
     --mx-fg: var(--mx-ink);
     --mx-fg-2: var(--mx-ink-2);
     --mx-fg-3: var(--mx-ink-3);
-    --mx-line: rgb(32 43 41 / 0.13);
-    --mx-line-strong: rgb(32 43 41 / 0.26);
-    --mx-accent: var(--mx-green);
+    --mx-line: rgb(34 43 51 / 0.13);
+    --mx-line-strong: rgb(34 43 51 / 0.26);
+    --mx-accent: var(--mx-mineral);
     --mx-accent-2: var(--mx-brass-ink);
     --mx-mark: var(--mx-brass);
-    --mx-focus: var(--mx-green);
+    --mx-focus: var(--mx-mineral);
     --mx-raised: var(--mx-paper);
     --mx-sunken: var(--mx-stone);
     --mx-input-bg: var(--mx-paper);
-    --mx-cta-bg: var(--mx-green);
+    --mx-cta-bg: var(--mx-mineral);
     --mx-cta-fg: var(--mx-ivory);
     --mx-cta-hover: var(--mx-charcoal);
     background-color: var(--mx-bg);
@@ -170,42 +178,44 @@
 
   [data-site='meridian'] .mx-surface-stone {
     --mx-bg: var(--mx-stone);
-    --mx-line: rgb(32 43 41 / 0.15);
+    --mx-line: rgb(34 43 51 / 0.15);
     --mx-raised: var(--mx-ivory);
     --mx-sunken: var(--mx-stone-deep);
     --mx-input-bg: var(--mx-ivory);
   }
 
-  /* Charcoal: immersive chapters. Green: institutional surfaces. */
+  /* Ink: immersive chapters. Mineral: institutional surfaces. */
   [data-site='meridian'] .mx-surface-dark,
   [data-site='meridian'] .mx-surface-navy,
-  [data-site='meridian'] .mx-surface-green {
+  [data-site='meridian'] .mx-surface-green,
+  [data-site='meridian'] .mx-surface-mineral {
     --mx-bg: var(--mx-charcoal);
     --mx-fg: var(--mx-ivory);
     --mx-fg-2: rgb(250 248 242 / 0.8);
     --mx-fg-3: rgb(250 248 242 / 0.64);
     --mx-line: rgb(250 248 242 / 0.13);
     --mx-line-strong: rgb(250 248 242 / 0.28);
-    --mx-accent: var(--mx-brass-light);
+    --mx-accent: var(--mx-powder);
     --mx-accent-2: var(--mx-brass-light);
     --mx-mark: var(--mx-brass);
-    --mx-focus: var(--mx-brass-light);
-    --mx-raised: var(--mx-green);
+    --mx-focus: var(--mx-powder);
+    --mx-raised: var(--mx-mineral);
     --mx-sunken: var(--mx-charcoal-deep);
     --mx-input-bg: rgb(250 248 242 / 0.06);
-    --mx-cta-bg: var(--mx-brass);
+    --mx-cta-bg: var(--mx-powder);
     --mx-cta-fg: var(--mx-charcoal);
-    --mx-cta-hover: var(--mx-brass-light);
+    --mx-cta-hover: var(--mx-ivory);
     background-color: var(--mx-bg);
     color: var(--mx-fg);
   }
 
   [data-site='meridian'] .mx-surface-navy,
-  [data-site='meridian'] .mx-surface-green {
-    --mx-bg: var(--mx-green);
+  [data-site='meridian'] .mx-surface-green,
+  [data-site='meridian'] .mx-surface-mineral {
+    --mx-bg: var(--mx-mineral);
     --mx-fg-3: rgb(250 248 242 / 0.74);
-    --mx-raised: var(--mx-green-raised);
-    --mx-sunken: #2a3f37;
+    --mx-raised: var(--mx-mineral-raised);
+    --mx-sunken: #1f2e3b;
   }
 
   /* Paper grain overlay for editorial surfaces (opt-in) */
@@ -225,7 +235,7 @@
     mix-blend-mode: multiply;
   }
 
-  [data-site='meridian'] :is(.mx-surface-dark, .mx-surface-green, .mx-surface-navy).mx-grain::before {
+  [data-site='meridian'] :is(.mx-surface-dark, .mx-surface-green, .mx-surface-mineral, .mx-surface-navy).mx-grain::before {
     opacity: 0.16;
     mix-blend-mode: screen;
     filter: invert(1);
@@ -575,7 +585,7 @@
   [data-site='meridian'] .mx-btn-primary:hover {
     --mx-btn-bg: var(--mx-cta-hover);
     --mx-btn-border: var(--mx-cta-hover);
-    box-shadow: 0 12px 28px -16px rgb(24 33 31 / 0.65);
+    box-shadow: 0 12px 28px -16px rgb(26 33 40 / 0.65);
   }
 
   [data-site='meridian'] .mx-btn-ink {
@@ -756,8 +766,8 @@
      in a museum gallery, not a glow effect. */
   [data-site='meridian'] .mx-atmosphere {
     background:
-      radial-gradient(120% 80% at 70% 20%, transparent 40%, rgb(24 33 31 / 0.55) 100%),
-      linear-gradient(180deg, transparent 55%, rgb(52 76 67 / 0.35) 100%);
+      radial-gradient(120% 80% at 70% 20%, transparent 40%, rgb(26 33 40 / 0.55) 100%),
+      linear-gradient(180deg, transparent 55%, rgb(38 55 70 / 0.35) 100%);
   }
 
   /* Specimen plate — image frame with instrument corner ticks */
@@ -805,7 +815,7 @@
   }
 
   [data-site='meridian'] .mx-scrim {
-    background: linear-gradient(180deg, rgb(32 43 41 / 0) 35%, rgb(32 43 41 / 0.88) 100%);
+    background: linear-gradient(180deg, rgb(34 43 51 / 0) 35%, rgb(34 43 51 / 0.88) 100%);
   }
 
   /* Surfaces that lift on hover */
@@ -1161,12 +1171,12 @@
     --mx-fg-3: rgb(250 248 242 / 0.62);
     --mx-line: rgb(250 248 242 / 0.14);
     --mx-line-strong: rgb(250 248 242 / 0.3);
-    --mx-accent: var(--mx-brass-light);
-    --mx-focus: var(--mx-brass-light);
-    --mx-cta-bg: var(--mx-brass);
+    --mx-accent: var(--mx-powder);
+    --mx-focus: var(--mx-powder);
+    --mx-cta-bg: var(--mx-powder);
     --mx-cta-fg: var(--mx-charcoal);
-    --mx-cta-hover: var(--mx-brass-light);
-    background: linear-gradient(180deg, rgb(24 33 31 / 0.6), rgb(24 33 31 / 0));
+    --mx-cta-hover: var(--mx-ivory);
+    background: linear-gradient(180deg, rgb(26 33 40 / 0.6), rgb(26 33 40 / 0));
   }
 
   [data-site='meridian'] .mx-header[data-mode='overlay-light'] {
@@ -1177,7 +1187,7 @@
     background: rgb(250 248 242 / 0.92);
     backdrop-filter: saturate(140%) blur(12px);
     -webkit-backdrop-filter: saturate(140%) blur(12px);
-    box-shadow: 0 1px 0 rgb(32 43 41 / 0.1);
+    box-shadow: 0 1px 0 rgb(34 43 51 / 0.1);
   }
 
   @supports not (backdrop-filter: blur(1px)) {
@@ -1255,7 +1265,7 @@
     border-radius: var(--mx-radius-md);
     background: var(--mx-white);
     color: var(--mx-ink);
-    border: 1px solid rgb(32 43 41 / 0.08);
+    border: 1px solid rgb(34 43 51 / 0.08);
     box-shadow: var(--mx-shadow-lg);
     transform: translateX(-50%);
     --mx-fg: var(--mx-ink);
@@ -1391,7 +1401,7 @@
 
   /* Dialogs */
   [data-site='meridian'] dialog.mx-dialog::backdrop {
-    background: rgb(32 43 41 / 0.78);
+    background: rgb(34 43 51 / 0.78);
     backdrop-filter: blur(6px);
   }
 
@@ -1707,8 +1717,8 @@
     vector-effect: non-scaling-stroke;
   }
 
-  [data-site='meridian'] .mx-diagram .mx-d-sage {
-    stroke: var(--mx-sage);
+  [data-site='meridian'] .mx-diagram .mx-d-slate {
+    stroke: var(--mx-slate);
     stroke-width: 1.2;
     fill: none;
     vector-effect: non-scaling-stroke;
@@ -1797,7 +1807,7 @@
     overflow-y: auto;
     border-top: 1px solid var(--mx-line);
     border-bottom: 1px solid var(--mx-line-strong);
-    box-shadow: 0 40px 80px -40px rgb(24 33 31 / 0.45);
+    box-shadow: 0 40px 80px -40px rgb(26 33 40 / 0.45);
   }
 
   [data-site='meridian'] .mx-mega-link {
@@ -1853,7 +1863,7 @@
     height: 1.625rem;
     border-radius: 50%;
     border: 1px solid var(--mx-brass-light);
-    background: rgb(24 33 31 / 0.72);
+    background: rgb(26 33 40 / 0.72);
     color: var(--mx-ivory);
     font-family: var(--mx-font-mono);
     font-size: 0.6875rem;
@@ -1964,5 +1974,846 @@
     opacity: 1 !important;
     clip-path: none !important;
     transform: none !important;
+  }
+}
+
+@layer components {
+  /* Powder panel: a restrained light-blue ground for exhibits and maps.
+     Text keeps the ink scale (ink-3 is 5.0:1 here); powder itself is never text. */
+  [data-site='meridian'] .mx-surface-powder {
+    --mx-bg: var(--mx-powder-panel);
+    --mx-fg: var(--mx-ink);
+    --mx-fg-2: var(--mx-ink-2);
+    --mx-fg-3: var(--mx-ink-3);
+    --mx-line: rgb(34 43 51 / 0.14);
+    --mx-line-strong: rgb(34 43 51 / 0.28);
+    --mx-accent: var(--mx-mineral);
+    --mx-accent-2: var(--mx-brass-ink);
+    --mx-mark: var(--mx-slate);
+    --mx-focus: var(--mx-mineral);
+    --mx-raised: var(--mx-paper);
+    --mx-sunken: #d6e3e9;
+    --mx-input-bg: var(--mx-paper);
+    --mx-cta-bg: var(--mx-mineral);
+    --mx-cta-fg: var(--mx-ivory);
+    --mx-cta-hover: var(--mx-charcoal);
+    background-color: var(--mx-bg);
+    color: var(--mx-fg);
+  }
+}
+
+
+/* -------------------------------------------------------------------------
+   9. Film archive (gallery) — roll, light table, viewing room
+   After HOLMCHROME: 11px mono HUD with wide tracking, a round menu button,
+   a dark rounded menu panel, a near-black viewing room with ring buttons.
+   ------------------------------------------------------------------------- */
+@layer components {
+  [data-site='meridian'] .mx-film {
+    --mx-film-base: #222b33;
+    --mx-film-window: #33404b;
+    --mx-film-edge: 1.55rem;
+    --mx-film-hud: var(--mx-ink);
+    position: relative;
+    background: var(--mx-ivory);
+    color: var(--mx-ink);
+  }
+
+  [data-site='meridian'] :is(.mx-film-mark, .mx-film-mode, .mx-film-hud-caption, .mx-film-hud-meta, .mx-film-hint, .mx-film-empty-title, .mx-film-menu button) {
+    font-family: var(--mx-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  /* HUD -------------------------------------------------------------- */
+  [data-site='meridian'] .mx-film-hud-top {
+    position: absolute;
+    inset: 1.25rem var(--mx-gutter) auto var(--mx-gutter);
+    z-index: 6;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    pointer-events: none;
+  }
+
+  [data-site='meridian'] .mx-film-hud-top > * {
+    pointer-events: auto;
+  }
+
+  [data-site='meridian'] .mx-film-modes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1.25rem;
+  }
+
+  [data-site='meridian'] .mx-film-mark {
+    margin-right: 0.5rem;
+    font-weight: 600;
+  }
+
+  [data-site='meridian'] .mx-film-mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--mx-ink-3);
+    cursor: pointer;
+    transition: color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-mode:hover,
+  [data-site='meridian'] .mx-film-mode[aria-pressed='true'] {
+    color: var(--mx-ink);
+  }
+
+  [data-site='meridian'] .mx-film-caret {
+    font-size: 0.6rem;
+    visibility: hidden;
+  }
+
+  [data-site='meridian'] [aria-pressed='true'] > .mx-film-caret {
+    visibility: visible;
+  }
+
+  [data-site='meridian'] .mx-film-menu-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.875rem;
+    height: 2.875rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--mx-charcoal);
+    cursor: pointer;
+  }
+
+  [data-site='meridian'] .mx-film-menu-icon,
+  [data-site='meridian'] .mx-film-menu-icon::after {
+    display: block;
+    width: 1rem;
+    height: 1px;
+    background: var(--mx-ivory);
+    transition: transform var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-menu-icon {
+    transform: translateY(-3px);
+  }
+
+  [data-site='meridian'] .mx-film-menu-icon::after {
+    content: '';
+    transform: translateY(6px);
+  }
+
+  [data-site='meridian'] .mx-film-menu-icon[data-open='true'] {
+    transform: rotate(45deg);
+  }
+
+  [data-site='meridian'] .mx-film-menu-icon[data-open='true']::after {
+    transform: rotate(-90deg);
+  }
+
+  [data-site='meridian'] .mx-film-menu {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    z-index: 8;
+    width: min(20rem, calc(100vw - 2 * var(--mx-gutter)));
+    padding: 1.5rem 1.75rem;
+    border-radius: 0.875rem;
+    background: var(--mx-charcoal-deep);
+    color: var(--mx-ivory);
+    box-shadow: 0 30px 60px -30px rgb(26 33 40 / 0.7);
+    animation: mx-fade-in 260ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-menu ul {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  [data-site='meridian'] .mx-film-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    min-height: 2.75rem;
+    border: 0;
+    background: none;
+    color: rgb(250 248 242 / 0.78);
+    text-align: left;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+  }
+
+  [data-site='meridian'] .mx-film-menu button:hover,
+  [data-site='meridian'] .mx-film-menu button[aria-pressed='true'] {
+    color: var(--mx-ivory);
+  }
+
+  [data-site='meridian'] .mx-film-menu-count {
+    margin-left: auto;
+    opacity: 0.6;
+  }
+
+  [data-site='meridian'] :is(.mx-film-mode, .mx-film-menu-btn, .mx-film-menu button):focus-visible {
+    outline: 2px solid var(--mx-mineral);
+    outline-offset: 3px;
+  }
+
+  [data-site='meridian'] .mx-film-menu button:focus-visible {
+    outline-color: var(--mx-powder);
+  }
+
+  [data-site='meridian'] .mx-film-hud-caption,
+  [data-site='meridian'] .mx-film-hud-meta {
+    position: absolute;
+    bottom: 1.25rem;
+    z-index: 5;
+    max-width: 46%;
+    color: var(--mx-film-hud);
+  }
+
+  [data-site='meridian'] .mx-film-hud-caption {
+    left: var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-film-hud-meta {
+    right: var(--mx-gutter);
+    text-align: right;
+  }
+
+  [data-site='meridian'] .mx-film-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 3.75rem;
+    z-index: 5;
+    transform: translateX(-50%);
+    color: var(--mx-ink-3);
+    white-space: nowrap;
+    transition: opacity 600ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-hint.is-hidden {
+    opacity: 0;
+  }
+
+  @media (max-width: 639px) {
+    [data-site='meridian'] .mx-film-hud-caption {
+      max-width: none;
+      right: var(--mx-gutter);
+      bottom: 3rem;
+    }
+
+    [data-site='meridian'] .mx-film-hud-meta {
+      max-width: none;
+      left: var(--mx-gutter);
+      text-align: left;
+    }
+
+    [data-site='meridian'] .mx-film-hint {
+      bottom: 5.5rem;
+    }
+  }
+
+  /* Roll (scroll-linked stage) --------------------------------------- */
+  /* The roll starts under the fixed header, so it is a full viewport tall:
+     the sticky stage always has room to settle just below the header. */
+  [data-site='meridian'] .mx-film-roll {
+    height: calc(100svh + var(--travel, 0px));
+  }
+
+  [data-site='meridian'] .mx-film-stage {
+    position: sticky;
+    top: var(--mx-header-h);
+    height: calc(100svh - var(--mx-header-h));
+    overflow: hidden;
+  }
+
+  [data-site='meridian'] .mx-film-gl {
+    position: absolute;
+    inset: 0;
+    clip-path: circle(0% at 50% 50%);
+  }
+
+  /* The aperture opens once the roll is ready (a short iris, not a loader) */
+  [data-site='meridian'] .mx-film-stage.is-revealed .mx-film-gl {
+    clip-path: circle(75% at 50% 50%);
+    transition: clip-path 1100ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-stage[data-hovering='true'] canvas {
+    cursor: none;
+  }
+
+  [data-site='meridian'] .mx-film-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 7;
+    pointer-events: none;
+  }
+
+  [data-site='meridian'] .mx-film-cursor::before {
+    content: '';
+    position: absolute;
+    left: -3.75rem;
+    top: -3.75rem;
+    width: 7.5rem;
+    height: 7.5rem;
+    border: 1px solid var(--mx-ink);
+    border-radius: 50%;
+  }
+
+  [data-site='meridian'] .mx-film-cursor > span {
+    position: absolute;
+    top: 4.25rem;
+    left: 0;
+    transform: translateX(-50%);
+    font-family: var(--mx-font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+  }
+
+  /* DOM roll (no WebGL / reduced motion / save-data): a native scroller */
+  [data-site='meridian'] .mx-film-dom-strip {
+    --h: min(52svh, 26rem);
+    position: absolute;
+    inset: 50% 0 auto 0;
+    display: flex;
+    gap: 0;
+    padding-inline: var(--mx-gutter);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    transform: translateY(-50%);
+    scrollbar-width: thin;
+  }
+
+  [data-site='meridian'] .mx-film-dom-strip > li {
+    flex: none;
+    scroll-snap-align: center;
+  }
+
+  [data-site='meridian'] .mx-film-dom-strip .mx-film-frame {
+    height: var(--h);
+  }
+
+  [data-site='meridian'] .mx-film-dom-strip .mx-film-window {
+    width: auto;
+    height: calc(var(--h) - 2 * var(--mx-film-edge));
+  }
+
+  /* Film frame (DOM) -------------------------------------------------- */
+  [data-site='meridian'] .mx-film-frame {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: linear-gradient(180deg, #2b353e, var(--mx-film-base) 50%, #1d252c);
+    color: rgb(232 238 241 / 0.86);
+    cursor: zoom-in;
+    transition: transform 500ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-frame:focus-visible {
+    position: relative;
+    z-index: 2;
+    outline: 2px solid var(--mx-mineral);
+    outline-offset: 3px;
+  }
+
+  [data-site='meridian'] .mx-film-edge {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    height: var(--mx-film-edge);
+    padding: 0 0.6rem 0.18rem;
+    font-family: var(--mx-font-mono);
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  [data-site='meridian'] .mx-film-edge-top {
+    justify-content: space-between;
+  }
+
+  [data-site='meridian'] .mx-film-edge-bottom {
+    align-items: flex-start;
+    padding: 0.18rem 0.6rem 0;
+  }
+
+  /* Sprocket holes: the light table shows through */
+  [data-site='meridian'] .mx-film-edge::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 0.42rem;
+    background: repeating-linear-gradient(90deg, transparent 0 0.3rem, var(--mx-ivory) 0.3rem 0.82rem, transparent 0.82rem 1.15rem);
+  }
+
+  [data-site='meridian'] .mx-film-edge-top::before {
+    top: 0.28rem;
+  }
+
+  [data-site='meridian'] .mx-film-edge-bottom::before {
+    bottom: 0.28rem;
+  }
+
+  [data-site='meridian'] .mx-film-arrow {
+    font-size: 0.45rem;
+  }
+
+  [data-site='meridian'] .mx-film-window {
+    position: relative;
+    display: block;
+    width: calc(100% - 0.5rem);
+    margin-inline: auto;
+    aspect-ratio: var(--aspect, 1.5);
+    overflow: hidden;
+    background: var(--mx-film-window);
+  }
+
+  [data-site='meridian'] .mx-film-img {
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 600ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-film-frame[data-state='loaded'] .mx-film-img {
+    opacity: 1;
+  }
+
+  [data-site='meridian'] .mx-film-missing {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 0.5rem;
+    font-family: var(--mx-font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* Index: a light table of film strips ------------------------------- */
+  [data-site='meridian'] .mx-film-index-head {
+    position: relative;
+    height: calc(var(--mx-header-h) + 5.5rem);
+  }
+
+  [data-site='meridian'] .mx-film-index-head .mx-film-hud-top {
+    inset: auto var(--mx-gutter) 1.25rem var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-film-table {
+    --row: 9.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 1.75rem;
+    padding: 0.5rem var(--mx-gutter) 6rem;
+  }
+
+  @media (min-width: 640px) {
+    [data-site='meridian'] .mx-film-table {
+      --row: 12rem;
+      row-gap: 2.25rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    [data-site='meridian'] .mx-film-table {
+      --row: 14rem;
+    }
+  }
+
+  /* Justified rows: width ∝ aspect keeps every frame in a row the same height,
+     so a row reads as one continuous strip of film. */
+  /* Basis includes the 0.5rem frame line, so the spare width is shared in
+     proportion to aspect and every window in a row has the same height. */
+  [data-site='meridian'] .mx-film-table-cell {
+    display: flex;
+    flex-grow: var(--aspect);
+    flex-basis: calc(var(--aspect) * var(--row) + 0.5rem);
+    min-width: 0;
+  }
+
+  [data-site='meridian'] .mx-film-table-spacer {
+    flex-grow: 999;
+    flex-basis: 0;
+  }
+
+  @media (hover: hover) {
+    [data-site='meridian'] .mx-film-table .mx-film-frame:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  /* Empty roll --------------------------------------------------------- */
+  [data-site='meridian'] .mx-film-empty {
+    display: grid;
+    justify-items: center;
+    gap: 0.75rem;
+    padding: 6rem var(--mx-gutter);
+    text-align: center;
+  }
+
+  [data-site='meridian'] .mx-film-empty.is-overlay {
+    position: absolute;
+    inset: auto 0 12%;
+    z-index: 5;
+    padding-block: 0;
+  }
+
+  [data-site='meridian'] .mx-film-empty-note {
+    max-width: 34ch;
+    font-size: 0.9375rem;
+    color: var(--mx-ink-2);
+  }
+
+  /* Viewing room ------------------------------------------------------- */
+  [data-site='meridian'] dialog.mx-proj {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: var(--mx-charcoal-deep);
+    color: var(--mx-ivory);
+  }
+
+  [data-site='meridian'] dialog.mx-proj::backdrop {
+    background: transparent;
+  }
+
+  [data-site='meridian'] dialog.mx-proj[data-phase='opening'] {
+    animation: mx-proj-ground 320ms var(--mx-ease-out) both;
+  }
+
+  [data-site='meridian'] dialog.mx-proj[data-phase='closing'] {
+    animation: mx-proj-ground 420ms var(--mx-ease-out) reverse both;
+  }
+
+  [data-site='meridian'] .mx-proj-room {
+    position: relative;
+    height: 100%;
+  }
+
+  [data-site='meridian'] .mx-proj-bar {
+    position: absolute;
+    inset: 1.25rem var(--mx-gutter) auto var(--mx-gutter);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  [data-site='meridian'] :is(.mx-proj-back, .mx-proj-meta, .mx-proj-ring, .mx-proj-link) {
+    font-family: var(--mx-font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  [data-site='meridian'] .mx-proj-back {
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--mx-ivory);
+    cursor: pointer;
+  }
+
+  [data-site='meridian'] .mx-proj-round {
+    display: grid;
+    place-items: center;
+    width: 2.875rem;
+    height: 2.875rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--mx-ivory);
+    color: var(--mx-charcoal);
+    cursor: pointer;
+  }
+
+  [data-site='meridian'] .mx-proj-meta {
+    position: absolute;
+    top: 7.5rem;
+    z-index: 3;
+    display: grid;
+    gap: 0.9rem;
+    max-width: 22rem;
+    opacity: 0;
+    transition: opacity 520ms var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-proj-meta.is-ready {
+    opacity: 1;
+  }
+
+  [data-site='meridian'] .mx-proj-meta-left {
+    left: var(--mx-gutter);
+  }
+
+  [data-site='meridian'] .mx-proj-meta-right {
+    right: var(--mx-gutter);
+    text-align: right;
+    transition-delay: 160ms;
+  }
+
+  [data-site='meridian'] .mx-proj-meta-left > div {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  [data-site='meridian'] .mx-proj-meta dt {
+    color: rgb(250 248 242 / 0.62);
+  }
+
+  [data-site='meridian'] .mx-proj-meta-left > .mx-proj-caption-row {
+    display: block;
+  }
+
+  [data-site='meridian'] .mx-proj-caption {
+    margin-top: 1rem;
+    text-transform: none;
+    letter-spacing: 0.04em;
+    line-height: 1.9;
+    color: rgb(250 248 242 / 0.86);
+  }
+
+  [data-site='meridian'] .mx-proj-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    color: var(--mx-powder);
+  }
+
+  [data-site='meridian'] .mx-proj-column {
+    position: absolute;
+    inset: 0;
+  }
+
+  [data-site='meridian'] .mx-proj-photo {
+    --box-w: min(48vw, 56rem);
+    --box-h: 58vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: var(--box-w);
+    height: var(--box-h);
+    transform: translate(-50%, -50%);
+  }
+
+  [data-site='meridian'] .mx-proj-photo-inner {
+    position: relative;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  [data-site='meridian'] .mx-proj-photo-inner[data-direction='1'] {
+    animation: mx-proj-from-below 560ms var(--mx-ease-out) both;
+  }
+
+  [data-site='meridian'] .mx-proj-photo-inner[data-direction='-1'] {
+    animation: mx-proj-from-above 560ms var(--mx-ease-out) both;
+  }
+
+  /* Neighbouring frames waiting above and below, as on the reference */
+  [data-site='meridian'] .mx-proj-peek {
+    position: absolute;
+    left: 50%;
+    height: 30vh;
+    width: calc(30vh * var(--aspect, 1.5));
+    max-width: 48vw;
+    overflow: hidden;
+    opacity: 0.5;
+    transform: translateX(-50%);
+  }
+
+  /* Neighbours wait at the screen edges, leaving the gap below the photo to
+     the Prev/Next rings (as on the reference). */
+  [data-site='meridian'] .mx-proj-peek-prev {
+    bottom: calc(50% + 29vh + 16vh);
+  }
+
+  [data-site='meridian'] .mx-proj-peek-next {
+    top: calc(50% + 29vh + 16vh);
+  }
+
+  [data-site='meridian'] .mx-proj-nav {
+    position: absolute;
+    left: 50%;
+    bottom: 3.5vh;
+    z-index: 3;
+    display: flex;
+    gap: 1.5rem;
+    opacity: 0;
+    transform: translateX(-50%);
+    transition: opacity 520ms var(--mx-ease-out) 260ms;
+  }
+
+  [data-site='meridian'] .mx-proj-nav.is-ready {
+    opacity: 1;
+  }
+
+  [data-site='meridian'] .mx-proj-ring {
+    display: grid;
+    place-items: center;
+    width: 6.5rem;
+    height: 6.5rem;
+    border: 1px solid rgb(250 248 242 / 0.32);
+    border-radius: 50%;
+    background: rgb(26 33 40 / 0.55);
+    color: var(--mx-ivory);
+    cursor: pointer;
+    transition:
+      border-color var(--mx-duration) var(--mx-ease-out),
+      background-color var(--mx-duration) var(--mx-ease-out);
+  }
+
+  [data-site='meridian'] .mx-proj-ring:hover {
+    border-color: var(--mx-ivory);
+    background: rgb(250 248 242 / 0.08);
+  }
+
+  [data-site='meridian'] :is(.mx-proj-back, .mx-proj-round, .mx-proj-ring, .mx-proj-link):focus-visible {
+    outline: 2px solid var(--mx-powder);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 1023px) {
+    [data-site='meridian'] .mx-proj-meta {
+      top: 4.5rem;
+      max-width: none;
+    }
+
+    [data-site='meridian'] .mx-proj-meta-left {
+      right: var(--mx-gutter);
+      gap: 0.35rem;
+    }
+
+    [data-site='meridian'] .mx-proj-meta-left > div {
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+    }
+
+    [data-site='meridian'] .mx-proj-caption {
+      display: -webkit-box;
+      margin-top: 0.35rem;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-height: 1.6;
+    }
+
+    [data-site='meridian'] .mx-proj-meta-right {
+      display: none;
+    }
+
+    [data-site='meridian'] .mx-proj-photo {
+      --box-w: calc(100vw - 2 * var(--mx-gutter));
+      --box-h: 50vh;
+      top: 52%;
+    }
+
+    [data-site='meridian'] .mx-proj-peek {
+      height: 20vh;
+      width: calc(20vh * var(--aspect, 1.5));
+      max-width: 80vw;
+    }
+
+    /* Portrait screens have no spare height: no peeks, the rings get the gap. */
+    [data-site='meridian'] .mx-proj-peek {
+      display: none;
+    }
+
+    [data-site='meridian'] .mx-proj-ring {
+      width: 5.25rem;
+      height: 5.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-site='meridian'] :is(dialog.mx-proj, .mx-proj-photo-inner, .mx-film-menu) {
+      animation: none !important;
+    }
+
+    [data-site='meridian'] .mx-film-gl {
+      clip-path: none;
+    }
+
+    [data-site='meridian'] .mx-film-frame {
+      transition: none;
+    }
+  }
+}
+
+@keyframes mx-proj-ground {
+  from {
+    background-color: rgb(26 33 40 / 0);
+  }
+  to {
+    background-color: rgb(26 33 40 / 1);
+  }
+}
+
+@keyframes mx-proj-from-below {
+  from {
+    opacity: 0;
+    transform: translateY(14%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mx-proj-from-above {
+  from {
+    opacity: 0;
+    transform: translateY(-14%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer components {
+  /* The flying frame starts as the roll's own (cached) texture */
+  [data-site='meridian'] .mx-proj-photo-inner {
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@layer components {
+  /* Indic scripts are never tracked or case-transformed (conjuncts break apart) */
+  [data-site='meridian']:is(:lang(gu), :lang(hi)) :is(.mx-film-mark, .mx-film-mode, .mx-film-hud-caption, .mx-film-hud-meta, .mx-film-hint, .mx-film-empty-title, .mx-film-menu button, .mx-proj-back, .mx-proj-meta, .mx-proj-ring, .mx-proj-link) {
+    letter-spacing: 0;
+    font-size: 0.8125rem;
   }
 }

@@ -14,6 +14,7 @@ import {
   type Actor,
 } from '@/server/auth/actor';
 import { writeAuditLog } from './audit';
+import { scheduleTranslation } from '@/server/translation/service';
 
 export interface BlogTranslationInput {
   locale: LocaleCode;
@@ -118,6 +119,7 @@ export async function createBlogPost(actor: Actor, input: BlogInput) {
     entityId: post.id,
     summary: `Created blog post ${post.slug}`,
   });
+  await scheduleTranslation('BlogPost', post.id);
   return post;
 }
 
@@ -182,6 +184,7 @@ export async function updateBlogPost(
     summary: `Updated blog post ${slug}`,
     metadata: { status },
   });
+  await scheduleTranslation('BlogPost', postId);
   return db.blogPost.findUniqueOrThrow({ where: { id: postId } });
 }
 

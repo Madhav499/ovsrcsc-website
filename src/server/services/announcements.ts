@@ -7,6 +7,7 @@ import { slugify } from '@/lib/utils';
 import { hasPermission } from '@/lib/permissions';
 import { announcementDisplayState } from '@/lib/announcement';
 import { writeAuditLog } from './audit';
+import { scheduleTranslation } from '@/server/translation/service';
 import type { Actor } from '@/server/auth/actor';
 
 export interface AnnouncementTranslationInput {
@@ -163,6 +164,7 @@ export async function createAnnouncement(actor: Actor, input: AnnouncementInput)
     summary: `Created announcement ${announcement.id}`,
   });
 
+  await scheduleTranslation('Announcement', announcement.id);
   return {
     id: announcement.id,
     section: announcement.sectionId ? (await db.section.findUnique({ where: { id: announcement.sectionId } }))?.nameEn || '—' : '—',
@@ -240,6 +242,7 @@ export async function updateAnnouncement(actor: Actor, id: string, input: Announ
     summary: `Updated announcement ${announcement.id}`,
   });
 
+  await scheduleTranslation('Announcement', announcement.id);
   return {
     id: announcement.id,
     section: announcement.sectionId ? (await db.section.findUnique({ where: { id: announcement.sectionId } }))?.nameEn || '—' : '—',

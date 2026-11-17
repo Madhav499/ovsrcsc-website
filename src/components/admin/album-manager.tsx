@@ -1,8 +1,13 @@
 'use client';
 
-import { useActionState, useEffect, useMemo, useState } from 'react';
+import { useActionState, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Archive,
+  ArrowDown,
+  ArrowUp,
+  RefreshCw,
+  Trash2,
+  Upload,
   CalendarDays,
   Check,
   Images,
@@ -16,7 +21,7 @@ import { cn } from '@/lib/utils';
 import { mediaUrl, isImageKey } from '@/lib/media';
 import type { AdminActionState } from '@/lib/admin-payload';
 import { RichTextEditor } from './rich-text-editor';
-import { saveAlbumAction, archiveAlbumAction } from '@/server/actions/admin-gallery';
+import { saveAlbumAction, archiveAlbumAction, uploadAlbumPhotosAction } from '@/server/actions/admin-gallery';
 
 const initialState: AdminActionState = { status: 'idle' };
 
@@ -107,6 +112,41 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
     () => editing?.items.map((item) => ({ mediaId: item.mediaId, caption: item.caption, alt: item.altText })) ?? [],
   );
   const [pickerQuery, setPickerQuery] = useState('');
+  // Library grows as photos are uploaded here, without a page reload.
+  const [library, setLibrary] = useState(media);
+  const [uploading, setUploading] = useState(false);
+  const [uploadNote, setUploadNote] = useState<{ tone: 'ok' | 'error'; text: string } | null>(null);
+  const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
+  const uploadInput = useRef<HTMLInputElement>(null);
+  const replaceInput = useRef<HTMLInputElement>(null);
+  const replaceTarget = useRef<string | null>(null);
+
+  const keyFor = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const item of library) map.set(item.id, item.storageKey);
+    for (const item of editing?.items ?? []) if (!map.has(item.mediaId)) map.set(item.mediaId, item.storageKey);
+    return map;
+  }, [library, editing]);
+
+  /** Upload through the validated server action; returns the new media records. */
+  const upload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return [];
+    const data = new FormData();
+    for (const file of Array.from(files)) data.append('files', file);
+    setUploading(true);
+    setUploadNote(null);
+    try {
+      const result = await uploadAlbumPhotosAction(data);
+      setUploadNote({ tone: result.status === 'success' ? 'ok' : 'error', text: result.message });
+      if (result.media.length) setLibrary((previous) => [...result.media, ...previous]);
+      return result.media;
+    } catch {
+      setUploadNote({ tone: 'error', text: 'Upload failed. Check your connection and try again.' });
+      return [];
+    } finally {
+      setUploading(false);
+    }
+  };
   const [coverPickerOpen, setCoverPickerOpen] = useState(false);
 
   useEffect(() => {
@@ -139,8 +179,8 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
 
   const mediaMatches = useMemo(() => {
     const q = pickerQuery.trim().toLowerCase();
-    return media.filter((item) => !q || item.title.toLowerCase().includes(q) || item.storageKey.toLowerCase().includes(q));
-  }, [media, pickerQuery]);
+    return library.filter((item) => isImageKey(item.storageKey) && (!q || item.title.toLowerCase().includes(q) || item.storageKey.toLowerCase().includes(q)));
+  }, [library, pickerQuery]);
 
   const set = (name: string, value: unknown) => setValues((previous) => ({ ...previous, [name]: value }));
   const setLang = (name: 'title' | 'description', value: string) =>
@@ -159,15 +199,19 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
     [selected],
   );
 
-  const moveUp = (mediaId: string) => {
+  const move = (mediaId: string, delta: -1 | 1) => {
     setSelected((previous) => {
       const index = previous.findIndex((item) => item.mediaId === mediaId);
-      if (index <= 0) return previous;
+      const target = index + delta;
+      if (index < 0 || target < 0 || target >= previous.length) return previous;
       const next = [...previous];
-      [next[index - 1], next[index]] = [next[index], next[index - 1]];
+      [next[index], next[target]] = [next[target], next[index]];
       return next;
     });
   };
+
+  const updateEntry = (mediaId: string, patch: Partial<{ caption: string; alt: string }>) =>
+    setSelected((previous) => previous.map((entry) => (entry.mediaId === mediaId ? { ...entry, ...patch } : entry)));
 
   return (
     <div className="space-y-6">
@@ -268,7 +312,7 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                     </button>
                   </div>
                   <div className="grid max-h-48 gap-2 overflow-y-auto sm:grid-cols-6">
-                    {media
+                    {library
                       .filter((item) => isImageKey(item.storageKey))
                       .slice(0, 60)
                       .map((item) => (
@@ -336,8 +380,173 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
             </div>
 
             <div className="border-t border-line px-6 py-5">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="admin-label mb-0">In this album · {selected.length} photograph{selected.length === 1 ? '' : 's'}</p>
+                  <p className="mt-1 text-xs text-ink-muted">
+                    Shown on the public gallery in this order. Changes go live when you save the album.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    ref={uploadInput}
+                    type="file"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    onChange={async (event) => {
+                      const added = await upload(event.target.files);
+                      event.target.value = '';
+                      if (added.length) {
+                        setSelected((previous) => [
+                          ...previous,
+                          ...added.filter((item) => !previous.some((entry) => entry.mediaId === item.id)).map((item) => ({ mediaId: item.id, caption: '', alt: '' })),
+                        ]);
+                      }
+                    }}
+                  />
+                  <input
+                    ref={replaceInput}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    className="sr-only"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    onChange={async (event) => {
+                      const target = replaceTarget.current;
+                      const [fresh] = await upload(event.target.files);
+                      event.target.value = '';
+                      replaceTarget.current = null;
+                      if (!target || !fresh) return;
+                      // Swap the file, keep this photo's place, caption and alt text.
+                      setSelected((previous) =>
+                        previous.some((entry) => entry.mediaId === fresh.id)
+                          ? previous
+                          : previous.map((entry) => (entry.mediaId === target ? { ...entry, mediaId: fresh.id } : entry)),
+                      );
+                    }}
+                  />
+                  <button type="button" disabled={uploading} onClick={() => uploadInput.current?.click()} className="admin-btn admin-btn-primary whitespace-nowrap">
+                    {uploading ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Upload className="size-4" aria-hidden="true" />}
+                    Upload photographs
+                  </button>
+                </div>
+              </div>
+
+              <p className="mb-3 text-[11px] text-ink-muted">JPG, PNG, WebP or GIF · up to 20 at a time · each file within the site’s upload size limit.</p>
+              {uploadNote ? (
+                <p
+                  role={uploadNote.tone === 'error' ? 'alert' : 'status'}
+                  className={cn(
+                    'mb-3 rounded-xl border px-4 py-2.5 text-sm',
+                    uploadNote.tone === 'error' ? 'border-danger/25 bg-danger/5 text-danger' : 'border-emerald-600/25 bg-emerald-500/10 text-emerald-800',
+                  )}
+                >
+                  {uploadNote.text}
+                </p>
+              ) : null}
+
+              {selected.length === 0 ? (
+                <p className="rounded-xl border border-dashed border-line px-4 py-8 text-center text-sm text-ink-muted">
+                  No photographs yet. Upload new ones or add them from the library below.
+                </p>
+              ) : (
+                <ol className="divide-y divide-line rounded-xl border border-line">
+                  {selected.map((entry, position) => {
+                    const key = keyFor.get(entry.mediaId) ?? '';
+                    return (
+                      <li key={entry.mediaId} className="flex flex-wrap items-start gap-3 p-3 sm:flex-nowrap">
+                        <span className="w-6 pt-1 text-right font-mono text-xs text-ink-muted">{String(position + 1).padStart(2, '0')}</span>
+                        <div className="size-20 shrink-0 overflow-hidden rounded-lg border border-line bg-warm-ivory">
+                          {key ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={mediaUrl(key)} alt="" className="size-full object-cover" loading="lazy" />
+                          ) : null}
+                        </div>
+                        <div className="grid min-w-0 flex-1 gap-1.5">
+                          <label className="sr-only" htmlFor={`caption-${entry.mediaId}`}>
+                            Caption for photograph {position + 1}
+                          </label>
+                          <input
+                            id={`caption-${entry.mediaId}`}
+                            type="text"
+                            value={entry.caption}
+                            maxLength={400}
+                            onChange={(event) => updateEntry(entry.mediaId, { caption: event.target.value })}
+                            placeholder="Caption (optional)"
+                            className="admin-input !py-1.5 !text-xs"
+                          />
+                          <label className="sr-only" htmlFor={`alt-${entry.mediaId}`}>
+                            Alt text for photograph {position + 1}
+                          </label>
+                          <input
+                            id={`alt-${entry.mediaId}`}
+                            type="text"
+                            value={entry.alt}
+                            maxLength={300}
+                            onChange={(event) => updateEntry(entry.mediaId, { alt: event.target.value })}
+                            placeholder="Alt text — what the photograph shows"
+                            className="admin-input !py-1.5 !text-xs"
+                          />
+                        </div>
+                        <div className="flex shrink-0 flex-wrap items-center gap-1">
+                          <button type="button" onClick={() => move(entry.mediaId, -1)} disabled={position === 0} aria-label={`Move photograph ${position + 1} up`} className="admin-btn admin-btn-ghost !p-1.5 disabled:opacity-30">
+                            <ArrowUp className="size-3.5" aria-hidden="true" />
+                          </button>
+                          <button type="button" onClick={() => move(entry.mediaId, 1)} disabled={position === selected.length - 1} aria-label={`Move photograph ${position + 1} down`} className="admin-btn admin-btn-ghost !p-1.5 disabled:opacity-30">
+                            <ArrowDown className="size-3.5" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={uploading}
+                            onClick={() => {
+                              replaceTarget.current = entry.mediaId;
+                              replaceInput.current?.click();
+                            }}
+                            className="admin-btn admin-btn-ghost !py-1 !text-[11px]"
+                          >
+                            <RefreshCw className="size-3.5" aria-hidden="true" />
+                            Replace
+                          </button>
+                          {confirmRemove === entry.mediaId ? (
+                            <span className="flex items-center gap-1 rounded-lg border border-danger/30 bg-danger/5 px-2 py-1 text-[11px] text-danger">
+                              Remove from album?
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelected((previous) => previous.filter((item) => item.mediaId !== entry.mediaId));
+                                  setConfirmRemove(null);
+                                }}
+                                className="font-bold underline"
+                              >
+                                Yes
+                              </button>
+                              <button type="button" onClick={() => setConfirmRemove(null)} className="underline">
+                                No
+                              </button>
+                            </span>
+                          ) : (
+                            <button type="button" onClick={() => setConfirmRemove(entry.mediaId)} className="admin-btn admin-btn-ghost !py-1 !text-[11px] text-danger">
+                              <Trash2 className="size-3.5" aria-hidden="true" />
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
+              <p className="mt-2 text-[11px] text-ink-muted">
+                Remove and Replace only change this album: the original file stays in the media library, so another album or page that uses it is unaffected. To delete a file permanently, archive it in Media (it is refused while anything still uses it).
+              </p>
+            </div>
+
+            <div className="border-t border-line px-6 py-5">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                <p className="admin-label mb-0">Album images · {selected.length} selected (order = click order)</p>
+                <p className="admin-label mb-0">Add from the media library</p>
                 <label className="relative">
                   <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-ink-muted" />
                   <input
@@ -345,87 +554,30 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                     value={pickerQuery}
                     onChange={(event) => setPickerQuery(event.target.value)}
                     placeholder="Search media…"
+                    aria-label="Search the media library"
                     className="admin-input !w-52 !py-1.5 !pl-9"
                   />
                 </label>
               </div>
-              <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
+              <div className="grid max-h-[28rem] gap-3 overflow-y-auto sm:grid-cols-4 lg:grid-cols-6">
                 {mediaMatches.map((item) => {
-                  const chosen = selectedMap.get(item.id);
-                  const position = chosen ? selected.findIndex((entry) => entry.mediaId === item.id) : -1;
+                  const chosen = selectedMap.has(item.id);
                   return (
-                    <div key={item.id} className={cn('overflow-hidden rounded-xl border bg-paper', chosen ? 'border-brass ring-1 ring-brass/40' : 'border-line')}>
-                      <div className="relative aspect-[4/3] w-full bg-warm-ivory">
-                        {isImageKey(item.storageKey) ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={mediaUrl(item.storageKey)} alt={item.title} className="size-full object-cover" loading="lazy" />
-                        ) : (
-                          <div className="flex size-full flex-col items-center justify-center text-ink-muted">
-                            <CalendarDays className="size-6" aria-hidden="true" />
-                            <span className="mt-1 text-[10px] font-semibold uppercase tracking-wider">Document</span>
-                          </div>
-                        )}
-                        {chosen ? (
-                          <span className="absolute left-2 top-2 rounded-full bg-brass px-2 py-0.5 text-[10px] font-bold text-paper">
-                            {position + 1}
-                          </span>
-                        ) : null}
-                        <button
-                          type="button"
-                          onClick={() => toggleMedia(item.id)}
-                          aria-label={chosen ? `Remove ${item.title} from album` : `Add ${item.title} to album`}
-                          className={cn(
-                            'absolute right-2 top-2 rounded-full border p-1.5 backdrop-blur',
-                            chosen ? 'border-brass bg-brass text-paper' : 'border-line bg-paper/80 text-ink',
-                          )}
-                        >
-                          {chosen ? <Check className="size-3.5" aria-hidden="true" /> : <Plus className="size-3.5" aria-hidden="true" />}
-                        </button>
-                      </div>
-                      <div className="space-y-1.5 p-2">
-                        <p className="truncate text-[10px] text-ink-muted" title={item.title}>
-                          {item.title}
-                        </p>
-                        {chosen ? (
-                          <>
-                            <input
-                              type="text"
-                              value={chosen.caption}
-                              onChange={(event) => {
-                                const next = event.target.value;
-                                setSelected((previous) =>
-                                  previous.map((entry) => (entry.mediaId === item.id ? { ...entry, caption: next } : entry)),
-                                );
-                              }}
-                              placeholder="Caption"
-                              className="admin-input !py-1 !text-[11px]"
-                            />
-                            <input
-                              type="text"
-                              value={chosen.alt}
-                              onChange={(event) => {
-                                const next = event.target.value;
-                                setSelected((previous) =>
-                                  previous.map((entry) => (entry.mediaId === item.id ? { ...entry, alt: next } : entry)),
-                                );
-                              }}
-                              placeholder="Alt text"
-                              className="admin-input !py-1 !text-[11px]"
-                            />
-                            {selected.length > 1 ? (
-                              <button
-                                type="button"
-                                onClick={() => moveUp(item.id)}
-                                disabled={position === 0}
-                                className="admin-btn admin-btn-ghost !py-1 !text-[10px] disabled:opacity-30"
-                              >
-                                ↑ Move up
-                              </button>
-                            ) : null}
-                          </>
-                        ) : null}
-                      </div>
-                    </div>
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => toggleMedia(item.id)}
+                      aria-pressed={chosen}
+                      aria-label={chosen ? `Remove ${item.title} from album` : `Add ${item.title} to album`}
+                      className={cn('group relative overflow-hidden rounded-xl border bg-paper text-left', chosen ? 'border-brass ring-1 ring-brass/40' : 'border-line hover:border-stone')}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={mediaUrl(item.storageKey)} alt="" className="aspect-[4/3] w-full bg-warm-ivory object-cover" loading="lazy" />
+                      <span className={cn('absolute right-2 top-2 rounded-full border p-1.5', chosen ? 'border-brass bg-brass text-paper' : 'border-line bg-paper/85 text-ink')}>
+                        {chosen ? <Check className="size-3.5" aria-hidden="true" /> : <Plus className="size-3.5" aria-hidden="true" />}
+                      </span>
+                      <span className="block truncate p-2 text-[10px] text-ink-muted">{item.title}</span>
+                    </button>
                   );
                 })}
               </div>
@@ -440,24 +592,28 @@ export default function AlbumManager({ albums, sections, media }: AlbumManagerPr
                 Cancel
               </button>
               {editing && editing.status !== 'ARCHIVED' ? (
-                <form
-                  action={archiveAction}
-                  onSubmit={(event) => {
-                    if (!window.confirm(`Archive “${editing.searchIndex}”? Visitors will no longer see it.`)) {
-                      event.preventDefault();
-                    }
-                  }}
-                >
-                  <input type="hidden" name="id" value={editing.id} />
-                  <input type="hidden" name="slug" value={editing.slug} />
-                  <button type="submit" disabled={archivePending} className="admin-btn admin-btn-danger ml-auto">
-                    <Archive className="size-4" aria-hidden="true" />
-                    Archive
-                  </button>
-                </form>
+                <button type="submit" form="album-archive-form" disabled={archivePending} className="admin-btn admin-btn-danger ml-auto">
+                  <Archive className="size-4" aria-hidden="true" />
+                  Archive album
+                </button>
               ) : null}
             </div>
           </form>
+          {editing && editing.status !== 'ARCHIVED' ? (
+            <form
+              id="album-archive-form"
+              action={archiveAction}
+              hidden
+              onSubmit={(event) => {
+                if (!window.confirm(`Archive “${editing.searchIndex}”? Visitors will no longer see it. Its photographs stay in the media library.`)) {
+                  event.preventDefault();
+                }
+              }}
+            >
+              <input type="hidden" name="id" value={editing.id} />
+              <input type="hidden" name="slug" value={editing.slug} />
+            </form>
+          ) : null}
         </section>
       ) : (
         <section className="admin-card" aria-label="Photo albums">

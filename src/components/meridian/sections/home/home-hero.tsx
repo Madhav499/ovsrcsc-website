@@ -67,7 +67,7 @@ export function HomeHero({ locale, dict, nextEvent, latestNotice }: HomeHeroProp
               <span className="mx-enter block" style={delay(160)}>
                 {dict['mx.home.heroTitle']}
               </span>
-              <span className="mx-enter mx-serif-accent block text-(--mx-amber)" style={delay(280)}>
+              <span className="mx-enter mx-serif-accent block text-(--mx-accent)" style={delay(280)}>
                 {dict['mx.home.heroTitleAccent']}
               </span>
             </h1>

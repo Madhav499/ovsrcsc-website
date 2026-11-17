@@ -17,12 +17,12 @@ import {
   ListChecks,
   Settings,
   Users,
-  UserRound,
-} from 'lucide-react';
+  UserRound, Languages } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export type AdminNavIcon =
   | 'dashboard'
+  | 'translations'
   | 'pages'
   | 'notices'
   | 'events'
@@ -55,6 +55,7 @@ const ICONS: Record<AdminNavIcon, LucideIcon> = {
   sections: Layers,
   settings: Settings,
   audit: ClipboardList,
+  translations: Languages,
   account: UserRound,
 };
 

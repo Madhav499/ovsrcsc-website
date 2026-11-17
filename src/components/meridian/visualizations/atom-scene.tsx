@@ -24,8 +24,8 @@ export interface AtomControls {
   pitch: MotionValue<number>;
 }
 
-const CYAN = new THREE.Color('#D3B387'); // brass light
-const TEAL = new THREE.Color('#A8BAAE'); // sage light
+const CYAN = new THREE.Color('#A8C5D2'); // powder blue
+const TEAL = new THREE.Color('#DCE6EB'); // pale powder
 const AMBER = new THREE.Color('#B18A58'); // brass
 const IVORY = new THREE.Color('#FAF8F2');
 
@@ -295,8 +295,8 @@ export default function AtomScene({
     >
       <ambientLight intensity={0.55} />
       <directionalLight position={[3, 4, 5]} intensity={1.6} color="#ffffff" />
-      <pointLight position={[-3, -2, 2]} intensity={6} color="#D3B387" distance={8} />
-      <pointLight position={[2.5, -1.5, 1]} intensity={4} color="#A8BAAE" distance={7} />
+      <pointLight position={[-3, -2, 2]} intensity={6} color="#A8C5D2" distance={8} />
+      <pointLight position={[2.5, -1.5, 1]} intensity={4} color="#D3B387" distance={7} />
       <Rig animate={animate} scene={scene}>
         <Nucleus animate={animate} scene={scene} />
         {ORBITS.map((orbit, index) => (

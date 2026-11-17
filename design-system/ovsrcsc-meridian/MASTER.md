@@ -32,24 +32,26 @@ serif headlines, instrument-style mono annotations, computed scientific figures,
 immersive moments (atom, laboratory walk, telescope, experiments). Never all-dark; no
 decoration without a reason.
 
-## Colour (approved palette — `src/styles/meridian/meridian.css`)
+## Colour (approved palette, mineral blue — `src/styles/meridian/meridian.css`)
 
 | Token | Hex | Role |
 |---|---|---|
 | `--mx-ivory` | #FAF8F2 | Primary reading surface |
 | `--mx-stone` | #F0E9DC | Warm editorial variation (heroes, registers) |
-| `--mx-green` | #344C43 | Institution: primary CTA on light, `mx-surface-green` |
-| `--mx-charcoal` | #202B29 | Ink, immersive chapters (`mx-surface-dark`) |
-| `--mx-brass` | #B18A58 | Marks only: rules, diagram emphasis, CTA on dark |
-| `--mx-sage` | #82958A | Secondary lines and depth |
+| `--mx-mineral` | #263746 | Institution: primary CTA on light, links/accents, `mx-surface-mineral` |
+| `--mx-slate` | #526B7A | Secondary accent text (5.3:1 ivory, 4.65:1 stone), diagram lines |
+| `--mx-powder` | #A8C5D2 | Accent and CTA on dark (7.9:1 on ink); `--mx-powder-panel` #E3ECF0 for restrained panels |
+| `--mx-charcoal` (ink) | #222B33 | Text, immersive chapters (`mx-surface-dark`) |
+| `--mx-brass` | #B18A58 | Small heritage marks only: rules, diagram emphasis, the drawn thread |
 
-Brass and Sage are below 4.5:1 on light surfaces, so text uses `--mx-brass-ink` (#7A5B32, 5.9:1)
-and `--mx-sage-ink` (#4E6157, 6.2:1); on dark, `--mx-brass-light` (7.3:1). Surfaces
-(`mx-surface-ivory|stone|white|dark|green`) set semantic variables (`--mx-fg*`, `--mx-line*`,
-`--mx-accent`, `--mx-mark`, `--mx-cta-*`). The primary button reads `--mx-cta-*` from the nearest
-surface (green on light, brass on dark). Legacy names (`--mx-cyan`, `--mx-amber`, `--mx-midnight`…)
-are aliases onto this palette — use the new names in new code. `.mx-grain` adds an inline SVG
-paper-noise layer (no image request).
+Never use powder or brass as text on light surfaces (1.7:1 and 3.0:1); brass text uses
+`--mx-brass-ink` (#7A5B32). Surfaces (`mx-surface-ivory|stone|white|powder|dark|mineral`) set
+the semantic variables (`--mx-fg*`, `--mx-line*`, `--mx-accent`, `--mx-mark`, `--mx-cta-*`); the
+primary button reads `--mx-cta-*` from the nearest surface (mineral on light, powder on dark).
+The retired heritage-green names (`--mx-green`, `--mx-sage`, `mx-surface-green`) and the first-pass
+names (`--mx-cyan`, `--mx-teal`, `--mx-amber`, `--mx-midnight`) are aliases onto this palette so
+nothing can render green; use the names above in new code. Status green was also retired:
+`--mx-success` is #2B5F7A. `.mx-grain` adds an inline SVG paper-noise layer.
 
 ## Typography (self-hosted — `src/lib/meridian-fonts.ts`, files in `src/assets/fonts`, SIL OFL)
 
@@ -81,9 +83,31 @@ The CMS catch-all dispatches by path: `about` → AboutPage · `infrastructure` 
 walk with photo hotspots on visibly identifiable items and a principle figure per lab, facilities
 register, pendulum) · `projects`, `activities` → DiscoveryPage (featured spread, asymmetric mosaic,
 index; no invented categories) · `projects/big-bang-astronomy-club` → EditorialPage + AstronomyExhibit ·
-everything else → EditorialPage. Standalone routes: Visit (new), Gallery (adaptive editorial archive,
-contact-sheet toggle, lightbox with full-resolution link), Events (twelve-month ruler in Asia/Kolkata),
+everything else → EditorialPage. Standalone routes: Visit (new), Gallery (photography archive, below), Events (twelve-month ruler in Asia/Kolkata),
 Journal (featured story + table of contents; reading progress on articles), Contact.
+
+## Gallery — film archive (`components/meridian/gallery/`)
+
+After HOLMCHROME's browsing experience (structure and motion only — none of its branding, text or
+photography). Three views, all derived at runtime from published albums (`film-model.ts`):
+
+- **Roll** (default): one WebGL 35 mm strip (`film-strip-gl.tsx`, three.js, loaded on demand) that
+  curves in depth, with sprockets, `OVSRCSC · RAJKOT` edge print and `07 ▸ 07A` frame numbers. Frames
+  keep each photo's proportions (clamped 0.62–1.9). Native page scroll in a sticky stage advances
+  the roll (no scroll hijack); blank leader film pads 0–2 photos. HUD: 11px mono, wide tracking —
+  modes top-left, round albums button top-right (2+ albums), `03 / 21 · CAPTION` (decode effect)
+  bottom-left, album · date bottom-right. Ring cursor with the frame number. A short iris reveal.
+  An sr-only list of frame buttons gives keyboard/screen-reader access.
+- **Index** (`?view=index`): a light table — justified rows of DOM film frames, every row one height.
+- **Viewing room** (`?photo=<mediaId>`, `photo-project.tsx`): the frame flies forward (FLIP) onto
+  near-black; metadata columns decode in (only real CMS data: frame, album, date, caption, size);
+  neighbours wait at the screen edges; round `Prev · 05 / Next · 07` rings; ← → ↑ ↓, swipe, Escape;
+  closes back into its frame and returns focus to the opener.
+- Fallbacks: reduced motion, no WebGL or Save-Data → a native horizontal DOM strip.
+
+Albums are the only grouping. `/gallery` = all, `/gallery/[slug]` = album pre-selected; view and
+photo live in the query string (shareable, back/forward-safe). gu/hi captions come from automatic
+translation (`TranslationState.fields`), falling back to English.
 
 ## 3D
 
