@@ -38,6 +38,7 @@ export function SiteHeader({ locale, dict, settings }: SiteHeaderProps) {
         explore: dict['mx.nav.explore'],
         submenu: dict['mx.nav.submenu'],
         external: dict['a11y.newTab'],
+        viewSection: dict['mx.nav.viewSection'],
         phone: dict['common.phone'],
         email: dict['common.email'],
       }}

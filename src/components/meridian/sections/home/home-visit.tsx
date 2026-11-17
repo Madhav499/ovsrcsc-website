@@ -46,7 +46,6 @@ export function HomeVisit({
               <div aria-hidden="true" className="mx-atmosphere absolute inset-0 -z-10" />
               <p className="mx-eyebrow">
                 <span className="mx-eyebrow-index">{index}</span>
-                <span aria-hidden="true" className="h-px w-6 bg-current opacity-50" />
                 {dict['home.visit.eyebrow']}
               </p>
               <h2 id="home-visit-title" className="mx-h2 mt-6">

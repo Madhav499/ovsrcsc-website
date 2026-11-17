@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useId, useRef, useState } from 'react';
@@ -9,6 +10,7 @@ import type { LocaleCode } from '@/lib/constants';
 import type { NavItem } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/meridian/layout/logo';
+import { BRAND_PHOTOS } from '@/components/meridian/media/brand-photos';
 import { LanguageSwitcher } from './language-switcher';
 
 type HeaderMode = 'overlay-dark' | 'overlay-light' | 'solid';
@@ -32,6 +34,7 @@ interface HeaderLabels {
   explore: string;
   submenu: string;
   external: string;
+  viewSection: string;
   phone: string;
   email: string;
 }
@@ -137,14 +140,14 @@ export function HeaderShell({ locale, items, contact, labels }: HeaderShellProps
   }, []);
 
   const desktopItems = items.filter((item) => item.href !== home);
-  const contactHref = `${home}/contact`;
+  const contactHref = `${home}/visit`;
 
   return (
     <>
       <header
         ref={headerRef}
         className="mx-header"
-        data-mode={menuOpen ? 'solid' : mode}
+        data-mode={menuOpen || openKey ? 'solid' : mode}
         data-hidden={hidden && !menuOpen && !searchOpen ? 'true' : 'false'}
       >
         <div className="mx-container flex h-full items-center justify-between gap-4">
@@ -159,7 +162,7 @@ export function HeaderShell({ locale, items, contact, labels }: HeaderShellProps
 
           <nav aria-label={labels.mainNav} className="hidden xl:block">
             <ul className="flex items-center gap-0.5">
-              {desktopItems.map((item) => {
+              {desktopItems.map((item, itemIndex) => {
                 const active = itemActive(pathname, item, home);
                 if (!item.children?.length) {
                   return (
@@ -178,12 +181,14 @@ export function HeaderShell({ locale, items, contact, labels }: HeaderShellProps
                   <DesktopDropdown
                     key={item.href}
                     item={item}
+                    index={itemIndex + 1}
                     active={active}
                     open={openKey === item.href}
                     pathname={pathname}
                     home={home}
                     submenuLabel={labels.submenu}
                     externalLabel={labels.external}
+                    viewSectionLabel={labels.viewSection}
                     onToggle={() => setOpenKey((current) => (current === item.href ? null : item.href))}
                     onClose={() => setOpenKey(null)}
                     onHoverOpen={(pointerType) => hoverOpen(item.href, pointerType)}
@@ -249,26 +254,36 @@ export function HeaderShell({ locale, items, contact, labels }: HeaderShellProps
 
 interface DesktopDropdownProps {
   item: NavItem;
+  index: number;
   active: boolean;
   open: boolean;
   pathname: string;
   home: string;
   submenuLabel: string;
   externalLabel: string;
+  viewSectionLabel: string;
   onToggle: () => void;
   onClose: () => void;
   onHoverOpen: (pointerType: string) => void;
   onHoverClose: (pointerType: string) => void;
 }
 
+/**
+ * Mega-menu: a full-width editorial panel under the header — a curated
+ * photograph as a numbered figure, the section's introduction and its links
+ * with one-line descriptions. Opens on hover intent (mouse only) or on the
+ * chevron button (keyboard / touch); Escape returns focus to the toggle.
+ */
 function DesktopDropdown({
   item,
+  index,
   active,
   open,
   pathname,
   home,
   submenuLabel,
   externalLabel,
+  viewSectionLabel,
   onToggle,
   onClose,
   onHoverOpen,
@@ -276,11 +291,12 @@ function DesktopDropdown({
 }: DesktopDropdownProps) {
   const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const children = (item.children ?? []).filter((child) => child.href !== item.href);
+  const children = item.children ?? [];
+  const photo = item.image ? BRAND_PHOTOS[item.image] : null;
+  const folio = String(index).padStart(2, '0');
 
   return (
     <li
-      className="relative"
       onPointerEnter={(event) => onHoverOpen(event.pointerType)}
       onPointerLeave={(event) => onHoverClose(event.pointerType)}
       onKeyDown={(event) => {
@@ -314,41 +330,75 @@ function DesktopDropdown({
         {open ? (
           <motion.div
             id={panelId}
-            className="mx-dropdown"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.22, ease: [0.19, 1, 0.22, 1] }}
+            className="mx-mega mx-surface-ivory mx-grain"
+            initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.42, ease: [0.19, 1, 0.22, 1] }}
           >
-            <ul>
-              {children.map((child) => {
-                const childActive = !child.external && isActive(pathname, child.href, home);
-                return (
-                  <li key={child.href}>
-                    {child.external ? (
-                      <a
-                        href={child.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mx-dropdown-link"
-                      >
-                        <span>{child.label}</span>
-                        <ArrowUpRight className="size-4 shrink-0 opacity-60" aria-hidden="true" />
-                        <span className="sr-only">({externalLabel})</span>
-                      </a>
-                    ) : (
-                      <Link
-                        href={child.href}
-                        className="mx-dropdown-link"
-                        aria-current={childActive ? 'page' : undefined}
-                      >
-                        <span>{child.label}</span>
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="mx-container grid grid-cols-[15rem_minmax(0,1fr)_minmax(0,1.6fr)] gap-10 py-10 2xl:grid-cols-[18rem_minmax(0,1fr)_minmax(0,1.6fr)]">
+              {photo ? (
+                <figure className="min-w-0">
+                  <div className="mx-plate relative aspect-[4/5] w-full">
+                    <Image src={photo} alt="" fill sizes="18rem" className="object-cover" placeholder="blur" />
+                    <span aria-hidden="true" className="mx-ticks" />
+                  </div>
+                  {item.imageCaption ? (
+                    <figcaption className="mx-figcap">
+                      <span className="mx-figcap-num">Fig. {folio}</span>
+                      <span>{item.imageCaption}</span>
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ) : (
+                <span />
+              )}
+              <div className="flex min-w-0 flex-col">
+                <p className="mx-eyebrow">
+                  <span className="mx-eyebrow-index">{folio}</span>
+                  {item.label}
+                </p>
+                {item.intro ? <p className="mx-h3 mt-5 max-w-[20ch] text-(--mx-fg)">{item.intro}</p> : null}
+                <Link href={item.href} className="mx-link mt-auto self-start pt-8 text-[0.9375rem]">
+                  {viewSectionLabel}
+                  <ArrowRight className="mx-btn-icon" aria-hidden="true" />
+                </Link>
+              </div>
+              <ul className="grid content-start gap-x-8 sm:grid-cols-2">
+                {children.map((child) => {
+                  const childActive = !child.external && isActive(pathname, child.href, home);
+                  const body = (
+                    <>
+                      <span className="flex items-center gap-2 font-semibold text-(--mx-fg)">
+                        {child.label}
+                        {child.external ? (
+                          <ArrowUpRight className="size-3.5 shrink-0 opacity-60" aria-hidden="true" />
+                        ) : null}
+                      </span>
+                      {child.description ? (
+                        <span className="mt-0.5 block text-[0.8125rem] leading-snug text-(--mx-fg-3)">
+                          {child.description}
+                        </span>
+                      ) : null}
+                      {child.external ? <span className="sr-only">({externalLabel})</span> : null}
+                    </>
+                  );
+                  return (
+                    <li key={child.href} className="border-t border-(--mx-line)">
+                      {child.external ? (
+                        <a href={child.href} target="_blank" rel="noopener noreferrer" className="mx-mega-link">
+                          {body}
+                        </a>
+                      ) : (
+                        <Link href={child.href} className="mx-mega-link" aria-current={childActive ? 'page' : undefined}>
+                          {body}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </motion.div>
         ) : null}
       </AnimatePresence>

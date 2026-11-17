@@ -4,7 +4,7 @@ import { SectionHeading } from '@/components/meridian/primitives/section-heading
 import { PendulumLab } from '@/components/meridian/story/pendulum-lab';
 
 /** Interactive physics bench that follows the Physics Laboratory chapter. */
-export function HomePendulum({ locale, dict, index }: { locale: LocaleCode; dict: Dictionary; index: string }) {
+export function HomePendulum({ locale, dict, index }: { locale: LocaleCode; dict: Dictionary; index?: string }) {
   return (
     <section id="pendulum-lab" aria-labelledby="home-pendulum-title" className="mx-surface-white mx-section scroll-mt-[var(--mx-header-h)]">
       <div className="mx-container">

@@ -8,7 +8,8 @@ import * as THREE from 'three';
 /*
  * The official OVSRCSC logo is an atom: three tilted elliptical orbits with
  * coloured electrons around a silver nucleus. This scene reinterprets that
- * mark in the MERIDIAN palette. Geometry is deliberately low-poly.
+ * mark as a brass-and-silver instrument in the heritage palette: polished
+ * metal electrons and nucleons, hairline orbits — no glow effects.
  *
  * Everything that changes per frame (scroll progress, the visitor's drag,
  * the highlighted part) is read from refs and motion values inside
@@ -23,10 +24,10 @@ export interface AtomControls {
   pitch: MotionValue<number>;
 }
 
-const CYAN = new THREE.Color('#52D5E8');
-const TEAL = new THREE.Color('#24A6A0');
-const AMBER = new THREE.Color('#E9A94B');
-const IVORY = new THREE.Color('#F6F3EC');
+const CYAN = new THREE.Color('#D3B387'); // brass light
+const TEAL = new THREE.Color('#A8BAAE'); // sage light
+const AMBER = new THREE.Color('#B18A58'); // brass
+const IVORY = new THREE.Color('#FAF8F2');
 
 const ORBITS: Array<{ tilt: number; color: THREE.Color; speed: number; phase: number }> = [
   { tilt: -Math.PI / 6, color: CYAN, speed: 0.55, phase: 0 },
@@ -98,7 +99,7 @@ function Orbit({
     }
     if (line.current) line.current.opacity = ease(line.current.opacity, targetOpacity('orbits', focus, 0.7), delta);
     if (core.current) core.current.opacity = ease(core.current.opacity, targetOpacity('electrons', focus, 1), delta);
-    if (halo.current) halo.current.opacity = ease(halo.current.opacity, targetOpacity('electrons', focus, 0.16), delta);
+    if (halo.current) halo.current.opacity = ease(halo.current.opacity, targetOpacity('electrons', focus, 0.07), delta);
   });
 
   return (
@@ -114,8 +115,9 @@ function Orbit({
               ref={core}
               color={color}
               emissive={color}
-              emissiveIntensity={0.9}
-              roughness={0.35}
+              emissiveIntensity={0.25}
+              metalness={0.7}
+              roughness={0.3}
               transparent
             />
           </mesh>
@@ -125,7 +127,7 @@ function Orbit({
               ref={halo}
               color={color}
               transparent
-              opacity={0.16}
+              opacity={0.07}
               depthWrite={false}
               blending={THREE.AdditiveBlending}
             />
@@ -293,8 +295,8 @@ export default function AtomScene({
     >
       <ambientLight intensity={0.55} />
       <directionalLight position={[3, 4, 5]} intensity={1.6} color="#ffffff" />
-      <pointLight position={[-3, -2, 2]} intensity={6} color="#52D5E8" distance={8} />
-      <pointLight position={[2.5, -1.5, 1]} intensity={4} color="#E9A94B" distance={7} />
+      <pointLight position={[-3, -2, 2]} intensity={6} color="#D3B387" distance={8} />
+      <pointLight position={[2.5, -1.5, 1]} intensity={4} color="#A8BAAE" distance={7} />
       <Rig animate={animate} scene={scene}>
         <Nucleus animate={animate} scene={scene} />
         {ORBITS.map((orbit, index) => (

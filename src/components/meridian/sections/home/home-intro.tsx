@@ -14,7 +14,6 @@ export function HomeIntro({ locale, dict, index }: { locale: LocaleCode; dict: D
         <div className="lg:col-span-5 lg:pt-6">
           <p className="mx-eyebrow">
             <span className="mx-eyebrow-index">{index}</span>
-            <span aria-hidden="true" className="h-px w-6 bg-current opacity-50" />
             {dict['home.about.eyebrow']}
           </p>
           <h2 id="home-intro-title" className="mx-h2 mt-6 max-w-[14ch]">

@@ -223,7 +223,7 @@ export function PendulumLab({ labels, locale }: { labels: PendulumLabels; locale
             <span className="mx-mono-label mr-2 text-(--mx-accent)">{labels.figure}</span>
             {labels.dragHint}
           </span>
-          <span className="mx-mono-label">{labels.formula}</span>
+          <span className="mx-mono-label normal-case tracking-normal">{labels.formula}</span>
         </figcaption>
       </figure>
 

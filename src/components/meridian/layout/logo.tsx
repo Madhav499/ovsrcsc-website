@@ -30,15 +30,15 @@ export function Logo({ href, name, familiarName, alt, homeLabel, size = 'sm', cl
         priority={size === 'sm'}
         sizes={size === 'sm' ? '40px' : '64px'}
         className={cn(
-          'w-auto shrink-0 drop-shadow-[0_2px_6px_rgb(16_28_44/0.25)] transition-transform duration-500 group-hover:-rotate-2',
+          'w-auto shrink-0 drop-shadow-[0_2px_6px_rgb(24_33_31/0.25)] transition-transform duration-500 group-hover:-rotate-2',
           size === 'sm' ? 'h-11 lg:h-12' : 'h-20',
         )}
       />
       <span className="flex min-w-0 flex-col leading-tight">
         <span
           className={cn(
-            'truncate font-semibold tracking-[-0.01em]',
-            size === 'sm' ? 'text-[0.85rem] min-[380px]:text-[0.95rem] lg:text-base' : 'text-lg',
+            'truncate font-normal tracking-[-0.005em]',
+            size === 'sm' ? 'text-[1.05rem] min-[380px]:text-[1.15rem] lg:text-[1.3rem]' : 'text-2xl',
           )}
           style={{ fontFamily: 'var(--mx-font-display)' }}
         >

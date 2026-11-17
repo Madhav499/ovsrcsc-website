@@ -41,7 +41,6 @@ export function HomeDiscovery({ locale, dict, index }: { locale: LocaleCode; dic
           <>
             <p className="mx-eyebrow">
               <span className="mx-eyebrow-index">{index}</span>
-              <span aria-hidden="true" className="h-px w-6 bg-current opacity-50" />
               {dict['mx.home.discoveryEyebrow']}
             </p>
             <h2 id="home-discovery-title" className="mx-display mt-6 max-w-[11ch]" style={{ fontSize: 'clamp(2.5rem, 1.3rem + 4vw, 5.25rem)' }}>

@@ -24,7 +24,7 @@ class WebGLBoundary extends Component<{ children: ReactNode; onError: () => void
 
 export type Capability = 'pending' | 'static' | 'css' | 'webgl';
 
-function detectCapability(): Capability {
+export function detectCapability(): Capability {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return 'static';
   if (window.matchMedia('(max-width: 767px)').matches) return 'css';

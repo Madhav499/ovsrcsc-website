@@ -57,9 +57,9 @@ export function OrbitMotif({ className, variant = 'atom', animated = true, focus
     <svg viewBox="0 0 400 400" fill="none" aria-hidden="true" className={cn('mx-atom', className)} data-focus={focus ?? undefined}>
       <defs>
         <radialGradient id="mx-nucleus" cx="40%" cy="35%" r="70%">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="45%" stopColor="#c9d3df" />
-          <stop offset="100%" stopColor="#4a5a6e" />
+          <stop offset="0%" stopColor="#fffdf8" />
+          <stop offset="45%" stopColor="#e3cfae" />
+          <stop offset="100%" stopColor="#7a5b32" />
         </radialGradient>
       </defs>
       <circle cx="200" cy="200" r="196" stroke="currentColor" strokeWidth="0.6" opacity="0.18" strokeDasharray="2 7" />

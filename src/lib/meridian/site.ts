@@ -55,3 +55,4 @@ export function formatNumber(value: number, locale: LocaleCode): string {
   const tag = locale === 'gu' ? 'gu-IN-u-nu-gujr' : locale === 'hi' ? 'hi-IN' : 'en-IN';
   return new Intl.NumberFormat(tag).format(value);
 }
+
